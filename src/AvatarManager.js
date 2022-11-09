@@ -22,6 +22,7 @@ export class AvatarManager{
     load_model1(){
         var self = this
         var pathModel="assets/woman01.gltf"//woman01_0.glb"
+        // var pathModel="assets/woman01.glb"
         var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman01LOD/"
         window.timeTest.measure("gltf load start")
