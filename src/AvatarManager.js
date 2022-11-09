@@ -9,6 +9,9 @@ export class AvatarManager{
         this.scene=scene
         this.camera=camera
         this.assets={}//为了防止资源重复加载，相同路径的资源只加载一次
+        this.row_index = 0; //在梯形看台中计算当前人物所在看台行数(貌似含义和小看台中正好相反)
+        this.sum_count = 0; //当前row_index前面行的人数总和
+        this.row_count = 0; //当前行的可放置人数
         this.init()
     }
     async init(){
@@ -22,7 +25,6 @@ export class AvatarManager{
     load_model1(){
         var self = this
         var pathModel="assets/woman01.gltf"//woman01_0.glb"
-        // var pathModel="assets/woman01.glb"
         var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman01LOD/"
         window.timeTest.measure("gltf load start")
@@ -97,10 +99,9 @@ export class AvatarManager{
         var pathModel="assets/woman02.gltf"//woman01_0.glb"
         var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman02LOD/"
-        new GLTFLoader().load(pathModel, async (glb) => {
+        new GLTFLoader().load(pathModel, (glb) => {
             console.log("model2",glb)
-            const p=new MaterialProcessor2(glb)
-            await p.init()
+            new MaterialProcessor2(glb)
             var crowd=new Crowd({
                 camera:self.camera,
                 count:100*100/2,//5*100*100,
@@ -168,7 +169,7 @@ export class AvatarManager{
             ]
             for(var i=0;i<3;i++)scale[i]*=1.3
             var animtionType=Math.floor(12*Math.random())
-            if(i0<1250){
+            if(i0<496){
                 if(Math.random()>0.5)animtionType=5
                 else animtionType=8
             }else if(animtionType==5)animtionType=0
@@ -240,10 +241,14 @@ export class AvatarManager{
     }
     getPosRot(i0) {
         var c=[//分组情况
-            1250,   //运动
+            496,   //运动
             15*182,     //大看台1
             21*182,     //大看台2
-            20*60   //小看台1
+            20*60,   //小看台1
+            17*60,   //小看台2
+            300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
+            240,         //弧形看台2 
+            192,         //弧形看台3
         ]
         if(i0<c[0]){
             var col_count=25
@@ -293,7 +298,7 @@ export class AvatarManager{
                 -99-1.5*col*1.9,
             ]
             var rotation=[0,-Math.PI,0]
-        }else{//小看台2
+        }else if(i0<c[0]+c[1]+c[2]+c[3]+c[4]){//小看台2
             i0-=(c[0]+c[1]+c[2]+c[3])
             var row_count=60
             var row=i0%row_count
@@ -307,6 +312,63 @@ export class AvatarManager{
             ]
             var rotation=[0,0,0]
             // var position=[-1000,-1000,-1000]
+        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
+            i0-=(c[0]+c[1]+c[2]+c[3]+c[4])
+            if (i0<2) this.row_index = 0; // 重置行数
+            var col_index=i0 - Math.floor((0+this.row_index)*(this.row_index+1)/2);
+            if (col_index > this.row_index) {
+                this.row_index++;
+                col_index-=this.row_index;
+            }
+            var position=[
+                1.*col_index+30,
+                1.28*this.row_index+1.28,
+                99+1.5*this.row_index*1.9-col_index*0.25
+            ]
+            var rotation=[0,0,0] // 还需调整方向，目前尚未调整
+        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]) { //弧形看台2
+            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]);
+            if (i0<2) {
+                this.row_index = 0; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 3;
+            }
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index-=this.row_count;
+                this.sum_count += this.row_count;
+                if (this.row_index%3 === 0) this.row_count+=2;
+            }
+            var position=[
+                1.*col_index+31+this.row_index,
+                1.28*this.row_index,
+                98+1.5*this.row_index*1.75-col_index*0.6
+            ]
+            var rotation = [0,0,0]
+        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]) {
+            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]);
+            if (i0<2) {
+                this.row_index = 0; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 3;
+            } 
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index-=this.row_count;
+                this.sum_count += this.row_count;
+                if (this.row_index%4 === 0) this.row_count+=2;
+            }
+            console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            var position=[
+                1.*col_index+34.5+this.row_index*1.8,
+                1.28*this.row_index,
+                95+1.5*this.row_index*1.45-col_index
+            ]
+            var rotation = [0,0,0]
+        } else {
+            
         }
         return {pos:position,rot:rotation} 
     }
