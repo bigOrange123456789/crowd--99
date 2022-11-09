@@ -36,7 +36,7 @@ export class AvatarManager{
             window.timeTest.measure("MaterialProcessor1 end")
             var crowd=new Crowd({
                 camera:self.camera,
-                count:100*100/2,//5*100*100,
+                count:100*100/2+754/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -99,12 +99,12 @@ export class AvatarManager{
         var pathModel="assets/woman02.gltf"//woman01_0.glb"
         var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman02LOD/"
-        new GLTFLoader().load(pathModel, (glb) => {
-            console.log("model2",glb)
-            new MaterialProcessor2(glb)
+        new GLTFLoader().load(pathModel, async (glb) => {
+            const p=new MaterialProcessor2(glb)
+            await p.init()
             var crowd=new Crowd({
                 camera:self.camera,
-                count:100*100/2,//5*100*100,
+                count:100*100/2+754/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -160,7 +160,7 @@ export class AvatarManager{
         })
     }
     setParam(crowd,model_index){
-        var crowd_count=100*100
+        var crowd_count=100*100+754
         for(var i0=0;i0<crowd_count;i0++){
             var scale=[
                 1,
@@ -169,7 +169,7 @@ export class AvatarManager{
             ]
             for(var i=0;i<3;i++)scale[i]*=1.3
             var animtionType=Math.floor(12*Math.random())
-            if(i0<496){
+            if(i0<1250){//496){
                 if(Math.random()>0.5)animtionType=5
                 else animtionType=8
             }else if(animtionType==5)animtionType=0
@@ -237,11 +237,12 @@ export class AvatarManager{
                 ],"hair")
             }
         }//end
+        // crowd.count=crowd_count
 
     }
     getPosRot(i0) {
         var c=[//分组情况
-            496,   //运动
+            1250,//496,   //运动
             15*182,     //大看台1
             21*182,     //大看台2
             20*60,   //小看台1
@@ -360,7 +361,7 @@ export class AvatarManager{
                 this.sum_count += this.row_count;
                 if (this.row_index%4 === 0) this.row_count+=2;
             }
-            console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
             var position=[
                 1.*col_index+34.5+this.row_index*1.8,
                 1.28*this.row_index,

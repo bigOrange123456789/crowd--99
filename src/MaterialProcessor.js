@@ -252,6 +252,7 @@ class MaterialProcessor2{
 		var self=this
 		var textureLoader = new THREE.TextureLoader()
 		this.normalMap1=textureLoader.load("./assets/normal_woman02/CloW_C_body_Normal.png")
+		console.log("this.normalMap1",this.normalMap1)
 		this.normalMap2=textureLoader.load("./assets/normal_woman02/CloW_B_hair_Normal.png")
 		// this.normalMap1=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_C_body_Normal.png")
 		// this.normalMap2=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_B_hair_Normal.png")

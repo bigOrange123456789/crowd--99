@@ -54,7 +54,11 @@ export class Loader{
 
         new AvatarManager(this.scene,this.camera)
         new Building(this.scene)
-        this.initSky()
+        var scope=this
+        setTimeout(()=>{
+          scope.initSky()
+        },1000)
+        
     }
     animate(){
         this.stats.update()
