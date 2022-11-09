@@ -129,8 +129,11 @@ class MaterialProcessor1{
 		// this.normalMap1=await CrowdMaterial.base64_texture(
 		// 	base64,50,50//base64,1024,1024
 		// )
-		this.normalMap1=this.textureLoader.load("./assets/normal_woman01/CloW_A_body_Normal.png")
-		this.normalMap2=this.textureLoader.load("./assets/normal_woman01/CloW_A_hair_Normal.png")
+		
+		// this.normalMap1=this.textureLoader.load("./assets/normal_woman01/CloW_A_body_Normal.png")
+		// this.normalMap2=this.textureLoader.load("./assets/normal_woman01/CloW_A_hair_Normal.png")
+		this.normalMap1=await CrowdMaterial.getTexture_base64("./assets/normal_woman01/CloW_A_body_Normal.png")
+		this.normalMap2=await CrowdMaterial.getTexture_base64("./assets/normal_woman01/CloW_A_hair_Normal.png")
 		glb.scene.traverse(m=>{
 			if(m instanceof THREE.SkinnedMesh){
 				self.processMesh(m)
@@ -241,17 +244,25 @@ class MaterialProcessor1{
 }
 class MaterialProcessor2{
     constructor(glb){
+        
+		this.glb=glb
+		// this.init()
+    }
+	async init(){
 		var self=this
-        var textureLoader = new THREE.TextureLoader()
+		var textureLoader = new THREE.TextureLoader()
 		this.normalMap1=textureLoader.load("./assets/normal_woman02/CloW_C_body_Normal.png")
 		this.normalMap2=textureLoader.load("./assets/normal_woman02/CloW_B_hair_Normal.png")
-		glb.scene.traverse(m=>{
+		// this.normalMap1=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_C_body_Normal.png")
+		// this.normalMap2=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_B_hair_Normal.png")
+
+		this.glb.scene.traverse(m=>{
 			if(m instanceof THREE.SkinnedMesh){
 				console.log("name",m.name)
 				self.processMesh(m)
 			}
 		})
-    }
+	}
 	processMesh(mesh){
 		var name=mesh.name
         var material=mesh.material

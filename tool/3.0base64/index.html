@@ -12,8 +12,10 @@
         var imgHandle=new ImgHandle();
         var w=1024,
             h=1024;
-        var w=50,
-            h=50;
+        // var w=50,
+        //     h=50;
+        var w=1,
+            h=1;
         imgHandle.init(w,h);
         imgHandle.drawImg("CloW_A_body_Normal.png",[0, 0 ,w,h],function(){
             console.log(imgHandle.canvas.toDataURL("image/jpeg"))

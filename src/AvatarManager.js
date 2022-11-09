@@ -97,9 +97,10 @@ export class AvatarManager{
         var pathModel="assets/woman02.gltf"//woman01_0.glb"
         var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/woman02LOD/"
-        new GLTFLoader().load(pathModel, (glb) => {
+        new GLTFLoader().load(pathModel, async (glb) => {
             console.log("model2",glb)
-            new MaterialProcessor2(glb)
+            const p=new MaterialProcessor2(glb)
+            await p.init()
             var crowd=new Crowd({
                 camera:self.camera,
                 count:100*100/2,//5*100*100,

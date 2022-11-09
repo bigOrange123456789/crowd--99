@@ -9,10 +9,12 @@ import {LightProducer } from './LightProducer.js'
 import {AvatarManager } from './AvatarManager.js'
 export class Loader{
     constructor(body){
+        this.isIosPlatform =this.isMobile()
         this.body = body
         this.canvas = document.getElementById('myCanvas')
         window.addEventListener('resize', this.resize.bind(this), false)
         this.initScene()
+
     }
     async initScene(){
         window.timeTest.measure("initScene start")
@@ -75,8 +77,7 @@ export class Loader{
             }
         )
     }
-    getCubeMapTexture(evnMapAsset) {
-        function isMobile() {
+    isMobile() {
           let check = false
             ; (function (a) {
               if (
@@ -103,10 +104,9 @@ export class Loader{
               (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
           }
           return check
-        }
-        var isIosPlatform = isMobile()
+    }
+    getCubeMapTexture(evnMapAsset) {
         var path = evnMapAsset
-        
         var scope = this
         var HalfFloatType=THREE.HalfFloatType
         var FloatType=THREE.FloatType
@@ -115,7 +115,7 @@ export class Loader{
             resolve({ envMap: null })
           } else if (path.indexOf('.hdr') >= 0) {
             new RGBELoader()
-              .setDataType(isIosPlatform ? HalfFloatType : FloatType)
+              .setDataType(scope.isIosPlatform ? HalfFloatType : FloatType)
               .load(
                 path,
                 texture => {
