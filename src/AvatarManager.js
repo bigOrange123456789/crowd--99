@@ -20,7 +20,7 @@ export class AvatarManager{
         this.assets[pathAnima]=await CrowdMesh.loadAnimJSON(pathAnima)
         window.timeTest.measure("Anima end await")
         this.load_model1()
-        this.load_model2()
+        // this.load_model2()
     }
     load_model1(){
         var self = this

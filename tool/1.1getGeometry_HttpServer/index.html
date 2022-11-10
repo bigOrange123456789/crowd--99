@@ -35,7 +35,7 @@
     function saveGeometry(node,result){
         // node.geometry = node.geometry.toNonIndexed();
         result[node.name]={}
-        var tags=['position','uv','skinIndex','skinWeight','uv','normal']
+        var tags=['position','uv','skinIndex','skinWeight','uv']//,'normal']//normal可以在前端根据拓扑关系重新计算，不需要传输
         var attributes=node.geometry.attributes
         for(var i=0;i<tags.length;i++ ){
             var t=tags[i]
