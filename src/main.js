@@ -43,6 +43,8 @@ export class Loader{
         this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.1,5000)
         this.camera.position.set(-43.486343682038736,  2.127206120237504,  -8.698678933445201)
         this.camera.lookAt(0,0,0)
+        // this.camera.position.set( -0.6821012446503002,  11.0913040259869,  -0.2459109391034793)
+        // this.camera.rotation.set(-1.5929642031588853,  -0.061406332932874515, -1.9174927752336077)
         window.camera=this.camera
         
         this.scene.add(this.camera)
@@ -53,7 +55,7 @@ export class Loader{
         requestAnimationFrame(this.animate)
 
         new AvatarManager(this.scene,this.camera)
-        new Building(this.scene)
+        new Building(this.scene,this.camera)
         var scope=this
         setTimeout(()=>{
           scope.initSky()
