@@ -14,7 +14,6 @@ export class Loader{
         this.canvas = document.getElementById('myCanvas')
         window.addEventListener('resize', this.resize.bind(this), false)
         this.initScene()
-
     }
     async initScene(){
         window.timeTest.measure("initScene start")

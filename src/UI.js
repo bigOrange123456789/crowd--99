@@ -68,15 +68,15 @@ class UI{
             roughness: 0.46,
         };
         fSSS.add(config_sss,'sssIntensity',0,0.5,0.01)
-            .name('Scattering Intensity')
+            .name('sssIntensity')
             .onChange( function () {
                 material.uniforms.sssIntensity.value = config_sss.sssIntensity;
         } );
         fSSS.add(config_sss,'sssIntensity2',0,0.5,0.01)
             .name('sssIntensity2')
             .onChange( function () {
-                console.log(material.uniforms)
-                // material.uniforms.sssIntensity2.value = config_sss.sssIntensity2;
+                // console.log(material.uniforms)
+                material.uniforms.sssIntensity2.value = config_sss.sssIntensity2;
         } );
         fSSS.add(config_sss,'brightness_specular',0,0.1,0.01)
             .name('Specular Intensity')

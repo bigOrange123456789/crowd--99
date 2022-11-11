@@ -19,8 +19,8 @@ export class AvatarManager{
         window.timeTest.measure("Anima start await")
         this.assets[pathAnima]=await CrowdMesh.loadAnimJSON(pathAnima)
         window.timeTest.measure("Anima end await")
-        this.load_model1()
-        // this.load_model2()
+        // this.load_model1()
+        this.load_model2()
     }
     load_model1(){
         var self = this
@@ -89,9 +89,9 @@ export class AvatarManager{
                 glb.scene,
                 ()=>{
                     window.timeTest.measure("init finish")
+                    new UI(this.scene,crowd.children[0])
                 }
             )
-            new UI(this.scene,crowd.children[0])
         })
     }
     load_model2(){

@@ -124,7 +124,6 @@ class MaterialProcessor1{
     }
 	async init(){
 		var self=this
-		const base64="data:image/jpeg;base64,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"
 		const glb=this.glb
 		// this.normalMap1=await CrowdMaterial.base64_texture(
 		// 	base64,50,50//base64,1024,1024
@@ -251,9 +250,9 @@ class MaterialProcessor2{
 	async init(){
 		var self=this
 		var textureLoader = new THREE.TextureLoader()
-		this.normalMap1=textureLoader.load("./assets/normal_woman02/CloW_C_body_Normal.png")
-		this.normalMap2=textureLoader.load("./assets/normal_woman02/CloW_B_hair_Normal.png")
-		// this.normalMap1=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_C_body_Normal.png")
+		// this.normalMap1=textureLoader.load("./assets/normal_woman02/CloW_C_body_Normal.png")
+		// this.normalMap2=textureLoader.load("./assets/normal_woman02/CloW_B_hair_Normal.png")
+		this.normalMap1=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_C_body_Normal.png")
 		// this.normalMap2=await CrowdMaterial.getTexture_base64("./assets/normal_woman02/CloW_B_hair_Normal.png")
 
 		this.glb.scene.traverse(m=>{
@@ -269,7 +268,7 @@ class MaterialProcessor2{
             ||name=="CloW_C_qunzi_geo3456"
             ||name=="CloW_C_shangyi_geo"
             ||name=="CloW_C_xie_geo"){
-            // material.normalMap=this.normalMap1
+            material.normalMap=this.normalMap1
         }else if(name=="hair"){
             // material.normalMap=this.normalMap2//textureLoader.load("./assets/models/CloM_A_hair_Normal.png")
         }
