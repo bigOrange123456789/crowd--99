@@ -3,7 +3,7 @@ import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js';
 import { Color } from 'three/src/math/Color.js';
 import { TangentSpaceNormalMap } from 'three/src/constants.js';
 import { Vector2 } from 'three/src/math/Vector2.js';
-import { CrowdMaterial } from '../lib/CrowdMaterial'//用于预加载动画数据
+import { CrowdMaterial } from '../lib/crowd/CrowdMaterial'//用于预加载动画数据
 var sssLUT= { value: new TGALoader().load( './assets/textures/PreIntergated.TGA' ) }
 class MaterialProcessor0{
     constructor(glb){

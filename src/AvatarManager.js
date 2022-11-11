@@ -1,7 +1,7 @@
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader.js";
 //RGBMLoader
-import { Crowd } from '../lib/Crowd.js'//let Crowd=Pack// 
-import { CrowdMesh } from '../lib/CrowdMesh.js'//用于预加载动画数据
+import { Crowd } from '../lib/crowd/Crowd.js'//let Crowd=Pack// 
+import { CrowdMesh } from '../lib/crowd/CrowdMesh.js'//用于预加载动画数据
 import { UI } from './UI.js'
 import {MaterialProcessor1,MaterialProcessor2 } from './MaterialProcessor.js'
 export class AvatarManager{

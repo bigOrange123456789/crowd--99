@@ -1,4 +1,4 @@
-import {Build} from "../lib/Build.js"
+import {Build} from "../lib/build/Build.js"
 export class Building{
     constructor(scene,camera){
         var parentGroup = new Build(
