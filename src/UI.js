@@ -102,7 +102,7 @@ class UI{
             color:'#ffffff',
         };
         const fDir1 = gui.addFolder( name );
-        fDir1.add( config_dir1, 'intensity', 0, 2, 0.01 )
+        fDir1.add( config_dir1, 'intensity', 0, 10, 0.01 )
         .name( 'Intensity' )
         .onChange( function () {
             dirLight1.intensity = config_dir1.intensity;
@@ -144,7 +144,7 @@ class UI{
             color:'#ccccff',
         };
         const fDir2 = gui.addFolder( name );
-        fDir2.add( config_dir2, 'intensity', 0, 2, 0.01 )
+        fDir2.add( config_dir2, 'intensity', 0, 10, 0.01 )
             .name( 'Intensity' )
             .onChange( function () {
                 dirLight2.intensity = config_dir2.intensity;
@@ -182,7 +182,7 @@ class UI{
         intensity: 0.5,
         color: '#443333',
     };
-    fAmbiemt.add( config_ambient, 'intensity', 0, 2, 0.01 )
+    fAmbiemt.add( config_ambient, 'intensity', 0, 10, 0.01 )
     .name( 'Intensity' )
     .onChange( function () {
         ambient.intensity = config_ambient.intensity;
