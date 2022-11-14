@@ -33,7 +33,7 @@ class UI{
             }else if(obj.name=="ambient"){
                 this.addUI_AmbientLight("ambient light",obj)
             }
-        }
+        }        
         // this.addUI_crowdGroup("crowdGroup",crowdGroup)
     }
     addUI_crowdGroup(name,crowdGroup){
@@ -194,6 +194,40 @@ class UI{
         
     } );
     fAmbiemt.open();
+    }
+    addUI_BloomFilter(name,bloom){//TODO 需要在此处获取到后处理效果才能用UI调整
+    var gui=this.gui_light
+    const fBloom = gui.addFolder( "Bloom");
+    //this.unrealBloomPass=
+    const config_bloom = {
+        enabled: 1,
+        strength: 0.3,
+        radius: 1,
+        threshold: 0.6
+    };
+    fBloom.add( config_bloom, 'enabled', 0, 1, 1 )
+    .name( 'Enabled' )
+    .onChange( function () {
+        bloom.enabled=config_bloom.enabled==1
+    } );
+    fBloom.add( config_bloom, 'strength', 0, 2, 0.001 )
+    .name( 'Strength' )
+    .onChange( function () {
+        bloom.strength=config_bloom.strength
+    } );
+    fBloom.add( config_bloom, 'radius', 0, 2, 0.001 )
+    .name( 'Radius' )
+    .onChange( function () {
+        bloom.radius=config_bloom.radius
+    } );
+    fBloom.add( config_bloom, 'threshold', 0, 1, 0.001 )
+    .name( 'Threshold' )
+    .onChange( function () {
+        bloom.threshold=config_bloom.threshold
+    } );
+    
+
+    fBloom.open();
     }
 
 }
