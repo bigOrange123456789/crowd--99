@@ -22,7 +22,7 @@ export class AvatarManager{
         window.timeTest.measure("Anima end await")
         // this.load_model1()
         // this.load_model2()
-        this.load_Char47()
+        // this.load_Char47()
         this.load_man_A()
         new UI(this.scene,new THREE.Object3D())
     }
@@ -174,7 +174,7 @@ export class AvatarManager{
             await p.init()
             var crowd=new Crowd({
                 camera:self.camera,
-                count:5*100*100,//100*100/2+754/2,//5*100*100,
+                count:100*100/2+754/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -234,7 +234,7 @@ export class AvatarManager{
                     }
                 },
             })
-            self.setParam2(crowd,1,5)
+            self.setParam2(crowd,0,5)
             self.scene.add(crowd)
             window.crowd=crowd
             console.log(crowd)
@@ -245,23 +245,31 @@ export class AvatarManager{
     }
     load_man_A(){
         var self = this
-        var pathModel="assets/man_A.glb"//woman01_0.glb"
+        var pathModel="assets/man_A_sim.glb"//woman01_0.glb"
         var pathAnima="assets/animation_man_A.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/man_ALOD/"
         new GLTFLoader().load(pathModel, async (glb) => {
             console.log(glb)
-            const p=new MaterialProcessor3(glb)
-            await p.init()
+            glb.scene.traverse(node=>{
+                if(node instanceof THREE.SkinnedMesh){
+                    console.log(node.name)
+                }
+            })
+            // const p=new MaterialProcessor3(glb)
+            // await p.init()
             var crowd=new Crowd({
                 camera:self.camera,
-                count:5*100*100,//100*100/2+754/2,//5*100*100,
+                count:100*100/2+754/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
                 useColorTag:[//需要进行颜色编辑的区域mesh名称
-                    "CloM_A_chengyi_geo",
+                    // "CloM_A_chengyi_geo",
+                    "CloM_A_lingdai_geo",
                     "CloM_A_kuzi_geo",
-                    "CloM_A_waitao_geo"
+                    "CloM_A_waitao_geo",
+                    "CloM_A_Xiezi_geo",
+                    "CloM_A_Hair_geo"
                 ],
                 lod_distance:[30,50,70,90,110,130,150],//6级LOD
                 lod_geometry:[19,17,15,10,8,4,2,0],
@@ -285,13 +293,45 @@ export class AvatarManager{
                     }
                 },
             })
-            self.setParamman_A(crowd,2,4)
+            self.setParamman_A(crowd,1,4)
+            for(var i00=0;i00<crowd.count;i00++){
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_chengyi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"CloM_A_kuzi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"CloM_A_waitao_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"CloM_A_lingdai_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"CloM_A_Xiezi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"CloM_A_Hair_geo")
+                //CloM_A_Hair_geo
+                crowd.setObesity(i00, 0.85+1.1*Math.random())
+            }
             self.scene.add(crowd)
             window.crowd=crowd
             console.log(crowd)
-            crowd.init(
-                glb.scene
-            )
+            crowd.init(glb.scene)
         })
     }
     setParam(crowd,model_index,animtionNum){
@@ -317,7 +357,7 @@ export class AvatarManager{
             let i00=Math.floor(i0/2)
 
             crowd.setSpeed(i00, speed)
-            crowd.setObesity(i00, 0.85+1.1*Math.random())
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
             if(animtionType==5||animtionType==8)
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
@@ -328,49 +368,50 @@ export class AvatarManager{
 
             crowd.setAnimation(i00,animtionType,10000*Math.random())
 
-            if(model_index==1){
-                crowd.setColor(i00, [
-                    62*Math.random(),
-                    62*Math.random(),
-                    62*Math.random()
-                ],"CloW_C_qunzi_geo3456")
-                crowd.setColor(i00, [
-                    -Math.random(),
-                    -Math.random(),
-                    -Math.random()
-                ],"CloW_C_shangyi_geo")
-                crowd.setColor(i00, [
-                    67*Math.random(),
-                    67*Math.random(),
-                    67*Math.random()
-                ],"CloW_C_xie_geo")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"hair")
-            }else if(model_index==0){
-                crowd.setColor(i00, [
-                    12*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"CloW_A_kuzi_geo")
-                crowd.setColor(i00, [
-                    12*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"CloW_A_waitao_geo1")
-                crowd.setColor(i00, [
-                    12*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"CloW_A_xiezi_geo")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"hair")
-            }
+            // if(model_index==1){
+            //     crowd.setColor(i00, [
+            //         62*Math.random(),
+            //         62*Math.random(),
+            //         62*Math.random()
+            //     ],"CloW_C_qunzi_geo3456")
+            //     crowd.setColor(i00, [
+            //         -Math.random(),
+            //         -Math.random(),
+            //         -Math.random()
+            //     ],"CloW_C_shangyi_geo")
+            //     crowd.setColor(i00, [
+            //         67*Math.random(),
+            //         67*Math.random(),
+            //         67*Math.random()
+            //     ],"CloW_C_xie_geo")
+            //     crowd.setColor(i00, [
+            //         20*Math.random(),
+            //         12*Math.random(),
+            //         12*Math.random()
+            //     ],"hair")
+            // }else if(model_index==0){
+            //     crowd.setColor(i00, [
+            //         12*Math.random(),
+            //         12*Math.random(),
+            //         12*Math.random()
+            //     ],"CloW_A_kuzi_geo")
+            //     crowd.setColor(i00, [
+            //         12*Math.random(),
+            //         12*Math.random(),
+            //         12*Math.random()
+            //     ],"CloW_A_waitao_geo1")
+            //     crowd.setColor(i00, [
+            //         12*Math.random(),
+            //         12*Math.random(),
+            //         12*Math.random()
+            //     ],"CloW_A_xiezi_geo")
+            //     crowd.setColor(i00, [
+            //         20*Math.random(),
+            //         12*Math.random(),
+            //         12*Math.random()
+            //     ],"hair")
+            // }
+
         }//end
         // crowd.count=crowd_count
 
@@ -399,7 +440,7 @@ export class AvatarManager{
             // let i00=i0
 
             crowd.setSpeed(i00, speed)
-            crowd.setObesity(i00, 0.85+1.1*Math.random())
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
             if(animtionType==3)
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
@@ -462,7 +503,7 @@ export class AvatarManager{
             // let i00=i0
 
             crowd.setSpeed(i00, speed)
-            crowd.setObesity(i00, 0.85+1.1*Math.random())
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
             if(animtionType==4)
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
@@ -474,21 +515,21 @@ export class AvatarManager{
 
             crowd.setAnimation(i00,animtionType,10000*Math.random())
 
-            crowd.setColor(i00, [
-                12*Math.random(),
-                12*Math.random(),
-                12*Math.random()
-            ],"CloM_A_chengyi_geo")
-            crowd.setColor(i00, [
-                12*Math.random(),
-                12*Math.random(),
-                12*Math.random()
-            ],"CloM_A_kuzi_geo")
-            crowd.setColor(i00, [
-                12*Math.random(),
-                12*Math.random(),
-                12*Math.random()
-            ],"CloM_A_waitao_geo")
+            // crowd.setColor(i00, [
+            //     12*Math.random(),
+            //     12*Math.random(),
+            //     12*Math.random()
+            // ],"CloM_A_chengyi_geo")
+            // crowd.setColor(i00, [
+            //     12*Math.random(),
+            //     12*Math.random(),
+            //     12*Math.random()
+            // ],"CloM_A_kuzi_geo")
+            // crowd.setColor(i00, [
+            //     12*Math.random(),
+            //     12*Math.random(),
+            //     12*Math.random()
+            // ],"CloM_A_waitao_geo")
             
         }//end
         // crowd.count=crowd_count

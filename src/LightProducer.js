@@ -11,7 +11,7 @@ class LightProducer{
         scene.add( dirLight1 );
         dirLight1.name="dirLight1"
 
-        const dirLight2 = new THREE.DirectionalLight( 0xcffffff,6 );
+        const dirLight2 = new THREE.DirectionalLight( 0xcffffff,2 );
         dirLight2.position.set( -20, 0, 0 );
         scene.add( dirLight2 )
         dirLight2.name="dirLight2"

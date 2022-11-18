@@ -144,7 +144,7 @@ class UI{
             color:'#ccccff',
         };
         const fDir2 = gui.addFolder( name );
-        fDir2.add( config_dir2, 'intensity', 0, 10, 0.01 )
+        fDir2.add( config_dir2, 'intensity', 0, 3, 0.01 )
             .name( 'Intensity' )
             .onChange( function () {
                 dirLight2.intensity = config_dir2.intensity;
