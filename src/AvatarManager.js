@@ -260,7 +260,7 @@ export class AvatarManager{
             let lod_distance=[]
             for(var i=0;i<19;i++)
                 lod_distance.push((i+1)*lod_distance_max/19)
-            lod_distance.push(lod_distance_max*3)
+            lod_distance.push(lod_distance_max*2)
             let lod_geometry=[]
             for(var i=0;i<=20;i++)
                 lod_geometry.push(20-i)
