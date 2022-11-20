@@ -266,7 +266,6 @@ export class AvatarManager{
                 lod_geometry.push(20-i)
             let lod_visible=[
                 ["CloM_A_Eye_lash_geo", -1],
-                // ["CloM_A_head_geo",     10],
                 ["CloM_A_Eyeshell_geo", 1],
                 ["CloM_A_EyeLeft_geo",  10],
                 ["CloM_A_EyeRight_geo", 10],
@@ -276,13 +275,15 @@ export class AvatarManager{
                 ['CloM_A_EyeEdge_geo',  5],
                 ['GW_man_Body_geo1',    19],
                 ['GW_man_Nail_geo',     -1],
-                // ['CloM_A_kuzi_geo',     10],
                 ['CloM_A_lingdai_geo',  10],
                 ['CloM_A_Wazi_geo',     1],
                 ['CloM_A_Xiezi_geo',    18],
                 ['CloM_A_chengyi_geo',  19],
-                // ['CloM_A_waitao_geo',   10],
                 ['CloM_A_xiuzi_geo',    -1],
+
+                // ['CloM_A_waitao_geo',   10],
+                // ['CloM_A_kuzi_geo',     10],
+                // ["CloM_A_head_geo",     10],
             ]
             // lod_geometry[19]=1
             var crowd=new Crowd({
