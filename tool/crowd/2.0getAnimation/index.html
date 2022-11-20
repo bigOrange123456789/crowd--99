@@ -60,15 +60,21 @@
         }
         // var animation=glb.animations[animationType];
         loader.load(path_model, (glb) => {
+            glb.scene.traverse(node=>{
+                if(node instanceof THREE.SkinnedMesh){
+                    node.material.normalMap=null
+                }
+            })
             exportGltf(glb,"model.gltf")
 
             scene.add(glb.scene);
             
             var skeleton;
-            glb.scene.traverse(function (node) {
-            if(node instanceof THREE.SkinnedMesh)
-                skeleton=node.skeleton;
-            })
+            // glb.scene.traverse(function (node) {
+            //     if(node instanceof THREE.SkinnedMesh){
+            //         node.material.normalMap=null
+            //     }
+            // })
             var skeleton_all=get_skeleton(glb)//获取所有的SkinMesh对象
             var n= prompt("动画的总帧数为:",animations[0].tracks[0].times.length);//帧数量
 

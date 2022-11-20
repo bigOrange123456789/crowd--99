@@ -245,7 +245,7 @@ export class AvatarManager{
     }
     load_man_A(){
         var self = this
-        var pathModel="assets/man_A_sim.glb"//woman01_0.glb"
+        var pathModel="assets/man_A_4.glb"//woman01_0.glb"
         var pathAnima="assets/animation_man_A.bin"//"assets/animation_woman.json"
         var pathLodGeo="assets/man_ALOD/"
         new GLTFLoader().load(pathModel, async (glb) => {
@@ -255,11 +255,38 @@ export class AvatarManager{
                     console.log(node.name)
                 }
             })
-            // const p=new MaterialProcessor3(glb)
-            // await p.init()
+            
+            let lod_distance_max=20
+            let lod_distance=[]
+            for(var i=0;i<19;i++)
+                lod_distance.push((i+1)*lod_distance_max/19)
+            let lod_geometry=[]
+            for(var i=0;i<20;i++)
+                lod_geometry.push(19-i)
+            let lod_visible=[
+                ["CloM_A_Eye_lash_geo", -1],
+                // ["CloM_A_head_geo",     10],
+                ["CloM_A_Eyeshell_geo", 1],
+                ["CloM_A_EyeLeft_geo",  10],
+                ["CloM_A_EyeRight_geo", 10],
+                ["CloM_A_Saliva_geo",   -1],
+                ["CloM_A_Teeth_geo",    -1],
+                ['CloM_A_Hair_geo',     19],
+                ['CloM_A_EyeEdge_geo',  5],
+                ['GW_man_Body_geo1',    19],
+                ['GW_man_Nail_geo',     -1],
+                // ['CloM_A_kuzi_geo',     10],
+                ['CloM_A_lingdai_geo',  10],
+                ['CloM_A_Wazi_geo',     1],
+                ['CloM_A_Xiezi_geo',    18],
+                ['CloM_A_chengyi_geo',  19],
+                // ['CloM_A_waitao_geo',   10],
+                ['CloM_A_xiuzi_geo',    -1],
+            ]
+            // lod_geometry[19]=1
             var crowd=new Crowd({
                 camera:self.camera,
-                count:100*100/2+754/2,//5*100*100,
+                count:9*(100*100+754),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -271,25 +298,26 @@ export class AvatarManager{
                     "CloM_A_Xiezi_geo",
                     "CloM_A_Hair_geo"
                 ],
-                lod_distance:[30,50,70,90,110,130,150],//6级LOD
-                lod_geometry:[19,17,15,10,8,4,2,0],
+                lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
+                lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
                 lod_set:()=>{
                     for(let i=0;i<crowd.children.length;i++){
                         var crowdGroup0=crowd.children[i]
-                        // crowdGroup0.getMesh("CloM_A_Eye_lash_geo").visible=false
-                        crowdGroup0.getMesh("CloM_A_EyeEdge_geo").visible=false
-                        crowdGroup0.getMesh("GW_man_Nail_geo").visible=false
-                        // crowdGroup0.getMesh("Ch23_Belt").visible=false
-                        if(i>1){
-                            // Ch23_Eyelashes
-                            // crowdGroup0.getMesh("Ch23_Eyelashes").visible=false
-                            // crowdGroup0.getMesh("Ch23_Belt").visible=false
-                            crowdGroup0.getMesh("CloM_A_xiuzi_geo").visible=false
+                        // crowdGroup0.getMesh("CloM_A_EyeEdge_geo").visible=false
+                        // if(i>1){
+                        //     crowdGroup0.getMesh("CloM_A_xiuzi_geo").visible=false
+                        // }
+                        // if(i>4){
+                        //     crowdGroup0.getMesh("CloM_A_Xiezi_geo").visible=false
+                        // }
+                        // //
+                        for(let j=0;j<lod_visible.length;j++){
+                            if(i>=lod_visible[j][1]){
+                                var mesh=crowdGroup0.getMesh(lod_visible[j][0])
+                                if(mesh)mesh.visible=false
+                            }
                         }
-                        if(i>4){
-                            // crowdGroup0.getMesh("CloM_A_Wazi_geo").visible=false
-                            crowdGroup0.getMesh("CloM_A_Xiezi_geo").visible=false
-                        }
+                            
                     }
                 },
             })
@@ -481,14 +509,14 @@ export class AvatarManager{
 
     }
     setParamman_A(crowd,model_index,animtionNum){
-        var crowd_count=1*100*100+754
+        var crowd_count=crowd.count//1*100*100+754
         for(var i0=0;i0<crowd_count;i0++){
             var scale=[
                 1,
                 Math.random()*0.3+0.85,
                 1,
             ]
-            for(var i=0;i<3;i++)scale[i]*=1.1
+            for(var i=0;i<3;i++)scale[i]*=0.34
             var animtionType=Math.floor(animtionNum*Math.random())//12
             if(i0<1250){//496){
                 animtionType=4
@@ -498,9 +526,9 @@ export class AvatarManager{
 
             var speed=(Math.random()*2.5+2)*2.5
             
-            if(i0%2==model_index)continue
-            let i00=Math.floor(i0/2)
-            // let i00=i0
+            // if(i0%2==model_index)continue
+            // let i00=Math.floor(i0/2)
+            let i00=i0
 
             crowd.setSpeed(i00, speed)
             // crowd.setObesity(i00, 0.85+1.1*Math.random())
@@ -508,31 +536,13 @@ export class AvatarManager{
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
 
-            var PosRot=this.getPosRot2(i0)
+            var PosRot=this.getPosRot3(i0)
             crowd.setPosition(i00,PosRot.pos)
             PosRot.rot[1]+=Math.PI;
             crowd.setRotation(i00,PosRot.rot)
 
-            crowd.setAnimation(i00,animtionType,10000*Math.random())
-
-            // crowd.setColor(i00, [
-            //     12*Math.random(),
-            //     12*Math.random(),
-            //     12*Math.random()
-            // ],"CloM_A_chengyi_geo")
-            // crowd.setColor(i00, [
-            //     12*Math.random(),
-            //     12*Math.random(),
-            //     12*Math.random()
-            // ],"CloM_A_kuzi_geo")
-            // crowd.setColor(i00, [
-            //     12*Math.random(),
-            //     12*Math.random(),
-            //     12*Math.random()
-            // ],"CloM_A_waitao_geo")
-            
+            crowd.setAnimation(i00,animtionType,1000*Math.random())
         }//end
-        // crowd.count=crowd_count
 
     }
     getPosRot(i0) {
@@ -803,5 +813,13 @@ export class AvatarManager{
             var rotation = [0,0,0]
         }
         return {pos:position,rot:rotation} 
+    }
+    getPosRot3(i0){
+        var PosRot=this.getPosRot2(parseInt(i0/9))
+        var j0=i0%9;
+        let k=0.5;
+        PosRot.pos[0]+=(k*parseInt(j0/3))
+        PosRot.pos[2]+=(k*(j0%3))
+        return PosRot
     }
 }
