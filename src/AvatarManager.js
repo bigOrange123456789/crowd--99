@@ -260,9 +260,10 @@ export class AvatarManager{
             let lod_distance=[]
             for(var i=0;i<19;i++)
                 lod_distance.push((i+1)*lod_distance_max/19)
+            lod_distance.push(lod_distance_max*3)
             let lod_geometry=[]
-            for(var i=0;i<20;i++)
-                lod_geometry.push(19-i)
+            for(var i=0;i<=20;i++)
+                lod_geometry.push(20-i)
             let lod_visible=[
                 ["CloM_A_Eye_lash_geo", -1],
                 // ["CloM_A_head_geo",     10],
