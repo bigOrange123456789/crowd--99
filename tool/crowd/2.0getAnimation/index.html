@@ -41,7 +41,7 @@
     var path0="model/woman01_0.glb"
     var path0="model/1.glb"
     var path0="Char47/Char47.gltf"
-    var path0="man_A.glb"
+    var path0="model/man_D.gltf"
     var path_anim =prompt("请输入动画文件名:",path0)
     var path_model=prompt("请输入模型文件名:",path0)
     loader.load(path_anim, (glb) => {
@@ -65,9 +65,18 @@
         // var animation=glb.animations[animationType];
         loader.load(path_model, (glb) => {
             glb.scene.traverse(node=>{
-                if(node instanceof THREE.SkinnedMesh){
-                    node.material.normalMap=null
+                if(node.material){//if(node instanceof THREE.SkinnedMesh){
+                    delete node.material.aoMap
+                    // node.material.map=null
+                    delete node.material.normalMap
+                    delete node.material.metalnessMap
+                    delete node.material.roughnessMap
+                    
+                    if(node.geometry.attributes.uv2)delete node.geometry.attributes.uv2
+                    if(node.geometry.attributes.normal)delete node.geometry.attributes.normal
                 }
+                
+                
             })
             exportGltf(glb,"model.gltf")
 

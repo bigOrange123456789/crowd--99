@@ -16,17 +16,18 @@ export class AvatarManager{
         this.init()
     }
     async init(){
-        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
+        var pathAnima="assets/animation_man_A.bin"//"assets/animation_woman.bin"//"assets/animation_woman.json"
         window.timeTest.measure("Anima start await")
-        this.assets[pathAnima]=await CrowdMesh.loadAnimJSON(pathAnima)
+        // this.assets[pathAnima]=await CrowdMesh.loadAnimJSON(pathAnima)
         window.timeTest.measure("Anima end await")
+
         // this.load_model1()
         // this.load_model2()
         // this.load_Char47()
         this.load_man_A()
         this.load_man_D()
-        this.load_woman_A()
-        this.load_woman_B()
+        //this.load_woman_A()
+        // this.load_woman_B()
         new UI(this.scene,new THREE.Object3D())
     }
     load_model1(){
@@ -255,7 +256,12 @@ export class AvatarManager{
             console.log(glb)
             glb.scene.traverse(node=>{
                 if(node instanceof THREE.SkinnedMesh){
-                    console.log(node.name)
+                    let name=node.name
+                    console.log(name)
+                    // node.material.emissiveIntensity=0
+                    node.material.envMapIntensity=0.3
+                    if(name=="CloM_A_head_geo"||name=="GW_man_Body_geo1")
+                        node.material.envMapIntensity=0.1
                 }
             })
             
@@ -295,7 +301,7 @@ export class AvatarManager{
             // lod_geometry[19]=1
             var crowd=new Crowd({
                 camera:self.camera,
-                count:3*(100*100+1189),//5*100*100,
+                count:9*(100*100+754)/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -376,7 +382,7 @@ export class AvatarManager{
     }
     load_man_D(){
         var self = this
-        var pathModel="assets/man_D.gltf"
+        var pathModel="assets/man_D_4.gltf"
         var pathAnima="assets/animation_man_D.bin"
         var pathLodGeo="assets/man_DLOD/"
         new GLTFLoader().load(pathModel, async (glb) => {
@@ -391,36 +397,42 @@ export class AvatarManager{
             let lod_distance=[]
             for(var i=0;i<19;i++)
                 lod_distance.push((i+1)*lod_distance_max/19)
+            lod_distance.push(lod_distance_max*3)
+            lod_distance.push(lod_distance_max*6)
+            
             let lod_geometry=[]
-            lod_geometry.push(19)
-            lod_geometry.push(19)
-            lod_geometry.push(19)
-            lod_geometry.push(19)
-            for(var i=4;i<20;i++)
-                lod_geometry.push(19-i)
+            for(var i=0;i<=20;i++)//20..0
+                lod_geometry.push(20-i)
+            lod_geometry.push(0)
+            
             let lod_visible=[
-                ["CloM_C_Eye_lash_geo", -1],
-                ["CloM_C_Eyebrow_geo", -1],
-                ["CloM_C_Saliva_geo", -1],
+                ["Nail_geo",  -1],
+                ["CloM_C_Teeth_geo",  -1],
+                ["CloM_C_Saliva_geo",  20],
+
+                ["CloM_C_Eye_lash_geo",  10],
+                ["CloM_C_Eyebrow_geo",  10],
                 ["CloM_C_EyeLeft_geo",  10],
-                ["CloM_C_EyeRight_geo", 10],
-                ["CloM_C_Teeth_geo",    -1],
-                ["CloM_C_head_geo", 19],
-                ["hair1", 19],
-                ["kuzi_geo", 19],
-                ["kuzi_geo1", 1],
-                ["Nail_geo", -1],
-                ["lalian_geo", 10],
-                ["wazi_geo", 1],
-                ["nei5",19],
-                ["xiezi_geo", 19],
-                ["weiyi_geo1", 1],
-                ["waitao_geo", 19],
-                ["body_geo1",19],
+                ["CloM_C_EyeRight_geo",  10],
+                ["lalian_geo",  10],
+                ["nei5",  10],
+                ["weiyi_geo1",  10],
+                ["xiezi_geo",  10],
+                ["body_geo1",  19],
+                ["wazi_geo",  10],
+                ["kuzi_geo1",  10],
+
+                ["hair1",  20],
+                
+                // ["waitao_geo",  10],
+                ["kuzi_geo",  21],
+                ["CloM_C_head_geo",  21],
+
+
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:2*(100*100+1189),//5*100*100,
+                count:9*(100*100+754)/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -428,8 +440,8 @@ export class AvatarManager{
                     "xiezi_geo",
                     "waitao_geo",
                     "kuzi_geo",
-                    "nei5",
-                    "hair1"
+                    // "nei5",
+                    // "hair1"
                 ],
                 lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
                 lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
@@ -449,30 +461,30 @@ export class AvatarManager{
             self.setParamman_D(crowd,1,4)
             for(var i00=0;i00<crowd.count;i00++){
                 crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
+                    10*Math.random(),
+                    10*Math.random(),
+                    10*Math.random(),
                 ],"xiezi_geo")
                 crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
+                    30*Math.random(),
+                    10*Math.random(),
+                    10*Math.random(),
                 ],"waitao_geo")
                 crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
+                    10*Math.random(),
+                    10*Math.random(),
+                    10*Math.random(),
                 ],"kuzi_geo")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
-                ],"nei5")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
-                ],"hair1")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()
+                // ],"nei5")
+                // crowd.setColor(i00, [
+                //    - Math.random(),
+                //    - Math.random(),
+                //    - Math.random(),
+                // ],"hair1")
                 //CloM_A_Hair_geo
                 crowd.setObesity(i00, 0.85+1.1*Math.random())
             }
@@ -484,7 +496,7 @@ export class AvatarManager{
     }
     load_woman_A() {
         var self = this
-        var pathModel="assets/woman_A.gltf"
+        var pathModel="assets/woman_A.glb"
         var pathAnima="assets/animation_woman_A.bin"
         var pathLodGeo="assets/woman_ALOD/"
         new GLTFLoader().load(pathModel, async (glb) => {
@@ -503,31 +515,38 @@ export class AvatarManager{
             for(var i=0;i<20;i++)
                 lod_geometry.push(19-i)
             let lod_visible=[
-                ["CloW_A_body_geo1", 19],
-                ["CloW_A_chenshanxie_geo2",18],
-                // ["CloM_A_head_geo",     10],
-                ["CloW_A_eyelash_geo", -1],
-                ["CloW_A_eyeLeft_geo",  10],
-                ["CloW_A_eyeRight_geo", 10],
-                ['CloW_A_hair_geo',     19],
-                ["CloW_A_kuzi_geo", 19],
-                ['CloW_A_Nail_geo',     -1],
-                ["CloW_A_saliva_geo",   -1],
-                ["CloW_A_teeth_geo",    -1],
-                ['CloW_A_xifu_geo',  19],
-                ['head',19],
+                // ["CloM_A_Eye_lash_geo", -1],
+                // ["CloM_A_Eyebrow_geo"]
+                // // ["CloM_A_head_geo",     10],
+                // ["CloM_A_Eyeshell_geo", 1],
+                // ["CloM_A_EyeLeft_geo",  10],
+                // ["CloM_A_EyeRight_geo", 10],
+                // ["CloM_A_Saliva_geo",   -1],
+                // ["CloM_A_Teeth_geo",    -1],
+                // ['CloM_A_Hair_geo',     19],
+                // ['CloM_A_EyeEdge_geo',  5],
+                // ['GW_man_Body_geo1',    19],
+                // ['GW_man_Nail_geo',     -1],
+                // // ['CloM_A_kuzi_geo',     10],
+                // ['CloM_A_lingdai_geo',  10],
+                // ['CloM_A_Wazi_geo',     1],
+                // ['CloM_A_Xiezi_geo',    18],
+                // ['CloM_A_chengyi_geo',  19],
+                // // ['CloM_A_waitao_geo',   10],
+                // ['CloM_A_xiuzi_geo',    -1],
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:2*(100*100+1189),//5*100*100,
+                count:2*(100*100+754),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
                 useColorTag:[//需要进行颜色编辑的区域mesh名称
-                    "CloW_A_chenshanxie_geo2",
-                    'CloW_A_hair_geo',
-                    "CloW_A_kuzi_geo",
-                    'CloW_A_xifu_geo',
+                    // "CloM_A_lingdai_geo",
+                    // "CloM_A_kuzi_geo",
+                    // "CloM_A_waitao_geo",
+                    // "CloM_A_Xiezi_geo",
+                    // "CloM_A_Hair_geo"
                 ],
                 lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
                 lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
@@ -546,26 +565,31 @@ export class AvatarManager{
             })
             self.setParamwoman_A(crowd,1,4)
             for(var i00=0;i00<crowd.count;i00++){
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
-                ],"CloW_A_chenshanxie_geo2")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_kuzi_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_waitao_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_lingdai_geo")
                 // crowd.setColor(i00, [
                 //     20*Math.random(),
                 //     20*Math.random(),
                 //     20*Math.random()
-                // ],'CloW_A_hair_geo')
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
-                ],"CloW_A_kuzi_geo")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    20*Math.random(),
-                    20*Math.random()
-                ],'CloW_A_xifu_geo')
+                // ],"CloM_A_Xiezi_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()
+                // ],"CloM_A_Hair_geo")
                 //CloM_A_Hair_geo
                 crowd.setObesity(i00, 0.85+1.1*Math.random())
             }
@@ -613,7 +637,7 @@ export class AvatarManager{
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:2*(100*100+1189),//5*100*100,
+                count:2*(100*100+754),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -640,21 +664,21 @@ export class AvatarManager{
             })
             self.setParamwoman_B(crowd,1,4)
             for(var i00=0;i00<crowd.count;i00++){
-                // crowd.setColor(i00, [
-                //     20*Math.random(),
-                //     20*Math.random(),
-                //     20*Math.random()
-                // ],"hair")
                 crowd.setColor(i00, [
                     20*Math.random(),
                     20*Math.random(),
-                    20*Math.random()
+                    20*Math.random()-10
+                ],"hair")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
                 ],"qipao_geo")
-                // crowd.setColor(i00, [
-                //     20*Math.random(),
-                //     20*Math.random()+10,
-                //     20*Math.random()+10
-                // ],"waitao_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"waitao_geo")
                 crowd.setColor(i00, [
                     20*Math.random(),
                     20*Math.random(),
@@ -826,7 +850,7 @@ export class AvatarManager{
             var animtionType=Math.floor(28*Math.random())//12
             if( animtionType==11) animtionType=0
             if( animtionType==20) animtionType=1
-            if(i0<1250*9){//496){
+            if(i0<1250*9/2){//496){
                 if(Math.random()>0.5)animtionType=Math.random()>0.5?11:20
                 //11走动 20跑动
             }
@@ -845,7 +869,7 @@ export class AvatarManager{
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
 
-            var PosRot=this.getPosRotmanA(i0)
+            var PosRot=this.getPosRotman(2*i0)
             crowd.setPosition(i00,PosRot.pos)
             PosRot.rot[1]+=Math.PI;
             crowd.setRotation(i00,PosRot.rot)
@@ -863,7 +887,15 @@ export class AvatarManager{
                 1,
             ]
             for(var i=0;i<3;i++)scale[i]*=0.34
-            var animtionType=Math.floor(animtionNum*Math.random())//12
+            var animtionType=Math.floor(56*Math.random())//12
+            if( animtionType==11) animtionType=0
+            if( animtionType==20) animtionType=1
+            if(i0<1250*9/2){//496){
+                // animtionType=Math.random()>0.5?10:20
+                // if(Math.random()>0.5)
+                animtionType=Math.random()>0.5?11:20
+                //11走动 20跑动
+            }
             // if(i0<1250){
             //     animtionType=4
             // }
@@ -878,11 +910,11 @@ export class AvatarManager{
 
             crowd.setSpeed(i00, speed)
             // crowd.setObesity(i00, 0.85+1.1*Math.random())
-            if(animtionType==4)
+            if(animtionType==11||animtionType==20)
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
 
-            var PosRot=this.getPosRotmanD(i0)
+            var PosRot=this.getPosRotman(2*i0+1)
             crowd.setPosition(i00,PosRot.pos)
             PosRot.rot[1]+=Math.PI;
             crowd.setRotation(i00,PosRot.rot)
@@ -1108,8 +1140,6 @@ export class AvatarManager{
             300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
             240,         //弧形看台2 
             192,         //弧形看台3
-            140,    //弧形看台6
-            195,    //弧形看台5
         ]
         if(i0<c[0]){
             var col_count=25
@@ -1175,7 +1205,7 @@ export class AvatarManager{
             // var position=[-1000,-1000,-1000]
         }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
             i0-=(c[0]+c[1]+c[2]+c[3]+c[4])
-            if (i0<1) this.row_index = 0; // 重置行数
+            if (i0<2) this.row_index = 0; // 重置行数
             var col_index=i0 - Math.floor((0+this.row_index)*(this.row_index+1)/2);
             if (col_index > this.row_index) {
                 this.row_index++;
@@ -1186,7 +1216,7 @@ export class AvatarManager{
                 1.28*this.row_index+1.28,
                 99+1.5*this.row_index*1.9-col_index*0.25
             ]
-            var rotation=[0,Math.PI,0] 
+            var rotation=[0,0,0] // 还需调整方向，目前尚未调整
         }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]) { //弧形看台2
             i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]);
             if (i0<2) {
@@ -1206,10 +1236,10 @@ export class AvatarManager{
                 1.28*this.row_index,
                 98+1.5*this.row_index*1.75-col_index*0.6
             ]
-            var rotation = [0,Math.PI,0]
+            var rotation = [0,0,0]
         } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]) {
             i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]);
-            if (i0<1) {
+            if (i0<2) {
                 this.row_index = 0; // 重置行数
                 this.sum_count = 0;
                 this.row_count = 3;
@@ -1227,51 +1257,8 @@ export class AvatarManager{
                 1.28*this.row_index,
                 95+1.5*this.row_index*1.45-col_index
             ]
-            var rotation = [0,Math.PI*1.25,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8]) { //弧形看台6
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7])
-            if (i0<1) {
-                this.row_index = 8; // 重置行数
-                this.sum_count = 0;
-                this.row_count = 8;
-            } 
-            var col_index = i0 - this.sum_count;
-            if (col_index > this.row_count) {
-                this.row_index++;
-                col_index-=this.row_count;
-                this.sum_count += this.row_count;
-                if (this.row_index%4 === 0) this.row_count+=1;
-            }
-            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.5*31+1.5*this.row_index*1.9,
-                1.28*this.row_index,
-                0.82*col_index+75,
-            ]
-            var rotation = [0,Math.PI*0.5+Math.PI,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8]+c[9]) { //弧形看台5
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8])
-            if (i0<1) {
-                this.row_index = 8; // 重置行数
-                this.sum_count = 0;
-                this.row_count = 9;
-            } 
-            var col_index = i0 - this.sum_count;
-            if (col_index > this.row_count) {
-                this.row_index++;
-                col_index-=this.row_count;
-                this.sum_count += this.row_count;
-                this.row_count+=1;
-            }
-            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.5*30+1.5*this.row_index*1.9-0.3*col_index,
-                1.28*this.row_index,
-                0.82*col_index+79+this.row_count*0.5,
-            ]
-            var rotation = [0,Math.PI*0.5+Math.PI,0]
-        }
-        else {
+            var rotation = [0,0,0]
+        } else {
             var position=[
                 0,0,0
             ]
@@ -1279,29 +1266,12 @@ export class AvatarManager{
         }
         return {pos:position,rot:rotation} 
     }
-    getPosRotmanA(i0){
-        var PosRot=this.getPosRot2(parseInt(i0/3))
-        var j0=i0%3;
-        if (j0==1) {
-            PosRot.pos[0]+=0.5
-            PosRot.pos[2]+=0.5
-        }
-        else if (j0==2) {
-            PosRot.pos[0]+=1
-            PosRot.pos[2]+=1
-        }
-        return PosRot
-    }
-    getPosRotmanD(i0){
-        var PosRot=this.getPosRot2(parseInt(i0/2))
-        var j0=i0%2;
-        if (j0==0) {
-            PosRot.pos[0]+=0.5
-        }
-        else if (j0==1) {
-            PosRot.pos[0]+=1
-            PosRot.pos[2]+=0.5
-        }
+    getPosRotman(i0){
+        var PosRot=this.getPosRot2(parseInt(i0/9))
+        var j0=i0%9;
+        let k=0.5;
+        PosRot.pos[0]+=(k*parseInt(j0/3))
+        PosRot.pos[2]+=(k*(j0%3))
         return PosRot
     }
     getPosRotwomanA(i0){

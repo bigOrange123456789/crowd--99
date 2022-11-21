@@ -2,7 +2,7 @@ import * as THREE from "three";
 class LightProducer{
     constructor(scene){
         // Lights 
-        const ambient = new THREE.AmbientLight( 0xffffff ,0.5);
+        const ambient = new THREE.AmbientLight( 0xffffff ,1.);
         scene.add( ambient );
         ambient.name="ambient"
 
