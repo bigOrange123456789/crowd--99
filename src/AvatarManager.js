@@ -24,6 +24,9 @@ export class AvatarManager{
         // this.load_model2()
         // this.load_Char47()
         this.load_man_A()
+        this.load_man_D()
+        //this.load_woman_A()
+        this.load_woman_B()
         new UI(this.scene,new THREE.Object3D())
     }
     load_model1(){
@@ -286,7 +289,7 @@ export class AvatarManager{
             // lod_geometry[19]=1
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+754),//5*100*100,
+                count:3*(100*100+754),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -354,6 +357,312 @@ export class AvatarManager{
                     20*Math.random()
                 ],"CloM_A_Hair_geo")
                 //CloM_A_Hair_geo
+                crowd.setObesity(i00, 0.85+1.1*Math.random())
+            }
+            self.scene.add(crowd)
+            window.crowd=crowd
+            console.log(crowd)
+            crowd.init(glb.scene)
+        })
+    }
+    load_man_D(){
+        var self = this
+        var pathModel="assets/man_D.gltf"
+        var pathAnima="assets/animation_man_D.bin"
+        var pathLodGeo="assets/man_DLOD/"
+        new GLTFLoader().load(pathModel, async (glb) => {
+            console.log(glb)
+            glb.scene.traverse(node=>{
+                if(node instanceof THREE.SkinnedMesh){
+                    console.log(node.name)
+                }
+            })
+            
+            let lod_distance_max=20
+            let lod_distance=[]
+            for(var i=0;i<19;i++)
+                lod_distance.push((i+1)*lod_distance_max/19)
+            let lod_geometry=[]
+            lod_geometry.push(19)
+            lod_geometry.push(19)
+            lod_geometry.push(19)
+            lod_geometry.push(19)
+            for(var i=4;i<20;i++)
+                lod_geometry.push(19-i)
+            let lod_visible=[
+                ["CloM_C_Eye_lash_geo", -1],
+                ["CloM_C_Eyebrow_geo", -1],
+                ["CloM_C_Saliva_geo", -1],
+                ["CloM_C_EyeLeft_geo",  10],
+                ["CloM_C_EyeRight_geo", 10],
+                ["CloM_C_Teeth_geo",    -1],
+                ["CloM_C_head_geo", 19],
+                ["hair1", 19],
+                ["kuzi_geo", 19],
+                ["kuzi_geo1", 1],
+                ["Nail_geo", -1],
+                ["lalian_geo", 10],
+                ["wazi_geo", 1],
+                ["nei5",19],
+                ["xiezi_geo", 19],
+                ["weiyi_geo1", 1],
+                ["waitao_geo", 19],
+                ["body_geo1",19],
+            ]
+            var crowd=new Crowd({
+                camera:self.camera,
+                count:2*(100*100+754),//5*100*100,
+                animPathPre:pathAnima,
+                pathLodGeo:pathLodGeo,
+                assets:self.assets,
+                useColorTag:[//需要进行颜色编辑的区域mesh名称
+                    "xiezi_geo",
+                    "waitao_geo",
+                    "kuzi_geo",
+                    "nei5",
+                    "hair1"
+                ],
+                lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
+                lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
+                lod_set:()=>{
+                    for(let i=0;i<crowd.children.length;i++){
+                        var crowdGroup0=crowd.children[i]
+                        for(let j=0;j<lod_visible.length;j++){
+                            if(i>=lod_visible[j][1]){
+                                var mesh=crowdGroup0.getMesh(lod_visible[j][0])
+                                if(mesh)mesh.visible=false
+                            }
+                        }
+                            
+                    }
+                },
+            })
+            self.setParamman_D(crowd,1,4)
+            for(var i00=0;i00<crowd.count;i00++){
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"xiezi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"waitao_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"kuzi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"nei5")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"hair1")
+                //CloM_A_Hair_geo
+                crowd.setObesity(i00, 0.85+1.1*Math.random())
+            }
+            self.scene.add(crowd)
+            window.crowd=crowd
+            console.log(crowd)
+            crowd.init(glb.scene)
+        })
+    }
+    load_woman_A() {
+        var self = this
+        var pathModel="assets/woman_A.glb"
+        var pathAnima="assets/animation_woman_A.bin"
+        var pathLodGeo="assets/woman_ALOD/"
+        new GLTFLoader().load(pathModel, async (glb) => {
+            console.log(glb)
+            glb.scene.traverse(node=>{
+                if(node instanceof THREE.SkinnedMesh){
+                    console.log(node.name)
+                }
+            })
+            
+            let lod_distance_max=20
+            let lod_distance=[]
+            for(var i=0;i<19;i++)
+                lod_distance.push((i+1)*lod_distance_max/19)
+            let lod_geometry=[]
+            for(var i=0;i<20;i++)
+                lod_geometry.push(19-i)
+            let lod_visible=[
+                // ["CloM_A_Eye_lash_geo", -1],
+                // ["CloM_A_Eyebrow_geo"]
+                // // ["CloM_A_head_geo",     10],
+                // ["CloM_A_Eyeshell_geo", 1],
+                // ["CloM_A_EyeLeft_geo",  10],
+                // ["CloM_A_EyeRight_geo", 10],
+                // ["CloM_A_Saliva_geo",   -1],
+                // ["CloM_A_Teeth_geo",    -1],
+                // ['CloM_A_Hair_geo',     19],
+                // ['CloM_A_EyeEdge_geo',  5],
+                // ['GW_man_Body_geo1',    19],
+                // ['GW_man_Nail_geo',     -1],
+                // // ['CloM_A_kuzi_geo',     10],
+                // ['CloM_A_lingdai_geo',  10],
+                // ['CloM_A_Wazi_geo',     1],
+                // ['CloM_A_Xiezi_geo',    18],
+                // ['CloM_A_chengyi_geo',  19],
+                // // ['CloM_A_waitao_geo',   10],
+                // ['CloM_A_xiuzi_geo',    -1],
+            ]
+            var crowd=new Crowd({
+                camera:self.camera,
+                count:2*(100*100+754),//5*100*100,
+                animPathPre:pathAnima,
+                pathLodGeo:pathLodGeo,
+                assets:self.assets,
+                useColorTag:[//需要进行颜色编辑的区域mesh名称
+                    // "CloM_A_lingdai_geo",
+                    // "CloM_A_kuzi_geo",
+                    // "CloM_A_waitao_geo",
+                    // "CloM_A_Xiezi_geo",
+                    // "CloM_A_Hair_geo"
+                ],
+                lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
+                lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
+                lod_set:()=>{
+                    for(let i=0;i<crowd.children.length;i++){
+                        var crowdGroup0=crowd.children[i]
+                        for(let j=0;j<lod_visible.length;j++){
+                            if(i>=lod_visible[j][1]){
+                                var mesh=crowdGroup0.getMesh(lod_visible[j][0])
+                                if(mesh)mesh.visible=false
+                            }
+                        }
+                            
+                    }
+                },
+            })
+            self.setParamwoman_A(crowd,1,4)
+            for(var i00=0;i00<crowd.count;i00++){
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_kuzi_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_waitao_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()-10
+                // ],"CloM_A_lingdai_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()
+                // ],"CloM_A_Xiezi_geo")
+                // crowd.setColor(i00, [
+                //     20*Math.random(),
+                //     20*Math.random(),
+                //     20*Math.random()
+                // ],"CloM_A_Hair_geo")
+                //CloM_A_Hair_geo
+                crowd.setObesity(i00, 0.85+1.1*Math.random())
+            }
+            self.scene.add(crowd)
+            window.crowd=crowd
+            console.log(crowd)
+            crowd.init(glb.scene)
+        })
+    }
+    load_woman_B() {
+        var self = this
+        var pathModel="assets/woman_B.gltf"
+        var pathAnima="assets/animation_woman_B.bin"
+        var pathLodGeo="assets/woman_BLOD/"
+        new GLTFLoader().load(pathModel, async (glb) => {
+            console.log(glb)
+            glb.scene.traverse(node=>{
+                if(node instanceof THREE.SkinnedMesh){
+                    console.log(node.name)
+                }
+            })
+            
+            let lod_distance_max=20
+            let lod_distance=[]
+            for(var i=0;i<19;i++)
+                lod_distance.push((i+1)*lod_distance_max/19)
+            let lod_geometry=[]
+            for(var i=0;i<20;i++)
+                lod_geometry.push(19-i)
+            let lod_visible=[
+                ["body1", 19],
+                ["CloW_B_eyelash_geo", -1],
+                ["CloW_B_eyeLeft_geo", 10],
+                ["CloW_B_eyeRight_geo", 10],
+                ["CloW_B_head_geo",  19],
+                ["CloW_B_meimao_geo", 1],
+                ["CloW_B_saliva_geo",   -1],
+                ["CloW_B_teeth_geo",    -1],
+                ['hair',     19],
+                ['kouzi_geo',  1],
+                ['Nail_geo',     -1],
+                ['qipao_geo',  19],
+                ['waitao_geo',     19],
+                ['xiezi_geo',    18],
+            ]
+            var crowd=new Crowd({
+                camera:self.camera,
+                count:2*(100*100+754),//5*100*100,
+                animPathPre:pathAnima,
+                pathLodGeo:pathLodGeo,
+                assets:self.assets,
+                useColorTag:[//需要进行颜色编辑的区域mesh名称
+                    "hair",
+                    "qipao_geo",
+                    "waitao_geo",
+                    "xiezi_geo",
+                ],
+                lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
+                lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
+                lod_set:()=>{
+                    for(let i=0;i<crowd.children.length;i++){
+                        var crowdGroup0=crowd.children[i]
+                        for(let j=0;j<lod_visible.length;j++){
+                            if(i>=lod_visible[j][1]){
+                                var mesh=crowdGroup0.getMesh(lod_visible[j][0])
+                                if(mesh)mesh.visible=false
+                            }
+                        }
+                            
+                    }
+                },
+            })
+            self.setParamwoman_B(crowd,1,4)
+            for(var i00=0;i00<crowd.count;i00++){
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"hair")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"qipao_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"waitao_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"xiezi_geo")
                 crowd.setObesity(i00, 0.85+1.1*Math.random())
             }
             self.scene.add(crowd)
@@ -509,7 +818,7 @@ export class AvatarManager{
 
     }
     setParamman_A(crowd,model_index,animtionNum){
-        var crowd_count=crowd.count//1*100*100+754
+        var crowd_count=crowd.count
         for(var i0=0;i0<crowd_count;i0++){
             var scale=[
                 1,
@@ -536,7 +845,118 @@ export class AvatarManager{
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
 
-            var PosRot=this.getPosRot3(i0)
+            var PosRot=this.getPosRotmanA(i0)
+            crowd.setPosition(i00,PosRot.pos)
+            PosRot.rot[1]+=Math.PI;
+            crowd.setRotation(i00,PosRot.rot)
+
+            crowd.setAnimation(i00,animtionType,1000*Math.random())
+        }//end
+
+    }
+    setParamman_D(crowd,model_index,animtionNum){
+        var crowd_count=crowd.count
+        for(var i0=0;i0<crowd_count;i0++){
+            var scale=[
+                1,
+                Math.random()*0.3+0.85,
+                1,
+            ]
+            for(var i=0;i<3;i++)scale[i]*=0.34
+            var animtionType=Math.floor(animtionNum*Math.random())//12
+            // if(i0<1250){
+            //     animtionType=4
+            // }
+            // else if(animtionType==4)animtionType=0
+            // else if(animtionType==4)animtionType=1
+
+            var speed=(Math.random()*2.5+2)*2.5
+            
+            // if(i0%2==model_index)continue
+            // let i00=Math.floor(i0/2)
+            let i00=i0
+
+            crowd.setSpeed(i00, speed)
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
+            if(animtionType==4)
+                crowd.setMoveMaxLength(i00, 4+2*Math.random())
+            crowd.setScale(i00, scale)
+
+            var PosRot=this.getPosRotmanD(i0)
+            crowd.setPosition(i00,PosRot.pos)
+            PosRot.rot[1]+=Math.PI;
+            crowd.setRotation(i00,PosRot.rot)
+
+            crowd.setAnimation(i00,animtionType,1000*Math.random())
+        }//end
+
+    }
+    setParamwoman_A(crowd,model_index,animtionNum){
+        var crowd_count=crowd.count
+        for(var i0=0;i0<crowd_count;i0++){
+            var scale=[
+                1,
+                Math.random()*0.3+0.85,
+                1,
+            ]
+            for(var i=0;i<3;i++)scale[i]*=0.34
+            var animtionType=Math.floor(animtionNum*Math.random())//12
+            // if(i0<1250){
+            //     animtionType=4
+            // }
+            // else if(animtionType==4)animtionType=0
+            // else if(animtionType==4)animtionType=1
+
+            var speed=(Math.random()*2.5+2)*2.5
+            
+            // if(i0%2==model_index)continue
+            // let i00=Math.floor(i0/2)
+            let i00=i0
+
+            crowd.setSpeed(i00, speed)
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
+            if(animtionType==4)
+                crowd.setMoveMaxLength(i00, 4+2*Math.random())
+            crowd.setScale(i00, scale)
+
+            var PosRot=this.getPosRotwomanA(i0)
+            crowd.setPosition(i00,PosRot.pos)
+            PosRot.rot[1]+=Math.PI;
+            crowd.setRotation(i00,PosRot.rot)
+
+            crowd.setAnimation(i00,animtionType,1000*Math.random())
+        }//end
+
+    }
+    setParamwoman_B(crowd,model_index,animtionNum){
+        var crowd_count=crowd.count
+        for(var i0=0;i0<crowd_count;i0++){
+            var scale=[
+                1,
+                Math.random()*0.3+0.85,
+                1,
+            ]
+            for(var i=0;i<3;i++)scale[i]*=0.34
+            var animtionType=Math.floor(animtionNum*Math.random())//12
+            // if(i0<1250){
+            //     animtionType=4
+            // }
+            // else if(animtionType==4)animtionType=0
+            // else if(animtionType==4)animtionType=1
+
+            var speed=(Math.random()*2.5+2)*2.5
+            
+            // if(i0%2==model_index)continue
+            // let i00=Math.floor(i0/2)
+            let i00=i0
+
+            crowd.setSpeed(i00, speed)
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
+            if(animtionType==4)
+                crowd.setMoveMaxLength(i00, 4+2*Math.random())
+            crowd.setScale(i00, scale)
+
+            var PosRot=this.getPosRotwomanB(i0)
             crowd.setPosition(i00,PosRot.pos)
             PosRot.rot[1]+=Math.PI;
             crowd.setRotation(i00,PosRot.rot)
@@ -814,12 +1234,52 @@ export class AvatarManager{
         }
         return {pos:position,rot:rotation} 
     }
-    getPosRot3(i0){
-        var PosRot=this.getPosRot2(parseInt(i0/9))
-        var j0=i0%9;
-        let k=0.5;
-        PosRot.pos[0]+=(k*parseInt(j0/3))
-        PosRot.pos[2]+=(k*(j0%3))
+    getPosRotmanA(i0){
+        var PosRot=this.getPosRot2(parseInt(i0/3))
+        var j0=i0%3;
+        if (j0==1) {
+            PosRot.pos[0]+=0.5
+            PosRot.pos[2]+=0.5
+        }
+        else if (j0==2) {
+            PosRot.pos[0]+=1
+            PosRot.pos[2]+=1
+        }
+        return PosRot
+    }
+    getPosRotmanD(i0){
+        var PosRot=this.getPosRot2(parseInt(i0/2))
+        var j0=i0%2;
+        if (j0==0) {
+            PosRot.pos[0]+=0.5
+        }
+        else if (j0==1) {
+            PosRot.pos[0]+=1
+            PosRot.pos[2]+=0.5
+        }
+        return PosRot
+    }
+    getPosRotwomanA(i0){
+        var PosRot=this.getPosRot2(parseInt(i0/2))
+        var j0=i0%2;
+        if (j0==0) {
+            PosRot.pos[0]+=1
+        }
+        else if (j0==1) {
+            PosRot.pos[2]+=1
+        }
+        return PosRot
+    }
+    getPosRotwomanB(i0){
+        var PosRot=this.getPosRot2(parseInt(i0/2))
+        var j0=i0%2;
+        if (j0==0) {
+            PosRot.pos[2]+=0.5
+        }
+        else if (j0==1) {
+            PosRot.pos[0]+=0.5
+            PosRot.pos[2]+=1
+        }
         return PosRot
     }
 }
