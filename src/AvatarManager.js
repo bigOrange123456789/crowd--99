@@ -360,8 +360,11 @@ export class AvatarManager{
             }
             self.scene.add(crowd)
             window.crowd=crowd
-            console.log(crowd)
             crowd.init(glb.scene)
+            // for(let i=0;i<crowd.count/2;i++){
+            //     crowd.lodList[i]=-2
+            // }
+            console.log(crowd)
         })
     }
     setParam(crowd,model_index,animtionNum){
