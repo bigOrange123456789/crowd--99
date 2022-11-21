@@ -25,7 +25,9 @@ export class AvatarManager{
         // this.load_model2()
         // this.load_Char47()
         this.load_man_A()
-        this.load_man_D()
+        setTimeout(()=>{
+            this.load_man_D()
+        },1000)
         //this.load_woman_A()
         // this.load_woman_B()
         new UI(this.scene,new THREE.Object3D())
@@ -301,7 +303,7 @@ export class AvatarManager{
             // lod_geometry[19]=1
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+754)/2,//5*100*100,
+                count:9*(100*100+1089)/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -432,7 +434,7 @@ export class AvatarManager{
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+754)/2,//5*100*100,
+                count:9*(100*100+1089)/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -1007,6 +1009,8 @@ export class AvatarManager{
             300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
             240,         //弧形看台2 
             192,         //弧形看台3
+
+
         ]
         if(i0<c[0]){
             var col_count=25
@@ -1140,6 +1144,9 @@ export class AvatarManager{
             300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
             240,         //弧形看台2 
             192,         //弧形看台3
+
+            140,    //弧形看台6
+            195,    //弧形看台5
         ]
         if(i0<c[0]){
             var col_count=25
@@ -1257,8 +1264,51 @@ export class AvatarManager{
                 1.28*this.row_index,
                 95+1.5*this.row_index*1.45-col_index
             ]
-            var rotation = [0,0,0]
-        } else {
+            var rotation = [0,Math.PI*1.25,0]
+        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8]) { //弧形看台6
+            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7])
+            if (i0<1) {
+                this.row_index = 8; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 8;
+            } 
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index-=this.row_count;
+                this.sum_count += this.row_count;
+                if (this.row_index%4 === 0) this.row_count+=1;
+            }
+            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            var position=[
+                1.5*31+1.5*this.row_index*1.9,
+                1.28*this.row_index,
+                0.82*col_index+75,
+            ]
+            var rotation = [0,Math.PI*0.5+Math.PI,0]
+        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8]+c[9]) { //弧形看台5
+            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8])
+            if (i0<1) {
+                this.row_index = 8; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 9;
+            } 
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index-=this.row_count;
+                this.sum_count += this.row_count;
+                this.row_count+=1;
+            }
+            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            var position=[
+                1.5*30+1.5*this.row_index*1.9-0.3*col_index,
+                1.28*this.row_index,
+                0.82*col_index+79+this.row_count*0.5,
+            ]
+            var rotation = [0,Math.PI*0.5+Math.PI,0]
+        }
+        else {
             var position=[
                 0,0,0
             ]
