@@ -260,10 +260,14 @@ export class AvatarManager{
             let lod_distance=[]
             for(var i=0;i<19;i++)
                 lod_distance.push((i+1)*lod_distance_max/19)
-            lod_distance.push(lod_distance_max*2)
+            lod_distance.push(lod_distance_max*3)
+            lod_distance.push(lod_distance_max*6)
+            
             let lod_geometry=[]
-            for(var i=0;i<=20;i++)
+            for(var i=0;i<=20;i++)//20..0
                 lod_geometry.push(20-i)
+            lod_geometry.push(0)
+
             let lod_visible=[
                 ["CloM_A_Eye_lash_geo", -1],
                 ["CloM_A_Eyeshell_geo", 1],
@@ -282,8 +286,8 @@ export class AvatarManager{
                 ['CloM_A_xiuzi_geo',    -1],
 
                 // ['CloM_A_waitao_geo',   10],
-                // ['CloM_A_kuzi_geo',     10],
-                // ["CloM_A_head_geo",     10],
+                ['CloM_A_kuzi_geo',     21],
+                ["CloM_A_head_geo",     21],
             ]
             // lod_geometry[19]=1
             var crowd=new Crowd({
@@ -522,14 +526,17 @@ export class AvatarManager{
                 1,
             ]
             for(var i=0;i<3;i++)scale[i]*=0.34
-            var animtionType=Math.floor(animtionNum*Math.random())//12
-            if(i0<1250){//496){
-                animtionType=4
+            var animtionType=Math.floor(28*Math.random())//12
+            if( animtionType==11) animtionType=0
+            if( animtionType==20) animtionType=1
+            if(i0<1250*9){//496){
+                if(Math.random()>0.5)animtionType=Math.random()>0.5?11:20
+                //11走动 20跑动
             }
-            else if(animtionType==4)animtionType=0
+            // else if(animtionType==4)animtionType=0
             // else if(animtionType==4)animtionType=1
 
-            var speed=(Math.random()*2.5+2)*2.5
+            var speed=Math.random()*7+4
             
             // if(i0%2==model_index)continue
             // let i00=Math.floor(i0/2)
@@ -537,7 +544,7 @@ export class AvatarManager{
 
             crowd.setSpeed(i00, speed)
             // crowd.setObesity(i00, 0.85+1.1*Math.random())
-            if(animtionType==4)
+            if(animtionType==11||animtionType==20)
                 crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
 
