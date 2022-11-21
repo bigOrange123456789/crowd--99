@@ -303,7 +303,7 @@ export class AvatarManager{
             // lod_geometry[19]=1
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+1089)/2,//5*100*100,
+                count:9*(100*100+1123)/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -434,7 +434,7 @@ export class AvatarManager{
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+1089)/2,//5*100*100,
+                count:9*(100*100+1123)/2,//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -539,7 +539,7 @@ export class AvatarManager{
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:2*(100*100+754),//5*100*100,
+                count:2*(100*100+1123),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -639,7 +639,7 @@ export class AvatarManager{
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:2*(100*100+754),//5*100*100,
+                count:2*(100*100+1123),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -1144,9 +1144,8 @@ export class AvatarManager{
             300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
             240,         //弧形看台2 
             192,         //弧形看台3
-
-            140,    //弧形看台6
-            195,    //弧形看台5
+            152,    //弧形看台6
+            217,    //弧形看台5
         ]
         if(i0<c[0]){
             var col_count=25
