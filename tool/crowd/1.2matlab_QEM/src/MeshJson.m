@@ -8,6 +8,7 @@ classdef MeshJson < handle
         NF
         file_name
         matrix0
+        list
         
         print%���� ������º��Ƿ��Ի��Ƴ���
         voxel_size%���ط����С
@@ -40,16 +41,24 @@ classdef MeshJson < handle
             end
         end
         function o = MeshJson(file_name)
-            addpath('lib/jsonlab-master');
-            data_list = loadjson(file_name+'.json');
-            data=data_list.Suzanne;
-            
-            o.file_name=file_name;
             o.matrix0=eye(4);
-            %[o.V,o.F] = o.read(file_name);
+            if class(file_name)=="string"
+                addpath('lib/jsonlab-master');
+                data_list = loadjson(file_name+'.json');
+                data=data_list.Suzanne;
+            
+                o.file_name=file_name;
+                %[o.V,o.F] = o.read(file_name);
+            else
+                data=file_name;
+                o.file_name="";
+            end
+            
             o.V=reshape(data.position,3,[])';
             o.F=reshape(data.index,3,[])'+1;
-            o.mergeVertex();
+            
+            
+            o.list=o.mergeVertex();
             o.computeNormal();
             o.computeEdge();
             o.print=0;
@@ -60,13 +69,11 @@ classdef MeshJson < handle
                     o.flag0(i,1)=1;
                 end
             end
-            %{%}
             
         end
-        function mergeVertex(o)
+        function [list3]=mergeVertex(o)
             v1=o.V;
             f1=o.F;
-            
             
             list=zeros(size(v1,1),1);
             for i = 1:size(v1,1)
@@ -95,7 +102,7 @@ classdef MeshJson < handle
                 end
             end
 
-            v2=zeros(index-1,3);%index是下一个顶点的编号,index是顶点个数
+            v2=zeros(index-1,3);    %index是下一个顶点的编号,index-1是顶点个数
             for i = 1:size(list,1)
                 j=list2(i);
                 v2(j,:)=v1(i,:);
@@ -103,10 +110,14 @@ classdef MeshJson < handle
             
             f2=list2(f1);
             
-            
             o.V=v2;
             o.F=f2;
-
+            
+            list3=zeros(index-1,1);
+            for i = 1:size(list2,1)
+                j=list2(i);
+                list3(j)=i;
+            end
 
         end
         function o = Mesh0(file_name)
@@ -123,6 +134,32 @@ classdef MeshJson < handle
             %inv(o.matrix0);
             o.write(o.file_name+"_save",o.V,o.F);
         end
+        function data=getJson(o)
+            position=o.V';
+            index=o.F'-1;
+            data=struct( ... 
+                'position', position(:)', ... 
+                'index',index(:)'... 
+            );
+            %data=savejson(data);
+        end
+        function downloadJson(o)
+            position=o.V';
+            index=o.F'-1;
+            data=struct( ... 
+                'position', position(:)', ... 
+                'index',index(:)'... 
+            );
+            o.savejson("test.json",data)
+        end
+        function savejson(o,name,data)
+            str=savejson("Suzanne",data);
+            file=fopen(name,'w+');
+            fprintf(file,'%s',str);
+        end
+        
+
+        %{%}
         function reset(o)
             o.applyMatrix(inv(o.matrix0));
         end
@@ -233,7 +270,7 @@ classdef MeshJson < handle
             vector=SH.getFeature(o);
         end
         function simplify(o,r)
-            myQEM=QEM();
+            myQEM=QEMJson();
             o=myQEM.simplification(o,r);
             if o.print==1
                 o.draw();
@@ -332,33 +369,29 @@ classdef MeshJson < handle
                 end
             end
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        end%��������
+        end
         function computeEdge(o)
             TR = triangulation(o.F,o.V);%���������ʷ֣�����������������
             o.E = edges(TR);%�������бߵĶ�������  ne*2
         end
-        function rectifyindex(o)
-            %���Ϊ�յĶ���
-            %RECTIFYINDEX Summary of this function goes here
-            
-            
-            num_of_NaN=zeros(o.nv(),1);
-            sum=0;
+        function rectifyindex(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
+            num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数
+            sum=0;  % sum用于统计未被引用的顶点个数
             for i=1:o.nv()
-                if isnan(o.V(i,1)) % Ϊ�� NaN
+                if isnan(o.V(i,1))  % 为空NaN => 这是一个被删除的顶点
                     sum=sum+1;
                 end
                 num_of_NaN(i)=sum;
             end
             
-            recF=zeros(o.nf(),3);%������������䣬�������ڶ�����ı䣬������Ķ���������Ҫ�޸�
-            for i=1:o.nf()
+            recF=zeros(o.nf(),3);
+            for i=1:o.nf() %三角面个数不变，但是由于顶点个改变，三角面的顶点索引需要修改
                 for j=1:3
                     recF(i,j)=o.F(i,j)-num_of_NaN(o.F(i,j));
                 end
             end
             
-            recV=zeros(o.nv-sum,3);%�ܸ���-Ϊ�յĸ���
+            recV=zeros(o.nv-sum,3); %总个数-为空的个数
             j=1;
             for i=1:o.nv()
                 if ~isnan(o.V(i,1))
@@ -366,8 +399,21 @@ classdef MeshJson < handle
                     j=j+1;
                 end
             end
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            list_new=zeros(size(recV,1),1);
+            index=1;
+            for i=1:size(num_of_NaN,1)
+                if ~isnan(o.V(i,1))
+                    list_new(index)=o.list(i);
+                end
+            end
+            o.list=list_new;
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
             o.V=recV;
             o.F=recF;
+            
         end
         function voxel2=voxelization(o)
             box=o.box();
