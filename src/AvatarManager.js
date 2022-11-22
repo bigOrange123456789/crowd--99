@@ -26,7 +26,7 @@ export class AvatarManager{
         // this.load_Char47()
         this.load_man_A()
         setTimeout(()=>{
-            this.load_man_D()
+            // this.load_man_D()
         },1000)
         //this.load_woman_A()
         // this.load_woman_B()

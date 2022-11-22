@@ -152,9 +152,9 @@ classdef MeshJson < handle
 
             for i =1:o.nv()
                 j=o.list(i);
-                uv(i)=uv0(j);
-                skinWeight(i)=skinWeight0(j);
-                skinIndex(i) =skinIndex0(j);
+                uv(i,:)=uv0(j,:);
+                skinWeight(i,:)=skinWeight0(j,:);
+                skinIndex(i,:) =skinIndex0(j,:);
             end
 
             position=o.V';
