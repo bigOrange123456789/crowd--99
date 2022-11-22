@@ -9,6 +9,9 @@ classdef MeshJson < handle
         file_name
         matrix0
         list
+        uv
+        skinWeight
+        skinIndex
         
         print%���� ������º��Ƿ��Ի��Ƴ���
         voxel_size%���ط����С
@@ -56,7 +59,9 @@ classdef MeshJson < handle
             
             o.V=reshape(data.position,3,[])';
             o.F=reshape(data.index,3,[])'+1;
-            
+            o.uv=reshape(data.uv,2,[])';
+            o.skinWeight=reshape(data.skinWeight,4,[])';
+            o.skinIndex=reshape(data.skinIndex,4,[])';
             
             o.list=o.mergeVertex();
             o.computeNormal();
@@ -118,7 +123,6 @@ classdef MeshJson < handle
                 j=list2(i);
                 list3(j)=i;
             end
-
         end
         function o = Mesh0(file_name)
             o.file_name=file_name;
@@ -135,11 +139,35 @@ classdef MeshJson < handle
             o.write(o.file_name+"_save",o.V,o.F);
         end
         function data=getJson(o)
+            %o.uv=reshape(data.uv,2,[])';
+            %o.skinWeight=reshape(data.skinWeight,4,[])';
+            %o.skinIndex=reshape(data.skinIndex,4,[])';
+            uv0=o.uv;
+            skinWeight0=o.skinWeight;
+            skinIndex0=o.skinIndex;
+
+            uv=zeros(o.nv(),2);
+            skinWeight=zeros(o.nv(),4);
+            skinIndex=zeros(o.nv(),4);
+
+            for i =1:o.nv()
+                j=o.list(i);
+                uv(i)=uv0(j);
+                skinWeight(i)=skinWeight0(j);
+                skinIndex(i) =skinIndex0(j);
+            end
+
             position=o.V';
+            uv=uv';
+            skinWeight=skinWeight';
+            skinIndex=skinIndex';
             index=o.F'-1;
             data=struct( ... 
                 'position', position(:)', ... 
-                'index',index(:)'... 
+                'uv', uv(:)', ... 
+                'skinWeight', skinWeight(:)', ... 
+                'skinIndex', skinIndex(:)', ... 
+                'index',index(:)'...
             );
             %data=savejson(data);
         end
@@ -157,9 +185,6 @@ classdef MeshJson < handle
             file=fopen(name,'w+');
             fprintf(file,'%s',str);
         end
-        
-
-        %{%}
         function reset(o)
             o.applyMatrix(inv(o.matrix0));
         end
@@ -406,6 +431,7 @@ classdef MeshJson < handle
             for i=1:size(num_of_NaN,1)
                 if ~isnan(o.V(i,1))
                     list_new(index)=o.list(i);
+                    index=index+1;
                 end
             end
             o.list=list_new;
