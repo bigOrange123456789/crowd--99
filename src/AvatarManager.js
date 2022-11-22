@@ -303,7 +303,7 @@ export class AvatarManager{
             // lod_geometry[19]=1
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+1123)/2,//5*100*100,
+                count:Math.floor(9*(11123)/2),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -327,7 +327,6 @@ export class AvatarManager{
                         // if(i>4){
                         //     crowdGroup0.getMesh("CloM_A_Xiezi_geo").visible=false
                         // }
-                        // //
                         for(let j=0;j<lod_visible.length;j++){
                             if(i>=lod_visible[j][1]){
                                 var mesh=crowdGroup0.getMesh(lod_visible[j][0])
@@ -434,7 +433,7 @@ export class AvatarManager{
             ]
             var crowd=new Crowd({
                 camera:self.camera,
-                count:9*(100*100+1123)/2,//5*100*100,
+                count:Math.floor(9*(11123)/2),//5*100*100,
                 animPathPre:pathAnima,
                 pathLodGeo:pathLodGeo,
                 assets:self.assets,
@@ -777,7 +776,7 @@ export class AvatarManager{
 
     }
     setParam2(crowd,model_index,animtionNum){
-        var crowd_count=1*100*100+754
+        var crowd_count=11123
         for(var i0=0;i0<crowd_count;i0++){
             var scale=[
                 1,

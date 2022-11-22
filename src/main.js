@@ -7,6 +7,7 @@ import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js'
 import { Building } from './Building.js'
 import {LightProducer } from './LightProducer.js'
 import {AvatarManager } from './AvatarManager.js'
+import { MoveManager } from '../lib/playerControl/MoveManager.js'
 export class Loader{
     constructor(body){
         this.isIosPlatform =this.isMobile()
@@ -55,9 +56,11 @@ export class Loader{
 
         new AvatarManager(this.scene,this.camera)
         new Building(this.scene,this.camera)
+        this.autoMove=this.wander2()
         var scope=this
         setTimeout(()=>{
           scope.initSky()
+          // scope.autoMove.stopFlag = false;
         },1000)
         
     }
@@ -154,7 +157,23 @@ export class Loader{
             )
           }
         })
+    }
+    wander2() {
+      let movePath = [
+        ,[-14.41,6.41,54.32,-2.72136,0.00159,3.14088,200]
+        ,[22.97,3.44,59.34,-2.79166,0.00164,3.14099,700]
+        
+        ,[40.07,4.36,57.78,-0.31993,-0.58416,-0.18073,300]
+        ,[37.08,6.75,-55.9,-0.31993,-0.58416,-0.18073,1400]
+        ,[-31.42,8,-38.82,-2.1859,1.39718,2.19304,350]
+        ,[-37.72,5.75,47.94,-2.18567,1.10707,2.23914,500]
+        ,[-38.04,6.25,55.46,-0.01195,-0.62332,-0.00697,100]
+      ];
+      let funcArr = new Array( movePath.length );
+      funcArr[ movePath.length - 1 ] = function() {
       }
+      return new MoveManager(this.camera, movePath, funcArr);
+  }
     
 }
 document.addEventListener('DOMContentLoaded', () => {
