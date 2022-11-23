@@ -39,6 +39,14 @@ classdef Group < handle
                 mesh.rectifyindex();
             end
         end
+        function rectifyindex2(this)%删除那些没有被引用的顶点
+            cell0=fieldnames(this.children);
+            for i = 1:size(cell0,1)
+                name=cell2mat(cell0(i));
+                mesh=getfield(this.children,name);
+                mesh.rectifyindex2();
+            end
+        end
         
         function simplify(this,percent)
             %% Start add waitbar
@@ -75,6 +83,52 @@ classdef Group < handle
             this.rectifyindex();%删除那些没有被引用的顶点
         end
 
+        function simplify_save(this,percent,number)
+            step=round( (1-percent)/(number-1)*this.nv() );
+            
+            %% Start add waitbar
+            hWaitbar = waitbar(0, 'simplify,wait...', 'CreateCancelBtn', 'delete(gcbf)');
+            set(hWaitbar, 'Color', [0.9, 0.9, 0.9]);
+
+            time0=step*(number-1); %需要进行坍塌的总次数
+            for iii = 1:time0   %每次删除一个顶点(一条边/一个三角面)
+                
+                min_cost=Inf;   %正无穷
+                min_name="";
+                cell0=fieldnames(this.children);
+                for i = 1:size(cell0,1)
+                    name=cell2mat(cell0(i));
+                    mesh=getfield(this.children,name);
+                    if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
+                        continue;
+                    end
+                    cost0=mesh.myQEM.simplification_getCost();
+                    if cost0<min_cost
+                        min_name=name;
+                        min_cost=cost0;
+                    end
+                end
+                
+                if min_name~=""
+                    mesh=getfield(this.children,min_name);
+                    mesh.myQEM.simplification_makeStep(); 
+                else
+                    disp("压缩比太高,对象为空!");
+                    break; 
+                end
+                
+                compT = iii/time0;
+                waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 2) * 100), '%']);
+                if mod(iii,step)==0
+                    this.path=strcat('data2/',string(number-iii/step),'.json');
+                    disp([this.path,num2str(round(compT, 2) * 100), '%']);
+                    this.download2();
+                end
+                
+            end
+            close(hWaitbar);
+        end
+
         function simplify_old2(this,ratio)
             cell0=fieldnames(this.children);
             for i = 1:size(cell0,1)
@@ -109,6 +163,21 @@ classdef Group < handle
             fprintf(file,'%s',str);
             fclose(file);
         end
+        function download2(this)
+            this.rectifyindex2();%现在还不确定在中间是否能够去冗余
+            model_result=struct();
+            cell0=fieldnames(this.children);
+            for i = 1:size(cell0,1)
+                name=cell2mat(cell0(i));
+                mesh=getfield(this.children,name);
+                json0=mesh.getJson2();
+                model_result=setfield(model_result,name,json0);
+            end
+            str=savejson('',model_result);
+            file=fopen(this.path,'w+');
+            fprintf(file,'%s',str);
+            fclose(file);
+        end
 
     end%methods
     methods(Hidden)
@@ -116,7 +185,9 @@ classdef Group < handle
         end
     end%methods(Hidden)
     methods(Static)
-        function getAffineMatrix(url1,url2)
+        function process_save(inPath,percent)
+            avatarGroup=Group(inPath);
+            avatarGroup.simplify_save(percent,20)
         end
     end%methods(Static)
     methods(Static,Hidden)

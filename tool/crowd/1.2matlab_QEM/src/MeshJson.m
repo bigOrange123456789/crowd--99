@@ -8,7 +8,8 @@ classdef MeshJson < handle
         NF
         file_name
         matrix0
-        list
+        list    %去除重合的点
+        list2   %去除为空的点
         uv
         skinWeight
         skinIndex
@@ -17,6 +18,9 @@ classdef MeshJson < handle
         voxel_size%���ط����С
 
         myQEM
+
+        recV
+        recF
     end
     properties(Constant,Hidden)
       m34=[1 0 0 0;0 1 0 0;0 0 1 0]
@@ -24,6 +28,9 @@ classdef MeshJson < handle
     methods
         function n=nv(o)
             n=size(o.V,1);
+        end
+        function n=nv2(o)
+            n=size(o.recV,1);
         end
         function n=ne(o)
             n=size(o.E,1);
@@ -145,7 +152,7 @@ classdef MeshJson < handle
         function data=getJson(o)
             %o.uv=reshape(data.uv,2,[])';
             %o.skinWeight=reshape(data.skinWeight,4,[])';
-            %o.skinIndex=reshape(data.skinIndex,4,[])';
+            %o.skinIndex=reshape(data.skinIndex,4,[])';%'
             uv0=o.uv;
             skinWeight0=o.skinWeight;
             skinIndex0=o.skinIndex;
@@ -166,6 +173,42 @@ classdef MeshJson < handle
             skinWeight=skinWeight';
             skinIndex=skinIndex';
             index=o.F'-1;
+            data=struct( ... 
+                'position', position(:)', ... 
+                'uv', uv(:)', ... 
+                'skinWeight', skinWeight(:)', ... 
+                'skinIndex', skinIndex(:)', ... 
+                'index',index(:)'...
+            );
+            %data=savejson(data);
+        end
+        function data=getJson2(o)
+            %o.uv=reshape(data.uv,2,[])';
+            %o.skinWeight=reshape(data.skinWeight,4,[])';
+            %o.skinIndex=reshape(data.skinIndex,4,[])';%'
+            
+            uv0=o.uv;
+            skinWeight0=o.skinWeight;
+            skinIndex0=o.skinIndex;
+
+            uv=zeros(o.nv2(),2);
+            skinWeight=zeros(o.nv2(),4);
+            skinIndex=zeros(o.nv2(),4);
+
+            for i =1:o.nv2()
+                j=o.list2(i);
+                uv(i,:)=uv0(j,:);
+                skinWeight(i,:)=skinWeight0(j,:);
+                skinIndex(i,:) =skinIndex0(j,:);
+            end
+
+            
+            index=o.recF'-1;  %o.F'-1;
+            position=o.recV';   %o.V';
+            uv=uv';
+            skinWeight=skinWeight';
+            skinIndex=skinIndex';
+            
             data=struct( ... 
                 'position', position(:)', ... 
                 'uv', uv(:)', ... 
@@ -383,14 +426,14 @@ classdef MeshJson < handle
                     return;
                 end
                 if size(a,1)>size(a,2)
-                    a = a';
+                    a = a'; %'
                 end
                 if size(a,1)<3 && size(a,2)==3
                     a = a';
                 end
                 if size(a,1)<=3 && size(a,2)>=3 && sum(abs(a(:,3)))==0
                     % for flat triangles
-                    a = a';
+                    a = a';%'
                 end
                 if size(a,1)<vmin ||  size(a,1)>vmax
                     error('face or vertex is not of correct size');
@@ -442,6 +485,50 @@ classdef MeshJson < handle
 
             o.V=recV;
             o.F=recF;
+            
+        end
+        function rectifyindex2(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
+            num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数
+            sum=0;  % sum用于统计未被引用的顶点个数
+            for i=1:o.nv()
+                if isnan(o.V(i,1))  % 为空NaN => 这是一个被删除的顶点
+                    sum=sum+1;
+                end
+                num_of_NaN(i)=sum;
+            end
+            
+            recF=zeros(o.nf(),3);
+            for i=1:o.nf() %三角面个数不变，但是由于顶点个改变，三角面的顶点索引需要修改
+                for j=1:3
+                    recF(i,j)=o.F(i,j)-num_of_NaN(o.F(i,j));
+                end
+            end
+            
+            recV=zeros(o.nv()-sum,3); %总个数-为空的个数
+            j=1;
+            for i=1:o.nv()
+                if ~isnan(o.V(i,1))
+                    recV(j,:)=o.V(i,:);
+                    j=j+1;
+                end
+            end
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            list_new=zeros(size(recV,1),1);
+            index=1;
+            for i=1:size(num_of_NaN,1)
+                if ~isnan(o.V(i,1))
+                    aaaa=o.list(i);
+                    bbbb=list_new(index);
+                    list_new(index)=o.list(i);
+                    index=index+1;
+                end
+            end
+            o.list2=list_new;
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            o.recV=recV;    %o.V=recV;
+            o.recF=recF;    %o.F=recF;
             
         end
         function voxel2=voxelization(o)
