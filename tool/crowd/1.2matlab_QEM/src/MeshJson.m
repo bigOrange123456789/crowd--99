@@ -15,6 +15,8 @@ classdef MeshJson < handle
         
         print%���� ������º��Ƿ��Ի��Ƴ���
         voxel_size%���ط����С
+
+        myQEM
     end
     properties(Constant,Hidden)
       m34=[1 0 0 0;0 1 0 0;0 0 1 0]
@@ -74,6 +76,8 @@ classdef MeshJson < handle
                     o.flag0(i,1)=1;
                 end
             end
+
+            o.myQEM=QEMJson(o);
             
         end
         function [list3]=mergeVertex(o)
@@ -253,7 +257,7 @@ classdef MeshJson < handle
                 mat=[mat;[0 0 0]];
                 mat=[mat';[0 0 0 1]]';
             end
-            V2=[o.V';ones(o.nv,1)']';%nv*4
+            V2=[o.V';ones(o.nv,1)']';%nv*4 %'
             
             o.V=(o.m34*mat*(V2'))';
             o.matrix0=mat*o.matrix0;%��¼���еı任
@@ -295,8 +299,7 @@ classdef MeshJson < handle
             vector=SH.getFeature(o);
         end
         function simplify(o,r)
-            myQEM=QEMJson();
-            o=myQEM.simplification(o,r);
+            o=o.myQEM.simplification(o,r);
             if o.print==1
                 o.draw();
             end

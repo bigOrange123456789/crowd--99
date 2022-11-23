@@ -1,16 +1,20 @@
 classdef QEMJson < handle
     properties
-        %mesh
+        mesh
         QVex %4*4*nv  顶点的代价矩阵
         QEdge%4*4*ne    边的代价矩阵
         cost % ne*3 
         v    %4*3*ne  v记录了每一条边的三种坍塌结果: (x,y,z,1)*(left,right,mid)*ne
+
+        step_inf %一条边一边删减时,每一步的信息 %由simplification_getCost负责更新
     end
     methods
-        function o= QEMJson()
-        end
-        function mesh=simplification(o,mesh,percent )
+        function o= QEMJson(mesh)
+            o.mesh=mesh;
             o.pretreatment(mesh);
+        end
+        function mesh=simplification_old(o,percent )
+            mesh=o.mesh;
             for iii = 1:(1-percent)*mesh.nv()           %每次删除一个顶点(一条边/一个三角面)
                 if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
                     break;
@@ -23,6 +27,35 @@ classdef QEMJson < handle
             end
             mesh.rectifyindex();%删除那些没有被引用的顶点
         end%simplification
+
+        function mesh=simplification(o,percent )
+            mesh=o.mesh;
+            for iii = 1:(1-percent)*mesh.nv()           %每次删除一个顶点(一条边/一个三角面)
+                if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
+                    break;
+                end
+                o.simplification_getCost();
+                o.simplification_makeStep();
+            end
+            mesh.rectifyindex();%删除那些没有被引用的顶点
+        end%simplification
+
+        function cost0=simplification_getCost(o)
+            mesh=o.mesh;
+            [min_cost, vidx] = min(o.cost,[],2);    %返回包含每一行的最小值的列向量
+            % min_cost:ne*1   vidx:ne*1  ---判断每一个点哪种情况的代价最小
+                
+            [cost0, k] = min(min_cost); %获取代价最小的边序号   ---代价最小的点
+            o.step_inf=struct(...
+                "k",k,...
+                "vidx",vidx...
+            );
+        end%simplification
+
+        function simplification_makeStep(o)%k是一个数值 vidx是一个ne*3的数组
+            o.mesh=o.deleteEdge(o.step_inf.k,o.mesh, o.step_inf.vidx); %删除边k
+        end%simplification
+
         function pretreatment(o,mesh)
             N=mesh.NF; %法向量
             nv = mesh.nv(); %顶点个数
