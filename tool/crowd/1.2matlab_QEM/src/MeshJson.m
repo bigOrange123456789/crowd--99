@@ -61,7 +61,7 @@ classdef MeshJson < handle
             o.F=reshape(data.index,3,[])'+1;
             o.uv=reshape(data.uv,2,[])';
             o.skinWeight=reshape(data.skinWeight,4,[])';
-            o.skinIndex=reshape(data.skinIndex,4,[])';
+            o.skinIndex=reshape(data.skinIndex,4,[])';  %'
             
             o.list=o.mergeVertex();
             o.computeNormal();
