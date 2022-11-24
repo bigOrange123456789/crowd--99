@@ -1,16 +1,20 @@
 classdef QEMJson < handle
     properties
-        %mesh
+        mesh
         QVex %4*4*nv  顶点的代价矩阵
         QEdge%4*4*ne    边的代价矩阵
         cost % ne*3 
         v    %4*3*ne  v记录了每一条边的三种坍塌结果: (x,y,z,1)*(left,right,mid)*ne
+
+        step_inf %一条边一边删减时,每一步的信息 %由simplification_getCost负责更新
     end
     methods
-        function o= QEMJson()
-        end
-        function mesh=simplification(o,mesh,percent )
+        function o= QEMJson(mesh)
+            o.mesh=mesh;
             o.pretreatment(mesh);
+        end
+        function mesh=simplification_old(o,percent )
+            mesh=o.mesh;
             for iii = 1:(1-percent)*mesh.nv()           %每次删除一个顶点(一条边/一个三角面)
                 if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
                     break;
@@ -23,6 +27,35 @@ classdef QEMJson < handle
             end
             mesh.rectifyindex();%删除那些没有被引用的顶点
         end%simplification
+
+        function mesh=simplification(o,percent )
+            mesh=o.mesh;
+            for iii = 1:(1-percent)*mesh.nv()           %每次删除一个顶点(一条边/一个三角面)
+                if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
+                    break;
+                end
+                o.simplification_getCost();
+                o.simplification_makeStep();
+            end
+            mesh.rectifyindex();%删除那些没有被引用的顶点
+        end%simplification
+
+        function cost0=simplification_getCost(o)
+            mesh=o.mesh;
+            [min_cost, vidx] = min(o.cost,[],2);    %返回包含每一行的最小值的列向量
+            % min_cost:ne*1   vidx:ne*1  ---判断每一个点哪种情况的代价最小
+                
+            [cost0, k] = min(min_cost); %获取代价最小的边序号   ---代价最小的点
+            o.step_inf=struct(...
+                "k",k,...
+                "vidx",vidx...
+            );
+        end%simplification
+
+        function simplification_makeStep(o)%k是一个数值 vidx是一个ne*3的数组
+            o.mesh=o.deleteEdge(o.step_inf.k,o.mesh, o.step_inf.vidx); %删除边k
+        end%simplification
+
         function pretreatment(o,mesh)
             N=mesh.NF; %法向量
             nv = mesh.nv(); %顶点个数
@@ -98,6 +131,35 @@ classdef QEMJson < handle
         function mesh=deleteEdge(o,k,mesh, vidx)
             %k是待删除的边的序号   vidx应该表示坍塌结果是在边的左边、右边、还是中间
             e = mesh.E(k,:);%获取待删除边对应的两个顶点
+
+            %%%%%%%%%%%%%%%%%测试%%%%%%%%%%%%%%%%%%%
+            %{
+            f=zeros(size(mesh.F));
+            f(:)=mesh.F(:);
+            f(f == e(2)) = e(1);  %边中e2的索引现在都指向e1
+            sum(sum(f==e(1),2)==2)
+            [mesh.meshId,e(1),e(2)]
+            %}
+            %disp(e);
+            %mesh.check_e(e);
+            %%%%%%%%%%%%%%%%%测试%%%%%%%%%%%%%%%%%%%
+
+            %%%%%%%%%%%%%%%%%记录这次坍塌操作%%%%%%%%%%%%%%%%%%%
+            %0,1,2=>[left,right,mid]
+            %if vidx(k)==0 %left
+            a=e(1);
+            b=e(2);
+            aPos=mesh.V(e(1),:);
+            bPos=mesh.V(e(2),:);
+            cPos=aPos;
+            if vidx(k)==1   %right
+                cPos=bPos;
+            else            %if vidx(k)==2  %mid
+                cPos=(aPos+bPos)/2;
+            end
+            
+            mesh.recordAdd(a,b,aPos,bPos,cPos);
+            %%%%%%%%%%%%%%%%%记录这次坍塌操作%%%%%%%%%%%%%%%%%%%
             
             % update position for v1
             mesh.V(e(1),:) = o.v(1:3, vidx(k), k)';% '一个顶点坍塌到指定位置
@@ -109,8 +171,9 @@ classdef QEMJson < handle
             
             %更新三角面
             mesh.F(mesh.F == e(2)) = e(1);                          %e1、e2都是具体数值 %三角面中e2的索引现在都指向e1
-            f_remove = sum(diff(sort(mesh.F,2),[],2) == 0, 2) > 0;  %如果三角面中有两个相同的点就应当移除？
+            f_remove = sum(diff(sort(mesh.F,2),[],2) == 0, 2) > 0;  %如果三角面中有两个相同的点就应当移除
             mesh.F(f_remove,:) = [];                                %需要移除的平面置为空
+            mesh.listF(f_remove)=[];    %更新listf
             
             %删除去除的边和与该边相关的信息 collapse and delete edge and related edge information
             mesh.E(mesh.E == e(2)) = e(1);  %边中e2的索引现在都指向e1
@@ -122,7 +185,7 @@ classdef QEMJson < handle
             %删除重复的边和与该边相关的信息 delete duplicate edge and related edge information
             [mesh.E,ia] = unique(sort(mesh.E,2), 'rows');       %E:ne*2 获取独一的行（边）
             o.cost = o.cost(ia,:);
-            o.QEdge = o.QEdge(:,:,ia);%QEdge:4*4*ne
+            o.QEdge = o.QEdge(:,:,ia);  %QEdge:4*4*ne
             o.v = o.v(:,:,ia);
 
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -174,14 +237,14 @@ classdef QEMJson < handle
             end
         end
         function costi=get_costi0(vi,QEdge)
-            %����  vi:4*1*ne    QEdge:4*4*ne
-            %���  costi��ne*1
-            %ͳһʹ�ñ߾��󣿣��о����Ǻܺ���
+            %输入  vi:4*1*ne    QEdge:4*4*ne
+            %输出  costi: ne*1
+            %统一使用边矩阵？，感觉不是很合理
             bsx=bsxfun(@times,QEdge,vi); %{QEdge:4*4*ne   vi:4*1*ne } -> 4*4*ne
             
             s=sum(bsx,1);               % 4*4*ne -> 1*4*ne
-            s=permute(s, [2,1,3]);%!!!!!!!!!!!!!!!!!�����BUG
-            costi=sum(squeeze(s).*squeeze(vi),1)';
+            s=permute(s, [2,1,3]);      %!!!!!!!!!!!!!!!!!解决了BUG
+            costi=sum(squeeze(s).*squeeze(vi),1)'; 
             %           s:1*4*ne  vi:4*1*ne
             % ne*1 = {  1*4*ne ,  4*1*ne  }'
         end
