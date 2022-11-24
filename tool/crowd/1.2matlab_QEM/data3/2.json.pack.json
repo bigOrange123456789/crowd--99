@@ -1,0 +1,51 @@
+{
+	"mesh0":[
+		[
+			{
+				"aI":1,
+				"bI":10,
+				"aPos":[0,0,0],
+				"bPos":[5,6,9],
+				"cPos":[2.5,3,4.5],
+				"faceRe":[2,3],
+				"face":{
+					"x":1,
+					"y":2,
+					"z":3,
+					"d":1
+				},
+				"aUV":[0,0],
+				"aSkinWeight":[0,0,0,0],
+				"aSkinIndex":[0,0,0,0],
+				"bUV":[5,6],
+				"bSkinWeight":[5,6,9,0],
+				"bSkinIndex":[5,6,9,0]
+			},
+			{
+				"aI":8,
+				"bI":9,
+				"aPos":[9,1,6],
+				"bPos":[3,1,9],
+				"cPos":[3,1,9],
+				"faceRe":[6,7],
+				"face":{
+					"x":7,
+					"y":8,
+					"z":9,
+					"d":8
+				},
+				"aUV":[1,6],
+				"aSkinWeight":[9,1,6,0],
+				"aSkinIndex":[9,1,6,0],
+				"bUV":[3,9],
+				"bSkinWeight":[3,1,9,0],
+				"bSkinIndex":[3,1,9,0]
+			}
+		]
+	],
+	"listSim":[1,1],
+"names":[
+	"^mesh0",
+	"mesh0^mesh0"
+]
+}

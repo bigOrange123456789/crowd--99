@@ -2,25 +2,33 @@ classdef MeshJson < handle
     properties
         flag0
         V%��  nv*3
-        E%��  ne*3
+        E%��  ne*3 
         F%��  nf*3
         NV
         NF
         file_name
         matrix0
+        
         list    %去除重合的点
-        list2   %去除为空的点
+        list2   %去除为空的点 list是顶点id吗:是顶点id
+        listF 
+
         uv
         skinWeight
         skinIndex
         
-        print%���� ������º��Ƿ��Ի��Ƴ���
-        voxel_size%���ط����С
+        print       %���� ������º��Ƿ��Ի��Ƴ���
+        voxel_size  %���ط����С
 
         myQEM
 
         recV
         recF
+
+        record
+        recordSize
+
+        meshId %由group对象设置的mesh对象编号
     end
     properties(Constant,Hidden)
       m34=[1 0 0 0;0 1 0 0;0 0 1 0]
@@ -53,6 +61,7 @@ classdef MeshJson < handle
             end
         end
         function o = MeshJson(file_name)
+            o.meshId=0;
             o.matrix0=eye(4);
             if class(file_name)=="string"
                 addpath('lib/jsonlab-master');
@@ -71,7 +80,19 @@ classdef MeshJson < handle
             o.uv=reshape(data.uv,2,[])';
             o.skinWeight=reshape(data.skinWeight,4,[])';
             o.skinIndex=reshape(data.skinIndex,4,[])';  %'
-            
+
+            %{
+            %%#####测试案例########
+            o.V=[0,0,0; 5,6,9; 9,1,0; 1,7,9;     9,6,1; 0,8,0; 9,1,8; 9,1,6;  3,1,9 ];
+            o.F=[1,2,3; 2,4,5; 2,3,5; 3,5,6;     4,5,7; 6,7,8; 5,6,8; 7,8,9];
+            o.uv=[0,0; 5,6; 9,1; 1,7;     9,6; 0,8; 9,1; 9,1;  3,1 ];
+            o.skinWeight=[0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
+            o.skinIndex= [0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
+            %%#####测试案例########
+            %}
+
+
+            o.listF=1:o.nf();
             o.list=o.mergeVertex();
             o.computeNormal();
             o.computeEdge();
@@ -85,7 +106,106 @@ classdef MeshJson < handle
             end
 
             o.myQEM=QEMJson(o);
+            o.recordInit();
+        end
+        function recordInit(o)
+            o.record=repmat(struct(... %每个结构体对应坍塌一条边对应的变化
+                "aI",0,...          %顶点a编号
+                "bI",0,...          %顶点a编号
+                "aPos",[],...       %顶点a信息
+                "bPos",[],...       %顶点b信息
+                "cPos",[],...       %合并后的顶点信息
+                "faceRe",[],...     %更新的三角面编号
+                "face",struct("x",[],"y",[],"z",[],"d",[]),... %增加/删除的三角面
+                "aUV",[],...
+                "aSkinWeight",[],...
+                "aSkinIndex",[],...
+                "bUV",[],...
+                "bSkinWeight",[],...
+                "bSkinIndex",[]...
+                ),o.nv(),1);
+            o.recordSize=0;
+        end
+        function recordAdd(o,a,b,aPos,bPos,cPos)
+            %{
+            disp("[aPos,bPos]");
+            disp([aPos,bPos]);
+            %}
+
+            aI=o.list(a);
+            bI=o.list(b);
+            o.recordSize=o.recordSize+1;
+            i=o.recordSize;
+            o.record(i).aI=aI;
+            o.record(i).bI=bI;
+            o.record(i).aPos=aPos;
+            o.record(i).bPos=bPos;
+            o.record(i).cPos=cPos;
+
+            o.record(i).aUV=o.uv(aI,:);
+            o.record(i).aSkinWeight=o.skinWeight(aI,:);
+            o.record(i).aSkinIndex=o.skinIndex(aI,:);
+
+            o.record(i).bUV=o.uv(bI,:);
+            o.record(i).bSkinWeight=o.skinWeight(bI,:);
+            o.record(i).bSkinIndex=o.skinIndex(bI,:);
+
+            f=zeros(size(o.F));
+            f(:)=o.F(:);
+            f(f == b) = a;  %边中e2的索引现在都指向e1
             
+            f_remove = sum(diff(sort(f,2),[],2) == 0, 2) > 0;  %如果三角面中有两个相同的点就应当移除
+            for k =1:size(f_remove,1)
+                if f_remove(k)
+                    f0=o.F(k,:);
+                    d0=o.listF(k);
+                    j=size(o.record(i).face.x,1)+1;
+                    o.record(i).face.x(j)=f0(1);
+                    o.record(i).face.y(j)=f0(2);
+                    o.record(i).face.z(j)=f0(3);
+                    o.record(i).face.d(j)=d0;
+                end
+            end
+            
+            %{
+            if sum(f_remove)==0
+                "sum(f_remove)==0"
+                [sum(f_remove),size(o.record(i).face.x,1),sum(sum(f==a,2)==2)]
+                "a,b"
+                [a,b]
+                
+                e=zeros(size(o.E));
+                e(:)=o.E(:);
+                e(e==b)=a;
+                "sum(sum(e==a,2)==2)"
+                sum(sum(e==a,2)==2)
+
+                
+                %{
+                "V"
+                o.V
+                "F"
+                o.F
+                "E"
+                o.E
+                %}
+            end
+            %}
+
+            
+
+            updateIndex= sum(f==a,2)==1;
+            for k =1:size(updateIndex,1)
+                if updateIndex(k)
+                    j=size(o.record(i).faceRe,1)+1;
+                    o.record(i).faceRe(j)=o.listF(k);
+                end
+            end
+
+        end
+        function out=recordOutput(o)
+            out=o.record(1:o.recordSize);
+            o.recordInit();
         end
         function [list3]=mergeVertex(o)
             v1=o.V;
@@ -134,16 +254,6 @@ classdef MeshJson < handle
                 j=list2(i);
                 list3(j)=i;
             end
-        end
-        function o = Mesh0(file_name)
-            o.file_name=file_name;
-            o.matrix0=eye(4);
-            [o.V,o.F] = o.read(file_name);
-            %o.mergeVertex();
-            o.computeNormal();%��������ƽ��ķ���
-            o.computeEdge();
-            o.print=0;%��չʾÿ��������µĽ��
-            o.voxel_size=min(o.box("size"))/10;
         end
         function download(o)
             %inv(o.matrix0);
@@ -214,7 +324,9 @@ classdef MeshJson < handle
                 'uv', uv(:)', ... 
                 'skinWeight', skinWeight(:)', ... 
                 'skinIndex', skinIndex(:)', ... 
-                'index',index(:)'...
+                'index',index(:)', ...
+                'vId',o.list2', ... %'
+                'fId',o.listF ...
             );
             %data=savejson(data);
         end
@@ -278,7 +390,7 @@ classdef MeshJson < handle
             end
             V0=o.V; %��¼�޸�ǰ�����
             V2=[o.V';ones(o.nv,1)']';%nv*4
-            o.V=(o.m34*mat*(V2'))';
+            o.V=(o.m34*mat*(V2'))';%'
             %m=Mesh("man");m.draw();
             %m.applyMove(-0.4,0.44,0)
             for i=1:o.nv()  %o.V=V0;
@@ -345,6 +457,34 @@ classdef MeshJson < handle
             o=o.myQEM.simplification(o,r);
             if o.print==1
                 o.draw();
+            end
+        end
+        function check(this)
+            e=this.E;
+            for i =1:size(e,1)
+                a=e(i,1);
+                b=e(i,2);
+                f=zeros(size(this.F));
+                f(:)=this.F(:);
+                f(f==b)=a;
+                if sum(sum(f==a,2)==2)==0
+                    "异常边："
+                    disp([a,b,sum(sum(f==a,2)==2)])
+                    
+                end
+
+            end
+        end
+        function check_e(this,e)
+            a=e(1);
+            b=e(2);
+            f=zeros(size(this.F));
+            f(:)=this.F(:);
+            f(f==b)=a;
+            if sum(sum(f==a,2)==2)==0
+                "异常边："
+                disp([a,b,sum(sum(f==a,2)==2)])
+                
             end
         end
     end%methods
@@ -442,8 +582,8 @@ classdef MeshJson < handle
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         end
         function computeEdge(o)
-            TR = triangulation(o.F,o.V);%���������ʷ֣�����������������
-            o.E = edges(TR);%�������бߵĶ�������  ne*2
+            TR = triangulation(o.F,o.V);    %进行三角剖分，梳理出所有三角形
+            o.E = edges(TR);                %返回所有边的顶点索引  ne*2
         end
         function rectifyindex(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
             num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数
