@@ -69,7 +69,7 @@ export class modelManager {
             "CloM_A_Hair_geo"
         ]
         let walkAnimationList = [11,20]
-        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible,useColorTag,28,walkAnimationList,10000);
+        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible,useColorTag,28,walkAnimationList,100000);
     }
 
     getPosRot0(i0) {
