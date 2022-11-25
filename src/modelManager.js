@@ -1,5 +1,5 @@
 class modelMessage {
-    constructor(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList, modelCount) {
+    constructor(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList,standAnimationList, modelCount) {
         this.pathModel = pathModel;
         this.pathAnima = pathAnima;
         this.pathLodGeo = pathLodGeo;
@@ -7,9 +7,11 @@ class modelMessage {
         this.useColorTag = useColorTag;
         this.animtionNum = animtionNum;
         this.walkAnimationList = walkAnimationList;
+        this.standAnimationList = standAnimationList;
         this.ModelCount = modelCount;
         this.PosRotCount = 0;
         this.posRotList = [];
+        this.animtionTypes = [];
     }
 
     setPosRotList(PosRot) {
@@ -34,8 +36,8 @@ export class modelManager {
         this.getPosRot();
     }
 
-    addModel(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList, modelCount) {
-        var modelmessage = new modelMessage(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList, modelCount);
+    addModel(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList,standAnimationList,  modelCount) {
+        var modelmessage = new modelMessage(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList, standAnimationList, modelCount);
         this.modelList.push(modelmessage);
         this.modelIndex += 1;
         this.sumModelCount += modelCount;
@@ -69,7 +71,8 @@ export class modelManager {
             "CloM_A_Hair_geo"
         ]
         let walkAnimationList = [11, 20]
-        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        let standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
+        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList ,10000);
         lod_visible = [
             ["CloM_B_body_geo2", 19],
             ["CloM_B_chenshan_geo1", 19],
@@ -95,7 +98,8 @@ export class modelManager {
             "CloM_B_waitao_geo2",
         ]
         walkAnimationList = [11, 20]
-        this.addModel("assets/man_B.glb", "assets/animation_man_B.bin", "assets/man_BLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
+        this.addModel("assets/man_B.glb", "assets/animation_man_A.bin", "assets/man_BLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
         lod_visible = [
             ["CloW_A_body_geo1", 19],
             ["CloW_A_chenshanxie_geo2", 19],
@@ -115,8 +119,9 @@ export class modelManager {
             "CloW_A_kuzi_geo",
             "CloW_A_xifu_geo",
         ]
-        walkAnimationList = [11, 20]
-        this.addModel("assets/woman_A.gltf", "assets/animation_woman_A.bin", "assets/woman_ALOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        walkAnimationList = [9,18]
+        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        this.addModel("assets/woman_A.gltf", "assets/animation_woman_A.bin", "assets/woman_ALOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
         lod_visible = [
             ["body1", 19],
             ["CloW_B_meimao_geo", 10],
@@ -138,8 +143,9 @@ export class modelManager {
             "waitao_geo",
             "xiezi_geo",
         ]
-        walkAnimationList = [11, 20]
-        this.addModel("assets/woman_B.gltf", "assets/animation_woman_B.bin", "assets/woman_BLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        walkAnimationList = [9,19]
+        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27]
+        this.addModel("assets/woman_B.gltf", "assets/animation_woman_B.bin", "assets/woman_BLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
         lod_visible = [
             ["body1", 19],
             ["CloW_B_eyeRight_geo", 10],
@@ -158,8 +164,9 @@ export class modelManager {
             "CloW_C_shangyi_geo",
             "CloW_C_xiashen_geo",
         ]
-        walkAnimationList = [11, 20]
-        this.addModel("assets/woman_C.glb", "assets/animation_woman_C.bin", "assets/woman_CLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        walkAnimationList = [9,18]
+        standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
+        this.addModel("assets/woman_C.glb", "assets/animation_woman_C.bin", "assets/woman_CLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
         lod_visible = [
             ["CloW_A_eyelash_geo", -1],
             ["CloW_A_eyeLeft_geo", 10],
@@ -180,8 +187,9 @@ export class modelManager {
             "CloW_D_ShangYi_geo_2",
             "CloW_D_XieZi_geo",
         ]
-        walkAnimationList = [11, 20]
-        this.addModel("assets/woman_D.glb", "assets/animation_woman_A.bin", "assets/woman_DLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        walkAnimationList = [9,18]
+        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        this.addModel("assets/woman_D.glb", "assets/animation_woman_A.bin", "assets/woman_DLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
         lod_visible = [
             ["CloW_E_Body_geo1", 19],
             ["CloW_E_erhuan_geo", 10],
@@ -203,8 +211,9 @@ export class modelManager {
             "CloW_E_shangyi_geo",
             "CloW_E_xiezi_geo",
         ]
-        walkAnimationList = [11, 20]
-        this.addModel("assets/woman_E.glb", "assets/animation_woman_A.bin", "assets/woman_ELOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        walkAnimationList = [9,18]
+        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        this.addModel("assets/woman_E.glb", "assets/animation_woman_A.bin", "assets/woman_ELOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
         lod_visible = [
             ["CloW_B_eyelash_geo", -1],
             ["CloW_B_eyeLeft_geo", 10],
@@ -226,8 +235,9 @@ export class modelManager {
             "CloW_F_weiyi_geo",
             "CloW_F_xiezi_geo",
         ]
-        walkAnimationList = [11, 20]
-        this.addModel("assets/woman_F.glb", "assets/animation_woman_A.bin", "assets/woman_FLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        walkAnimationList = [9,18]
+        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        this.addModel("assets/woman_F.glb", "assets/animation_woman_A.bin", "assets/woman_FLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
     }
 
     getPosRot0(i0) {
@@ -427,6 +437,16 @@ export class modelManager {
             while (!this.modelList[modelType].setPosRotList(PosRot)) {
                 modelType = Math.floor(this.modelIndex * Math.random());
             };
+            if (i<=1250*9) {
+                // 运动的
+                let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].walkAnimationList.length);
+                this.modelList[modelType].animtionTypes.push(this.modelList[modelType].walkAnimationList[animationTypeIndex]);
+            }
+            else {
+                //静止的
+                let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].standAnimationList.length);
+                this.modelList[modelType].animtionTypes.push(this.modelList[modelType].standAnimationList[animationTypeIndex]);
+            }
         }
     }
 }
