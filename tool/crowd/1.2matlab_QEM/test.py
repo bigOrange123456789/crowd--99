@@ -93,10 +93,7 @@ def updateMesh(mesh1,increment):
     if not type(faceRe)==type([]):
         faceRe=[faceRe]
     for i in range(len(faceRe)):
-        print(faceRe[i],mesh1["f"][faceRe[i]])
-        # print(faceRe[i],type(faceRe[i]))
         face0=mesh1["f"][faceRe[i]]
-        
         for j in range(3):
             if face0[j]==aI:
                 face0[j]=bI
@@ -117,29 +114,19 @@ def updateMesh(mesh1,increment):
             z[i]
             ]
     return mesh1
-
 def processGroup(mesh1_,pack1_):
     pack1_=loadJson("data3/1.json.pack.json")
 if __name__ == "__main__":#用于测试
-    pack1_json=loadJson("data2/2.json.pack.json")
-    mesh1_json=loadJson("data2/2.json")
-    # pack1_json=loadJson("3.json.pack.json")
-    # mesh1_json=loadJson("3.json")
-    for name in mesh1_json:
-        # print(name)
+    # pack1_json=loadJson("data3/2.json.pack.json")
+    # mesh1_json=loadJson("data3/2.json")
+    pack1_json=loadJson("2.json.pack.json")
+    mesh1_json=loadJson("2.json")
+    #5099
+    for name in ["CloM_A_Xiezi_geo"]:#mesh1_json:
+        print(name)
         if len(pack1_json[name])==0:
             continue
         pack1=pack1_json[name][0]
         mesh1_=mesh1_json[name]
         mesh1=Josn2Mesh(mesh1_)
-        for i in range(len(pack1)):
-            # print(name,i)
-            p=pack1[len(pack1)-1-i]
-            mesh1=updateMesh(mesh1,p)
-            print(name,i)
-            # print(json.dumps(mesh1) )
-            print(json.dumps(mesh1, indent=4, ensure_ascii=False))
-
-
-    
-    
+        print(mesh1)
