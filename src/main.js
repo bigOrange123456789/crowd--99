@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
+import { MapControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js'
 //RGBMLoader
@@ -42,13 +43,14 @@ export class Loader{
 
         this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.1,5000)
         this.camera.position.set(-43.486343682038736,  2.127206120237504,  -8.698678933445201)
-        this.camera.lookAt(0,0,0)
+        // this.camera.lookAt(0,0,0)
         // this.camera.position.set( -0.6821012446503002,  11.0913040259869,  -0.2459109391034793)
         // this.camera.rotation.set(-1.5929642031588853,  -0.061406332932874515, -1.9174927752336077)
         window.camera=this.camera
         
         this.scene.add(this.camera)
-        this.orbitControl = new OrbitControls(this.camera,this.renderer.domElement)
+        this.orbitControl = new MapControls(this.camera,this.renderer.domElement)
+        // this.mapControl = new MapControls(this.camera,this.renderer.domElement)
         new LightProducer(this.scene)
         
         this.animate = this.animate.bind(this)
@@ -160,14 +162,14 @@ export class Loader{
     }
     wander2() {
       let movePath = [
-        ,[-14.41, 6.41, 54.32, -2.72136,0.00159,3.14088, 200]
-        ,[22.97,3.44,59.34,-2.79166,0.00164,3.14099,700]
+        // ,[-14.41, 6.41, 54.32, -2.72136,0.00159,3.14088, 200]
+        // ,[22.97,3.44,59.34,-2.79166,0.00164,3.14099,700]
         
-        ,[40.07,4.36,57.78,-0.31993,-0.58416,-0.18073,300]
-        ,[37.08,6.75,-55.9,-0.31993,-0.58416,-0.18073,1400]
-        ,[-31.42,8,-38.82,-2.1859,1.39718,2.19304,350]
-        ,[-37.72,5.75,47.94,-2.18567,1.10707,2.23914,500]
-        ,[-38.04,6.25,55.46,-0.01195,-0.62332,-0.00697,100]
+        // ,[40.07,4.36,57.78,-0.31993,-0.58416,-0.18073,300]
+        // ,[37.08,6.75,-55.9,-0.31993,-0.58416,-0.18073,1400]
+        // ,[-31.42,8,-38.82,-2.1859,1.39718,2.19304,350]
+        // ,[-37.72,5.75,47.94,-2.18567,1.10707,2.23914,500]
+        // ,[-38.04,6.25,55.46,-0.01195,-0.62332,-0.00697,100]
       ];
       let funcArr = new Array( movePath.length );
       funcArr[ movePath.length - 1 ] = function() {
