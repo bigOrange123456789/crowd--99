@@ -139,7 +139,6 @@ export class AvatarManager {
             crowd.setPosition(i00, PosRot.pos)
             PosRot.rot[1] += Math.PI;
             crowd.setRotation(i00, PosRot.rot)
-
             crowd.setAnimation(i00, animtionType, 1000 * Math.random())
         }//end
 
