@@ -120,25 +120,40 @@ def updateMesh(mesh1,increment):
 
 def processGroup(mesh1_,pack1_):
     pack1_=loadJson("data3/1.json.pack.json")
+def judge(path1,path2):
+    mesh1=loadJson(path1)
+    mesh2=loadJson(path2)
+    # mesh1=Josn2Mesh(mesh1_json["CloM_A_Eye_lash_geo"])
+    # mesh2=Josn2Mesh(mesh2_json["CloM_A_Eye_lash_geo"])
+    print((mesh1==mesh2).all)
+
 if __name__ == "__main__":#用于测试
-    pack1_json=loadJson("data2/2.json.pack.json")
-    mesh1_json=loadJson("data2/2.json")
+    judge(
+        "data2/pm.py_19998addCloM_A_Eye_lash_geoadd.json",
+        "data2/pm.py_19999CloM_A_Eye_lash_geo.json")
+    pack1_json=loadJson("data2/19999.json.pack.json")
+    mesh1_json=loadJson("data2/19999.json")
+    exit(0)
     # pack1_json=loadJson("3.json.pack.json")
     # mesh1_json=loadJson("3.json")
-    for name in mesh1_json:
+    for name in ["CloM_A_Eye_lash_geo"]:#mesh1_json:#['CloM_A_head_geo']:#
         # print(name)
         if len(pack1_json[name])==0:
             continue
         pack1=pack1_json[name][0]
         mesh1_=mesh1_json[name]
         mesh1=Josn2Mesh(mesh1_)
+        json.dump(mesh1,open("pm.py_"+name+".json","w"), indent=4, ensure_ascii=False)
         for i in range(len(pack1)):
             # print(name,i)
             p=pack1[len(pack1)-1-i]
+
             mesh1=updateMesh(mesh1,p)
-            print(name,i)
+            # print(name,i)
             # print(json.dumps(mesh1) )
-            print(json.dumps(mesh1, indent=4, ensure_ascii=False))
+            # print(json.dumps(mesh1, indent=4, ensure_ascii=False))
+        json.dump(mesh1,open("pm.py_"+name+"add.json","w"), indent=4, ensure_ascii=False)
+        # print(mesh1["f"][5590])
 
 
     

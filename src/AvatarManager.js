@@ -136,7 +136,7 @@ export class AvatarManager {
             crowd.setScale(i00, scale)
 
             var PosRot = this.modelManager.modelList[modelType].posRotList[i0];
-            console.log(PosRot)
+            // console.log(PosRot)
             crowd.setPosition(i00, PosRot.pos)
             PosRot.rot[1] += Math.PI;
             crowd.setRotation(i00, PosRot.rot)
