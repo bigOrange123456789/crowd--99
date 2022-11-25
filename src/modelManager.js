@@ -49,14 +49,17 @@ export class modelManager {
         let url = window.location.href.split('?')[1].match(reg);
         // console.log(url)
         if (url != null) {
-          return decodeURI(url[2])//decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码。
+            let id=decodeURI(url[2])
+            window.id=id
+          return id//decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码。
         } else {
-          return null
+          return 0
         }
       }
 
     init() {
         let index = this.getQueryString("id");
+        if(index==0)return
         let lod_visible = [
             ["CloM_A_Eye_lash_geo", -1],
             ["CloM_A_Eyeshell_geo", 1],
@@ -460,7 +463,7 @@ export class modelManager {
             };
             if (i<=1250*9) {
                 // 运动的
-                console.log(modelType,this.modelList[modelType].walkAnimationList[animationTypeIndex])
+                // console.log(modelType,this.modelList[modelType].walkAnimationList[animationTypeIndex])
                 let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].walkAnimationList.length);
                 this.modelList[modelType].animtionTypes.push(this.modelList[modelType].walkAnimationList[animationTypeIndex]);
             }
