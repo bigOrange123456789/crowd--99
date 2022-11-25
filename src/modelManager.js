@@ -72,172 +72,172 @@ export class modelManager {
         ]
         let walkAnimationList = [11, 20]
         let standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
-        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList ,10000);
-        lod_visible = [
-            ["CloM_B_body_geo2", 19],
-            ["CloM_B_chenshan_geo1", 19],
-            ["CloM_B_kuzi_geo", 19],
-            ["CloM_B_lianzi_geo", 10],
-            ["CloM_B_Nail_geo", -1],
-            ["CloM_B_waitao_geo2", 19],
-            ["CloM_B_xianglian_geo", 10],
-            ["CloM_B_xie_geo", 19],
-            ["CloM_C_Eye_lash_geo", -1],
-            ["CloM_C_Eyebrow_geo", -1],
-            ["CloM_C_EyeLeft_geo", 10],
-            ["CloM_C_EyeRight_geo", 10],
-            ["CloM_C_head_geo", 19],
-            ["CloM_C_Saliva_geo", -1],
-            ["CloM_C_Teeth_geo", -1],
-            ["CloM_E_hair_geo", 19],
-            ["CloM_E_shorthair_geo", 19],
-        ]
-        useColorTag = [
-            "CloM_B_chenshan_geo1",
-            "CloM_B_kuzi_geo",
-            "CloM_B_waitao_geo2",
-        ]
-        walkAnimationList = [11, 20]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
-        this.addModel("assets/man_B.glb", "assets/animation_man_A.bin", "assets/man_BLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
-        lod_visible = [
-            ["CloW_A_body_geo1", 19],
-            ["CloW_A_chenshanxie_geo2", 19],
-            ["CloW_A_eyelash_geo", -1],
-            ["CloW_A_eyeLeft_geo", 10],
-            ["CloW_A_eyeRight_geo", 10],
-            ["CloW_A_hair_geo", 19],
-            ["CloW_A_kuzi_geo", 19],
-            ["CloW_A_Nail_geo", -1],
-            ["CloW_A_saliva_geo", -1],
-            ["CloW_A_teeth_geo", -1],
-            ["CloW_A_xifu_geo", 19],
-            ["head", 19],
-        ]
-        useColorTag = [
-            "CloW_A_chenshanxie_geo2",
-            "CloW_A_kuzi_geo",
-            "CloW_A_xifu_geo",
-        ]
-        walkAnimationList = [9,18]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
-        this.addModel("assets/woman_A.gltf", "assets/animation_woman_A.bin", "assets/woman_ALOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
-        lod_visible = [
-            ["body1", 19],
-            ["CloW_B_meimao_geo", 10],
-            ["CloW_B_eyelash_geo", -1],
-            ["CloW_B_eyeLeft_geo", 10],
-            ["CloW_B_eyeRight_geo", 10],
-            ["hair", 19],
-            ["kouzi_geo", 10],
-            ["Nail_geo", -1],
-            ["CloW_B_saliva_geo", -1],
-            ["CloW_B_teeth_geo", -1],
-            ["qipao_geo", 19],
-            ["waitao_geo",19],
-            ["xiezi_geo",19],
-            ["CloW_B_head_geo", 19],
-        ]
-        useColorTag = [
-            "qipao_geo",
-            "waitao_geo",
-            "xiezi_geo",
-        ]
-        walkAnimationList = [9,19]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27]
-        this.addModel("assets/woman_B.gltf", "assets/animation_woman_B.bin", "assets/woman_BLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
-        lod_visible = [
-            ["body1", 19],
-            ["CloW_B_eyeRight_geo", 10],
-            ["CloW_C_eyelash_geo", -1],
-            ["CloW_C_eyeLeft_geo", 10],
-            ["CloW_C_hair_geo", 19],
-            ["CloW_C_head_geo", 19],
-            ["CloW_C_meimao_geo", 10],
-            ["CloW_C_saliva_geo", -1],
-            ["CloW_C_shangyi_geo", 19],
-            ["CloW_C_teeth_geo", -1],
-            ["CloW_C_xiashen_geo", 19],
-            ["Nail_geo",-1],
-        ]
-        useColorTag = [
-            "CloW_C_shangyi_geo",
-            "CloW_C_xiashen_geo",
-        ]
-        walkAnimationList = [9,18]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
+        // this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList ,10000);
+        // lod_visible = [
+        //     ["CloM_B_body_geo2", 19],
+        //     ["CloM_B_chenshan_geo1", 19],
+        //     ["CloM_B_kuzi_geo", 19],
+        //     ["CloM_B_lianzi_geo", 10],
+        //     ["CloM_B_Nail_geo", -1],
+        //     ["CloM_B_waitao_geo2", 19],
+        //     ["CloM_B_xianglian_geo", 10],
+        //     ["CloM_B_xie_geo", 19],
+        //     ["CloM_C_Eye_lash_geo", -1],
+        //     ["CloM_C_Eyebrow_geo", -1],
+        //     ["CloM_C_EyeLeft_geo", 10],
+        //     ["CloM_C_EyeRight_geo", 10],
+        //     ["CloM_C_head_geo", 19],
+        //     ["CloM_C_Saliva_geo", -1],
+        //     ["CloM_C_Teeth_geo", -1],
+        //     ["CloM_E_hair_geo", 19],
+        //     ["CloM_E_shorthair_geo", 19],
+        // ]
+        // useColorTag = [
+        //     "CloM_B_chenshan_geo1",
+        //     "CloM_B_kuzi_geo",
+        //     "CloM_B_waitao_geo2",
+        // ]
+        // walkAnimationList = [11, 20]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
+        // this.addModel("assets/man_B.glb", "assets/animation_man_A.bin", "assets/man_BLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
+        // lod_visible = [
+        //     ["CloW_A_body_geo1", 19],
+        //     ["CloW_A_chenshanxie_geo2", 19],
+        //     ["CloW_A_eyelash_geo", -1],
+        //     ["CloW_A_eyeLeft_geo", 10],
+        //     ["CloW_A_eyeRight_geo", 10],
+        //     ["CloW_A_hair_geo", 19],
+        //     ["CloW_A_kuzi_geo", 19],
+        //     ["CloW_A_Nail_geo", -1],
+        //     ["CloW_A_saliva_geo", -1],
+        //     ["CloW_A_teeth_geo", -1],
+        //     ["CloW_A_xifu_geo", 19],
+        //     ["head", 19],
+        // ]
+        // useColorTag = [
+        //     "CloW_A_chenshanxie_geo2",
+        //     "CloW_A_kuzi_geo",
+        //     "CloW_A_xifu_geo",
+        // ]
+        // walkAnimationList = [9,18]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        // this.addModel("assets/woman_A.gltf", "assets/animation_woman_A.bin", "assets/woman_ALOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
+        // lod_visible = [
+        //     ["body1", 19],
+        //     ["CloW_B_meimao_geo", 10],
+        //     ["CloW_B_eyelash_geo", -1],
+        //     ["CloW_B_eyeLeft_geo", 10],
+        //     ["CloW_B_eyeRight_geo", 10],
+        //     ["hair", 19],
+        //     ["kouzi_geo", 10],
+        //     ["Nail_geo", -1],
+        //     ["CloW_B_saliva_geo", -1],
+        //     ["CloW_B_teeth_geo", -1],
+        //     ["qipao_geo", 19],
+        //     ["waitao_geo",19],
+        //     ["xiezi_geo",19],
+        //     ["CloW_B_head_geo", 19],
+        // ]
+        // useColorTag = [
+        //     "qipao_geo",
+        //     "waitao_geo",
+        //     "xiezi_geo",
+        // ]
+        // walkAnimationList = [9,19]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27]
+        // this.addModel("assets/woman_B.gltf", "assets/animation_woman_B.bin", "assets/woman_BLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
+        // lod_visible = [
+        //     ["body1", 19],
+        //     ["CloW_B_eyeRight_geo", 10],
+        //     ["CloW_C_eyelash_geo", -1],
+        //     ["CloW_C_eyeLeft_geo", 10],
+        //     ["CloW_C_hair_geo", 19],
+        //     ["CloW_C_head_geo", 19],
+        //     ["CloW_C_meimao_geo", 10],
+        //     ["CloW_C_saliva_geo", -1],
+        //     ["CloW_C_shangyi_geo", 19],
+        //     ["CloW_C_teeth_geo", -1],
+        //     ["CloW_C_xiashen_geo", 19],
+        //     ["Nail_geo",-1],
+        // ]
+        // useColorTag = [
+        //     "CloW_C_shangyi_geo",
+        //     "CloW_C_xiashen_geo",
+        // ]
+        // walkAnimationList = [9,18]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27]
         this.addModel("assets/woman_C.glb", "assets/animation_woman_C.bin", "assets/woman_CLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
-        lod_visible = [
-            ["CloW_A_eyelash_geo", -1],
-            ["CloW_A_eyeLeft_geo", 10],
-            ["CloW_A_eyeRight_geo", 10],
-            ["CloW_A_teeth_geo", -1],
-            ["CloW_D_Body_geo1", 19],
-            ["CloW_D_Hair_geo", 19],
-            ["CloW_D_Nail_geo1", -1],
-            ["CloW_D_QunZi_geo", 19],
-            ["CloW_D_ShangYi_geo_1", 19],
-            ["CloW_D_ShangYi_geo_2", 19],
-            ["CloW_D_XieZi_geo", 19],
-            ["head",19],
-        ]
-        useColorTag = [
-            "CloW_D_QunZi_geo",
-            "CloW_D_ShangYi_geo_1",
-            "CloW_D_ShangYi_geo_2",
-            "CloW_D_XieZi_geo",
-        ]
-        walkAnimationList = [9,18]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
-        this.addModel("assets/woman_D.glb", "assets/animation_woman_A.bin", "assets/woman_DLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
-        lod_visible = [
-            ["CloW_E_Body_geo1", 19],
-            ["CloW_E_erhuan_geo", 10],
-            ["CloW_E_eyelash_geo", -1],
-            ["CloW_E_eyeLeft_geo", 10],
-            ["CloW_E_eyeRight_geo", 10],
-            ["CloW_E_hair_geo", 19],
-            ["CloW_E_head_geo", 19],
-            ["CloW_E_kuzi_geo", 19],
-            ["CloW_E_meimao_geo", 10],
-            ["CloW_E_Nail_geo", -1],
-            ["CloW_E_saliva_geo", -1],
-            ["CloW_E_shangyi_geo",19],
-            ["CloW_E_teeth_geo",-1],
-            ["CloW_E_xiezi_geo", 19],
-        ]
-        useColorTag = [
-            "CloW_E_kuzi_geo",
-            "CloW_E_shangyi_geo",
-            "CloW_E_xiezi_geo",
-        ]
-        walkAnimationList = [9,18]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
-        this.addModel("assets/woman_E.glb", "assets/animation_woman_A.bin", "assets/woman_ELOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
-        lod_visible = [
-            ["CloW_B_eyelash_geo", -1],
-            ["CloW_B_eyeLeft_geo", 10],
-            ["CloW_B_eyeRight_geo", 10],
-            ["CloW_B_head_geo", 19],
-            ["CloW_B_meimao_geo", 10],
-            ["CloW_B_saliva_geo", -1],
-            ["CloW_B_teeth_geo", -1],
-            ["CloW_F_body_geo1", 19],
-            ["CloW_F_hair_geo", 19],
-            ["CloW_F_kuzi_geo1", 19],
-            ["CloW_F_Nail_geo", -1],
-            ["CloW_F_wazi_geo",10],
-            ["CloW_F_weiyi_geo",19],
-            ["CloW_F_xiezi_geo", 19],
-        ]
-        useColorTag = [
-            "CloW_F_kuzi_geo1",
-            "CloW_F_weiyi_geo",
-            "CloW_F_xiezi_geo",
-        ]
-        walkAnimationList = [9,18]
-        standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
-        this.addModel("assets/woman_F.glb", "assets/animation_woman_A.bin", "assets/woman_FLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
+        // lod_visible = [
+        //     ["CloW_A_eyelash_geo", -1],
+        //     ["CloW_A_eyeLeft_geo", 10],
+        //     ["CloW_A_eyeRight_geo", 10],
+        //     ["CloW_A_teeth_geo", -1],
+        //     ["CloW_D_Body_geo1", 19],
+        //     ["CloW_D_Hair_geo", 19],
+        //     ["CloW_D_Nail_geo1", -1],
+        //     ["CloW_D_QunZi_geo", 19],
+        //     ["CloW_D_ShangYi_geo_1", 19],
+        //     ["CloW_D_ShangYi_geo_2", 19],
+        //     ["CloW_D_XieZi_geo", 19],
+        //     ["head",19],
+        // ]
+        // useColorTag = [
+        //     "CloW_D_QunZi_geo",
+        //     "CloW_D_ShangYi_geo_1",
+        //     "CloW_D_ShangYi_geo_2",
+        //     "CloW_D_XieZi_geo",
+        // ]
+        // walkAnimationList = [9,18]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        // this.addModel("assets/woman_D.glb", "assets/animation_woman_A.bin", "assets/woman_DLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
+        // lod_visible = [
+        //     ["CloW_E_Body_geo1", 19],
+        //     ["CloW_E_erhuan_geo", 10],
+        //     ["CloW_E_eyelash_geo", -1],
+        //     ["CloW_E_eyeLeft_geo", 10],
+        //     ["CloW_E_eyeRight_geo", 10],
+        //     ["CloW_E_hair_geo", 19],
+        //     ["CloW_E_head_geo", 19],
+        //     ["CloW_E_kuzi_geo", 19],
+        //     ["CloW_E_meimao_geo", 10],
+        //     ["CloW_E_Nail_geo", -1],
+        //     ["CloW_E_saliva_geo", -1],
+        //     ["CloW_E_shangyi_geo",19],
+        //     ["CloW_E_teeth_geo",-1],
+        //     ["CloW_E_xiezi_geo", 19],
+        // ]
+        // useColorTag = [
+        //     "CloW_E_kuzi_geo",
+        //     "CloW_E_shangyi_geo",
+        //     "CloW_E_xiezi_geo",
+        // ]
+        // walkAnimationList = [9,18]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        // this.addModel("assets/woman_E.glb", "assets/animation_woman_A.bin", "assets/woman_ELOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
+        // lod_visible = [
+        //     ["CloW_B_eyelash_geo", -1],
+        //     ["CloW_B_eyeLeft_geo", 10],
+        //     ["CloW_B_eyeRight_geo", 10],
+        //     ["CloW_B_head_geo", 19],
+        //     ["CloW_B_meimao_geo", 10],
+        //     ["CloW_B_saliva_geo", -1],
+        //     ["CloW_B_teeth_geo", -1],
+        //     ["CloW_F_body_geo1", 19],
+        //     ["CloW_F_hair_geo", 19],
+        //     ["CloW_F_kuzi_geo1", 19],
+        //     ["CloW_F_Nail_geo", -1],
+        //     ["CloW_F_wazi_geo",10],
+        //     ["CloW_F_weiyi_geo",19],
+        //     ["CloW_F_xiezi_geo", 19],
+        // ]
+        // useColorTag = [
+        //     "CloW_F_kuzi_geo1",
+        //     "CloW_F_weiyi_geo",
+        //     "CloW_F_xiezi_geo",
+        // ]
+        // walkAnimationList = [9,18]
+        // standAnimationList = [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27]
+        // this.addModel("assets/woman_F.glb", "assets/animation_woman_A.bin", "assets/woman_FLOD/", lod_visible, useColorTag, 28, walkAnimationList,standAnimationList, 10000);
     }
 
     getPosRot0(i0) {
