@@ -10,9 +10,9 @@ export class AvatarManager {
         this.scene = scene
         this.camera = camera
         this.assets = {}//为了防止资源重复加载，相同路径的资源只加载一次
-        this.row_index = 0; //在梯形看台中计算当前人物所在看台行数(貌似含义和小看台中正好相反)
-        this.sum_count = 0; //当前row_index前面行的人数总和
-        this.row_count = 0; //当前行的可放置人数
+        // this.row_index = 0; //在梯形看台中计算当前人物所在看台行数(貌似含义和小看台中正好相反)
+        // this.sum_count = 0; //当前row_index前面行的人数总和
+        // this.row_count = 0; //当前行的可放置人数
         this.init()
     }
     async init() {
@@ -26,9 +26,9 @@ export class AvatarManager {
         // this.load_model2()
         // this.load_Char47()
         this.load_model()
-        setTimeout(() => {
-            // this.load_man_D()
-        }, 1000)
+        // setTimeout(() => {
+        //     // this.load_man_D()
+        // }, 1000)
         //this.load_woman_A()
         // this.load_woman_B()
         new UI(this.scene, new THREE.Object3D())
@@ -91,9 +91,9 @@ export class AvatarManager {
                     let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
                     for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                         crowd.setColor(i00, [
-                            20 * Math.random(),
-                            20 * Math.random(),
-                            20 * Math.random() - 10
+                            20 * Math.random()-10,
+                            20 * Math.random()-10,
+                            20 * Math.random()-10
                         ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
                     }
                     crowd.setObesity(i00, 0.85 + 1.1 * Math.random())
