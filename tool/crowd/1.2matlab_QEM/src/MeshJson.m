@@ -160,11 +160,13 @@ classdef MeshJson < handle
                     f0=o.F(k,:);
                     d0=o.listF(k);
                     j=size(o.record(i).face.x,2)+1;
-
+                    
+                    %{
                     if sum(size(o.record(i).face.x,2)+1)>2
                         "sum(size(o.record(i).face.x,2)+1)>2"
                         disp([aI,size(o.record(i).face.x,2)+1]);
                     end
+                    %}
                     
                     o.record(i).face.x(j)=f0(1);
                     o.record(i).face.y(j)=f0(2);
@@ -209,9 +211,15 @@ classdef MeshJson < handle
                 end
             end
 
-            o.meshId
-            o.record(i)
-            o.record(i).face
+            %o.meshId
+            %o.record(i)
+            %o.record(i).face
+            %{
+            if o.nf()<5
+                o.record(i)
+                o.record(i).face
+            end
+            %}
 
         end
         function out=recordOutput(o)
@@ -224,6 +232,10 @@ classdef MeshJson < handle
             
             list=zeros(size(v1,1),1);
             for i = 1:size(v1,1)
+                list(i)=i;
+            end
+            %{
+            for i = 1:size(v1,1)
                 for j = 1:i
                     a=v1(i,:);
                     b=v1(j,:);
@@ -233,6 +245,7 @@ classdef MeshJson < handle
                     end
                 end
             end
+            %}
             for i =1:o.nf() %修改顶点索引似乎会影响最后的效果
                 for j =1:3
                     o.F(i,j)=list(o.F(i,j));

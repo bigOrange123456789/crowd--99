@@ -119,12 +119,27 @@ classdef Group < handle
                         min_cost=cost0;
                     end
                 end
-                min_name="CloM_A_Eye_lash_geo"
+                
+                %min_name="CloM_A_Eye_lash_geo"
                 if min_name~=""
                     
                     mesh=getfield(this.children,min_name);
                     mesh.myQEM.simplification_makeStep(); 
                     this.listSim(size(this.listSim,1)+1)=mesh.meshId;
+                    
+                    %{
+                    if mesh.nf()<5
+                        disp("iii")
+                        disp(iii)
+                        disp("v")
+                        disp(size(mesh.V))
+                        disp("e")
+                        disp(size(mesh.E))
+                        disp("f")
+                        disp(mesh.F)
+                        disp("f_size")
+                        disp(size(mesh.F))
+                    end
                     
                     if min_name=="CloM_A_Eye_lash_geo"
                     disp("iii")
@@ -135,8 +150,7 @@ classdef Group < handle
                     disp(size(mesh.F))
                     disp("e")
                     disp(size(mesh.E))
-                    end
-                    %{
+                    end    
                     disp("iii")
                     disp(iii)
                     disp("v")
@@ -158,7 +172,7 @@ classdef Group < handle
                     this.path=strcat('data2/',string(number-iii/step),'.json');
                     disp([this.path,num2str(round(compT, 2) * 100), '%']);
                     this.download2();
-                    if this.path== 'data2/19998.json'
+                    if this.path== 'data2/19990.json'
                         error("中断:用于测试");
                     end
                 end
