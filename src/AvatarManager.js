@@ -115,14 +115,8 @@ export class AvatarManager {
                 1,
             ]
             for (var i = 0; i < 3; i++)scale[i] *= 0.34
-            var animtionType = Math.floor(this.modelManager.modelList[modelType].animtionType * Math.random())//12
-            // 还没设置走路和跑步情况
-            if( animtionType==11) animtionType=0
-            if( animtionType==20) animtionType=1
-            if (i0 < 1250 * 9 / 2) {
-                if (Math.random() > 0.5) animtionType = Math.random() > 0.5 ? 11 : 20
-                //11走动 20跑动
-            }
+            var animtionType =this.modelManager.modelList[modelType].animtionTypes[i0];
+            // console.log("animationType = ",animtionType);
             var speed = Math.random() * 7 + 4
 
             // if(i0%2==model_index)continue
@@ -131,16 +125,20 @@ export class AvatarManager {
 
             crowd.setSpeed(i00, speed)
             // crowd.setObesity(i00, 0.85+1.1*Math.random())
-            if (animtionType == 11 || animtionType == 20)
-                crowd.setMoveMaxLength(i00, 4 + 2 * Math.random())
+            let walkAnimationlen = this.modelManager.modelList[modelType].walkAnimationList.length;
+            for (let walkAnimation = 0; walkAnimation<walkAnimationlen; walkAnimation++) {
+                if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]) 
+                {
+                    crowd.setMoveMaxLength(i00, 4 + 2 * Math.random())
+                    break;
+                }
+            }
             crowd.setScale(i00, scale)
 
             var PosRot = this.modelManager.modelList[modelType].posRotList[i0];
-            // console.log(PosRot)
             crowd.setPosition(i00, PosRot.pos)
             PosRot.rot[1] += Math.PI;
             crowd.setRotation(i00, PosRot.rot)
-
             crowd.setAnimation(i00, animtionType, 1000 * Math.random())
         }//end
 
