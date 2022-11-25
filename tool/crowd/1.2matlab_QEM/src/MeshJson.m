@@ -194,13 +194,17 @@ classdef MeshJson < handle
 
             
 
-            updateIndex= sum(f==a,2)==1;
+            updateIndex= sum(f==a,2)==1;    %三角形中现在有了a且未被删除
+            updateIndexNo=sum(o.F==a,2)==1; %三角形中原本有a
             for k =1:size(updateIndex,1)
-                if updateIndex(k)
+                if updateIndex(k) & ~updateIndexNo(k) %原本没有,现在有的三角形需要更新
                     j=size(o.record(i).faceRe,1)+1;
                     o.record(i).faceRe(j)=o.listF(k);
                 end
             end
+
+            %o.record(i)
+            %o.record(i).face
 
         end
         function out=recordOutput(o)

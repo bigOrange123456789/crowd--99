@@ -21,7 +21,7 @@ classdef Group < handle
 
         function this = Group(pathJson)
             this.path=pathJson;
-            this.names=""
+            this.names="";
             data_list = loadjson(pathJson);
             cell0=fieldnames(data_list);
             meshId=1;
@@ -233,6 +233,7 @@ classdef Group < handle
     methods(Static)
         function process_save(inPath,percent,pack_number)
             avatarGroup=Group(inPath);
+            %avatarGroup.children.mesh0.download();
             avatarGroup.simplify_save(percent,pack_number);
         end
     end%methods(Static)

@@ -146,15 +146,15 @@ classdef QEMJson < handle
 
             %%%%%%%%%%%%%%%%%记录这次坍塌操作%%%%%%%%%%%%%%%%%%%
             %0,1,2=>[left,right,mid]
-            %if vidx(k)==0 %left
+            %if vidx(k)==1 %left
             a=e(1);
             b=e(2);
             aPos=mesh.V(e(1),:);
             bPos=mesh.V(e(2),:);
             cPos=aPos;
-            if vidx(k)==1   %right
+            if vidx(k)==2   %right
                 cPos=bPos;
-            else            %if vidx(k)==2  %mid
+            elseif vidx(k)==3  %mid
                 cPos=(aPos+bPos)/2;
             end
             
