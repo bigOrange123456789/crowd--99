@@ -67,16 +67,19 @@
             glb.scene.traverse(node=>{
                 if(node.material){//if(node instanceof THREE.SkinnedMesh){
                     delete node.material.aoMap
-                    // node.material.map=null
                     delete node.material.normalMap
                     delete node.material.metalnessMap
                     delete node.material.roughnessMap
+                    node.material.aoMap=null
+                    node.material.normalMap=null
+                    node.material.metalnessMap=null
+                    node.material.roughnessMap=null
                     
                     if(node.geometry.attributes.uv2)delete node.geometry.attributes.uv2
                     if(node.geometry.attributes.normal)delete node.geometry.attributes.normal
+                    if(node.geometry.attributes.uv2)node.geometry.attributes.uv2=null
+                    if(node.geometry.attributes.normal)node.geometry.attributes.normal=null
                 }
-                
-                
             })
             exportGltf(glb,"model.gltf")
 

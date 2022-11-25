@@ -260,6 +260,119 @@ export class AvatarManager {
             console.log(crowd)
         })
     }
+    load_man_B(){
+        var self = this
+        var pathModel="assets/man_A_4.glb"//woman01_0.glb"
+        var pathAnima="assets/animation_man_B.bin"//"assets/animation_woman.json"
+        var pathLodGeo="assets/man_BLOD/"
+        new GLTFLoader().load(pathModel, async (glb) => {
+            glb.scene.traverse(node=>{
+                if(node instanceof THREE.SkinnedMesh){
+                    let name=node.name
+                    node.material.envMapIntensity=0.3
+                    if(name=="CloM_A_head_geo"||name=="GW_man_Body_geo1")
+                        node.material.envMapIntensity=0.1
+                }
+            })
+
+            let lod_distance_max=20
+            let lod_distance=[]
+            for(var i=0;i<19;i++)
+                lod_distance.push((i+1)*lod_distance_max/19)
+            lod_distance.push(lod_distance_max*3)
+            lod_distance.push(lod_distance_max*6)
+
+            let lod_geometry=[]
+            for(var i=0;i<=20;i++)//20..0
+                lod_geometry.push(20-i)
+            lod_geometry.push(0)
+
+            let lod_visible=[
+                ["CloM_A_Eye_lash_geo", -1],
+                ["CloM_A_Eyeshell_geo", 1],
+                ["CloM_A_EyeLeft_geo",  10],
+                ["CloM_A_EyeRight_geo", 10],
+                ["CloM_A_Saliva_geo",   -1],
+                ["CloM_A_Teeth_geo",    -1],
+                ['CloM_A_Hair_geo',     19],
+                ['CloM_A_EyeEdge_geo',  5],
+                ['GW_man_Body_geo1',    19],
+                ['GW_man_Nail_geo',     -1],
+                ['CloM_A_lingdai_geo',  10],
+                ['CloM_A_Wazi_geo',     1],
+                ['CloM_A_Xiezi_geo',    18],
+                ['CloM_A_chengyi_geo',  19],
+                ['CloM_A_xiuzi_geo',    -1],
+
+                // ['CloM_A_waitao_geo',   10],
+                ['CloM_A_kuzi_geo',     21],
+                ["CloM_A_head_geo",     21],
+            ]
+
+            var crowd=new Crowd({
+                camera:self.camera,
+                count:Math.floor(9*(11123)/2),//5*100*100,
+                animPathPre:pathAnima,
+                pathLodGeo:pathLodGeo,
+                assets:self.assets,
+                useColorTag:[//需要进行颜色编辑的区域mesh名称
+                    // "CloM_A_chengyi_geo",
+                    "CloM_A_lingdai_geo",
+                    "CloM_A_kuzi_geo",
+                    "CloM_A_waitao_geo",
+                    "CloM_A_Xiezi_geo",
+                    "CloM_A_Hair_geo"
+                ],
+                lod_distance:lod_distance,//[30,50,70,90,110,130,150],//6级LOD
+                lod_geometry:lod_geometry,//[19,17,15,10,8,4,2,0],
+                lod_set:()=>{
+                    for(let i=0;i<crowd.children.length;i++){
+                        var crowdGroup0=crowd.children[i]
+                        for(let j=0;j<lod_visible.length;j++){
+                            if(i>=lod_visible[j][1]){
+                                var mesh=crowdGroup0.getMesh(lod_visible[j][0])
+                                if(mesh)mesh.visible=false
+                            }
+                        }
+
+                    }
+                },
+            })
+            self.setParamman_A(crowd,1,4)
+            for(var i00=0;i00<crowd.count;i00++){
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"CloM_A_kuzi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"CloM_A_waitao_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()-10
+                ],"CloM_A_lingdai_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"CloM_A_Xiezi_geo")
+                crowd.setColor(i00, [
+                    20*Math.random(),
+                    20*Math.random(),
+                    20*Math.random()
+                ],"CloM_A_Hair_geo")
+                crowd.setObesity(i00, 0.85+1.1*Math.random())
+            }
+            self.scene.add(crowd)
+            window.crowd=crowd
+            crowd.init(glb.scene)
+            console.log(crowd)
+        })
+    }
     setParam(crowd,model_index,animtionNum){
         var crowd_count=100*100+754
         for(var i0=0;i0<crowd_count;i0++){

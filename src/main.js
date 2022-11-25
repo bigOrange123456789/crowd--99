@@ -8,6 +8,7 @@ import { Building } from './Building.js'
 import {LightProducer } from './LightProducer.js'
 import {AvatarManager } from './AvatarManager.js'
 import { MoveManager } from '../lib/playerControl/MoveManager.js'
+import {MyUI} from "./MyUI.js"
 export class Loader{
     constructor(body){
         this.isIosPlatform =this.isMobile()
@@ -15,6 +16,7 @@ export class Loader{
         this.canvas = document.getElementById('myCanvas')
         window.addEventListener('resize', this.resize.bind(this), false)
         this.initScene()
+        this.addMyUI()
     }
     async initScene(){
         window.timeTest.measure("initScene start")
@@ -63,6 +65,41 @@ export class Loader{
           // scope.autoMove.stopFlag = false;
         },1000)
         
+    }
+    addMyUI()
+    {
+      var ui=new MyUI()
+      var height=window.innerHeight
+  
+      var camera_pos = [
+        new THREE.Vector3( -64.39189399430883,  8.99856114154391,  -74.3016535116766),
+        new THREE.Vector3( -1.5994877198648538,  1.4997407676957795,  -77.1512219063800),
+        new THREE.Vector3( -58.92759054201366, 39.57529059951184,  -130.21318894586796),
+      ]
+      var camera_tar = [
+        new THREE.Vector3( -65.34712509322323,  9.472649100434154,  -69.41033714095124),
+        new THREE.Vector3(-1.9992580266994615,  1.6314769709077197,  -59.25814512545),
+        new THREE.Vector3(0,0,0),
+      ]
+      var inf = {
+        '视点0':0,
+        '视点1':1,
+        '视点2':2
+      }
+  
+      var self = this;
+      var names=Object.keys(inf)
+      for(let i=0; i<names.length; i++){
+        new ui.Button(names[i], "#D4D80B", '#DAA520', '#FFFACD',
+            30, 10,
+            150, 45,
+            10,height-60*(i+1.5),()=>{
+              var id = inf[names[i]]
+              self.camera.position.copy(camera_pos[id])
+              self.camera.lookAt(camera_tar[id])
+              self.orbitControl.target = camera_tar[id].clone()
+            });
+      }
     }
     animate(){
         this.stats.update()
