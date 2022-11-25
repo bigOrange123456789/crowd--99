@@ -38,7 +38,7 @@ export class modelManager {
         var modelmessage = new modelMessage(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList, modelCount);
         this.modelList.push(modelmessage);
         this.modelIndex += 1;
-        this.sumModelCount+=modelCount;
+        this.sumModelCount += modelCount;
     }
 
     init() {
@@ -68,102 +68,260 @@ export class modelManager {
             "CloM_A_Xiezi_geo",
             "CloM_A_Hair_geo"
         ]
-        let walkAnimationList = [11,20]
-        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible,useColorTag,28,walkAnimationList,100000);
+        let walkAnimationList = [11, 20]
+        this.addModel("assets/man_A_4.glb", "assets/animation_man_A.bin", "assets/man_ALOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["CloM_B_body_geo2", 19],
+            ["CloM_B_chenshan_geo1", 19],
+            ["CloM_B_kuzi_geo", 19],
+            ["CloM_B_lianzi_geo", 10],
+            ["CloM_B_Nail_geo", -1],
+            ["CloM_B_waitao_geo2", 19],
+            ["CloM_B_xianglian_geo", 10],
+            ["CloM_B_xie_geo", 19],
+            ["CloM_C_Eye_lash_geo", -1],
+            ["CloM_C_Eyebrow_geo", -1],
+            ["CloM_C_EyeLeft_geo", 10],
+            ["CloM_C_EyeRight_geo", 10],
+            ["CloM_C_head_geo", 19],
+            ["CloM_C_Saliva_geo", -1],
+            ["CloM_C_Teeth_geo", -1],
+            ["CloM_E_hair_geo", 19],
+            ["CloM_E_shorthair_geo", 19],
+        ]
+        useColorTag = [
+            "CloM_B_chenshan_geo1",
+            "CloM_B_kuzi_geo",
+            "CloM_B_waitao_geo2",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/man_B.glb", "assets/animation_man_B.bin", "assets/man_BLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["CloW_A_body_geo1", 19],
+            ["CloW_A_chenshanxie_geo2", 19],
+            ["CloW_A_eyelash_geo", -1],
+            ["CloW_A_eyeLeft_geo", 10],
+            ["CloW_A_eyeRight_geo", 10],
+            ["CloW_A_hair_geo", 19],
+            ["CloW_A_kuzi_geo", 19],
+            ["CloW_A_Nail_geo", -1],
+            ["CloW_A_saliva_geo", -1],
+            ["CloW_A_teeth_geo", -1],
+            ["CloW_A_xifu_geo", 19],
+            ["head", 19],
+        ]
+        useColorTag = [
+            "CloW_A_chenshanxie_geo2",
+            "CloW_A_kuzi_geo",
+            "CloW_A_xifu_geo",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/woman_A.gltf", "assets/animation_woman_A.bin", "assets/woman_ALOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["body1", 19],
+            ["CloW_B_meimao_geo", 10],
+            ["CloW_B_eyelash_geo", -1],
+            ["CloW_B_eyeLeft_geo", 10],
+            ["CloW_B_eyeRight_geo", 10],
+            ["hair", 19],
+            ["kouzi_geo", 10],
+            ["Nail_geo", -1],
+            ["CloW_B_saliva_geo", -1],
+            ["CloW_B_teeth_geo", -1],
+            ["qipao_geo", 19],
+            ["waitao_geo",19],
+            ["xiezi_geo",19],
+            ["CloW_B_head_geo", 19],
+        ]
+        useColorTag = [
+            "qipao_geo",
+            "waitao_geo",
+            "xiezi_geo",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/woman_B.gltf", "assets/animation_woman_B.bin", "assets/woman_BLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["body1", 19],
+            ["CloW_B_eyeRight_geo", 10],
+            ["CloW_C_eyelash_geo", -1],
+            ["CloW_C_eyeLeft_geo", 10],
+            ["CloW_C_hair_geo", 19],
+            ["CloW_C_head_geo", 19],
+            ["CloW_C_meimao_geo", 10],
+            ["CloW_C_saliva_geo", -1],
+            ["CloW_C_shangyi_geo", 19],
+            ["CloW_C_teeth_geo", -1],
+            ["CloW_C_xiashen_geo", 19],
+            ["Nail_geo",-1],
+        ]
+        useColorTag = [
+            "CloW_C_shangyi_geo",
+            "CloW_C_xiashen_geo",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/woman_C.glb", "assets/animation_woman_C.bin", "assets/woman_CLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["CloW_A_eyelash_geo", -1],
+            ["CloW_A_eyeLeft_geo", 10],
+            ["CloW_A_eyeRight_geo", 10],
+            ["CloW_A_teeth_geo", -1],
+            ["CloW_D_Body_geo1", 19],
+            ["CloW_D_Hair_geo", 19],
+            ["CloW_D_Nail_geo1", -1],
+            ["CloW_D_QunZi_geo", 19],
+            ["CloW_D_ShangYi_geo_1", 19],
+            ["CloW_D_ShangYi_geo_2", 19],
+            ["CloW_D_XieZi_geo", 19],
+            ["head",19],
+        ]
+        useColorTag = [
+            "CloW_D_QunZi_geo",
+            "CloW_D_ShangYi_geo_1",
+            "CloW_D_ShangYi_geo_2",
+            "CloW_D_XieZi_geo",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/woman_D.glb", "assets/animation_woman_A.bin", "assets/woman_DLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["CloW_E_Body_geo1", 19],
+            ["CloW_E_erhuan_geo", 10],
+            ["CloW_E_eyelash_geo", -1],
+            ["CloW_E_eyeLeft_geo", 10],
+            ["CloW_E_eyeRight_geo", 10],
+            ["CloW_E_hair_geo", 19],
+            ["CloW_E_head_geo", 19],
+            ["CloW_E_kuzi_geo", 19],
+            ["CloW_E_meimao_geo", 10],
+            ["CloW_E_Nail_geo", -1],
+            ["CloW_E_saliva_geo", -1],
+            ["CloW_E_shangyi_geo",19],
+            ["CloW_E_teeth_geo",-1],
+            ["CloW_E_xiezi_geo", 19],
+        ]
+        useColorTag = [
+            "CloW_E_kuzi_geo",
+            "CloW_E_shangyi_geo",
+            "CloW_E_xiezi_geo",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/woman_E.glb", "assets/animation_woman_A.bin", "assets/woman_ELOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
+        lod_visible = [
+            ["CloW_B_eyelash_geo", -1],
+            ["CloW_B_eyeLeft_geo", 10],
+            ["CloW_B_eyeRight_geo", 10],
+            ["CloW_B_head_geo", 19],
+            ["CloW_B_meimao_geo", 10],
+            ["CloW_B_saliva_geo", -1],
+            ["CloW_B_teeth_geo", -1],
+            ["CloW_F_body_geo1", 19],
+            ["CloW_F_hair_geo", 19],
+            ["CloW_F_kuzi_geo1", 19],
+            ["CloW_F_Nail_geo", -1],
+            ["CloW_F_wazi_geo",10],
+            ["CloW_F_weiyi_geo",19],
+            ["CloW_F_xiezi_geo", 19],
+        ]
+        useColorTag = [
+            "CloW_F_kuzi_geo1",
+            "CloW_F_weiyi_geo",
+            "CloW_F_xiezi_geo",
+        ]
+        walkAnimationList = [11, 20]
+        this.addModel("assets/woman_F.glb", "assets/animation_woman_A.bin", "assets/woman_FLOD/", lod_visible, useColorTag, 28, walkAnimationList, 10000);
     }
 
     getPosRot0(i0) {
-        var c=[//分组情况
+        var c = [//分组情况
             1250,//496,   //运动
-            15*182,     //大看台1
-            21*182,     //大看台2
-            20*60,   //小看台1
-            17*60,   //小看台2
+            15 * 182,     //大看台1
+            21 * 182,     //大看台2
+            20 * 60,   //小看台1
+            17 * 60,   //小看台2
             300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
             240,         //弧形看台2 
             192,         //弧形看台3
             152,    //弧形看台6
             217,    //弧形看台5
         ]
-        if(i0<c[0]){
-            var col_count=25
-            var row_count=50
-            var i=i0%col_count
-            var j=Math.floor(i0/col_count)
-            var position=[
-                2*(1.8*i+1.5*Math.random()-col_count/2-20+11),
+        if (i0 < c[0]) {
+            var col_count = 25
+            var row_count = 50
+            var i = i0 % col_count
+            var j = Math.floor(i0 / col_count)
+            var position = [
+                2 * (1.8 * i + 1.5 * Math.random() - col_count / 2 - 20 + 11),
                 0,
-                2*(1.8*j+1.5*Math.random()-row_count/2-25+5),
+                2 * (1.8 * j + 1.5 * Math.random() - row_count / 2 - 25 + 5),
             ]
-            var rotation=[0,Math.PI*2*Math.random(),0]
+            var rotation = [0, Math.PI * 2 * Math.random(), 0]
         }
-        else if(i0<c[0]+c[1]){//大看台1
-            i0-=c[0]
-            var row_count=182
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)+1
-            var position=[
-                1.5*-31-1.5*(col)*1.9,
-                1.3*col,//
-                0.82*row-75,
+        else if (i0 < c[0] + c[1]) {//大看台1
+            i0 -= c[0]
+            var row_count = 182
+            var row = i0 % row_count
+            var col = Math.floor(i0 / row_count) + 1
+            var position = [
+                1.5 * -31 - 1.5 * (col) * 1.9,
+                1.3 * col,//
+                0.82 * row - 75,
             ]
-            var rotation=[0,-Math.PI*0.5+Math.PI,0]
+            var rotation = [0, -Math.PI * 0.5 + Math.PI, 0]
         }
-        else if(i0<c[0]+c[1]+c[2]){//大看台2
-            i0-=(c[0]+c[1])
-            var row_count=182
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)+1
-            var position=[
-                1.5*31+1.5*col*1.9,
-                1.3*col,
-                0.82*row-75,
+        else if (i0 < c[0] + c[1] + c[2]) {//大看台2
+            i0 -= (c[0] + c[1])
+            var row_count = 182
+            var row = i0 % row_count
+            var col = Math.floor(i0 / row_count) + 1
+            var position = [
+                1.5 * 31 + 1.5 * col * 1.9,
+                1.3 * col,
+                0.82 * row - 75,
             ]
-            var rotation=[0,Math.PI*0.5+Math.PI,0]
+            var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
         }
-        else if(i0<c[0]+c[1]+c[2]+c[3]){//小看台1
-            i0-=(c[0]+c[1]+c[2])
-            var row_count=60
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)
-            if(col>12)col+=4
-            var position=[
-                1.*row-30,//1.5*(row*0.25-50)*2.01+73,
-                1.28*col,
-                -99-1.5*col*1.9,
+        else if (i0 < c[0] + c[1] + c[2] + c[3]) {//小看台1
+            i0 -= (c[0] + c[1] + c[2])
+            var row_count = 60
+            var row = i0 % row_count
+            var col = Math.floor(i0 / row_count)
+            if (col > 12) col += 4
+            var position = [
+                1. * row - 30,//1.5*(row*0.25-50)*2.01+73,
+                1.28 * col,
+                -99 - 1.5 * col * 1.9,
             ]
-            var rotation=[0,-Math.PI+Math.PI,0]
-        }else if(i0<c[0]+c[1]+c[2]+c[3]+c[4]){//小看台2
-            i0-=(c[0]+c[1]+c[2]+c[3])
-            var row_count=60
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)
-            if(col>0)col+=3
-            if(col>12)col+=4
-            var position=[
-                1.*row-30,//1.5*(row*0.25-50)*2.01+73,
-                1.28*col,
-                99+1.5*col*1.9
+            var rotation = [0, -Math.PI + Math.PI, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4]) {//小看台2
+            i0 -= (c[0] + c[1] + c[2] + c[3])
+            var row_count = 60
+            var row = i0 % row_count
+            var col = Math.floor(i0 / row_count)
+            if (col > 0) col += 3
+            if (col > 12) col += 4
+            var position = [
+                1. * row - 30,//1.5*(row*0.25-50)*2.01+73,
+                1.28 * col,
+                99 + 1.5 * col * 1.9
             ]
-            var rotation=[0,0+Math.PI,0]
+            var rotation = [0, 0 + Math.PI, 0]
             // var position=[-1000,-1000,-1000]
-        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4])
-            if (i0<2) this.row_index = 0; // 重置行数
-            var col_index=i0 - Math.floor((0+this.row_index)*(this.row_index+1)/2);
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4])
+            if (i0 < 2) this.row_index = 0; // 重置行数
+            var col_index = i0 - Math.floor((0 + this.row_index) * (this.row_index + 1) / 2);
             if (col_index > this.row_index) {
                 this.row_index++;
-                col_index-=this.row_index;
+                col_index -= this.row_index;
             }
-            var position=[
-                1.*col_index+30,
-                1.28*this.row_index+1.28,
-                99+1.5*this.row_index*1.9-col_index*0.25
+            var position = [
+                1. * col_index + 30,
+                1.28 * this.row_index + 1.28,
+                99 + 1.5 * this.row_index * 1.9 - col_index * 0.25
             ]
-            var rotation=[0,0,0] // 还需调整方向，目前尚未调整
-        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]) { //弧形看台2
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]);
-            if (i0<2) {
+            var rotation = [0, 0, 0] // 还需调整方向，目前尚未调整
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6]) { //弧形看台2
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5]);
+            if (i0 < 2) {
                 this.row_index = 0; // 重置行数
                 this.sum_count = 0;
                 this.row_count = 3;
@@ -171,103 +329,103 @@ export class modelManager {
             var col_index = i0 - this.sum_count;
             if (col_index > this.row_count) {
                 this.row_index++;
-                col_index-=this.row_count;
+                col_index -= this.row_count;
                 this.sum_count += this.row_count;
-                if (this.row_index%3 === 0) this.row_count+=2;
+                if (this.row_index % 3 === 0) this.row_count += 2;
             }
-            var position=[
-                1.*col_index+31+this.row_index,
-                1.28*this.row_index,
-                98+1.5*this.row_index*1.75-col_index*0.6
+            var position = [
+                1. * col_index + 31 + this.row_index,
+                1.28 * this.row_index,
+                98 + 1.5 * this.row_index * 1.75 - col_index * 0.6
             ]
-            var rotation = [0,0,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]) {
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]);
-            if (i0<2) {
+            var rotation = [0, 0, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7]) {
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6]);
+            if (i0 < 2) {
                 this.row_index = 0; // 重置行数
                 this.sum_count = 0;
                 this.row_count = 3;
-            } 
+            }
             var col_index = i0 - this.sum_count;
             if (col_index > this.row_count) {
                 this.row_index++;
-                col_index-=this.row_count;
+                col_index -= this.row_count;
                 this.sum_count += this.row_count;
-                if (this.row_index%4 === 0) this.row_count+=2;
+                if (this.row_index % 4 === 0) this.row_count += 2;
             }
             // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.*col_index+34.5+this.row_index*1.8,
-                1.28*this.row_index,
-                95+1.5*this.row_index*1.45-col_index
+            var position = [
+                1. * col_index + 34.5 + this.row_index * 1.8,
+                1.28 * this.row_index,
+                95 + 1.5 * this.row_index * 1.45 - col_index
             ]
-            var rotation = [0,Math.PI*1.25,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8]) { //弧形看台6
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7])
-            if (i0<1) {
+            var rotation = [0, Math.PI * 1.25, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8]) { //弧形看台6
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7])
+            if (i0 < 1) {
                 this.row_index = 8; // 重置行数
                 this.sum_count = 0;
                 this.row_count = 8;
-            } 
+            }
             var col_index = i0 - this.sum_count;
             if (col_index > this.row_count) {
                 this.row_index++;
-                col_index-=this.row_count;
+                col_index -= this.row_count;
                 this.sum_count += this.row_count;
-                if (this.row_index%4 === 0) this.row_count+=1;
+                if (this.row_index % 4 === 0) this.row_count += 1;
             }
             // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.5*31+1.5*this.row_index*1.9,
-                1.28*this.row_index,
-                0.82*col_index+75,
+            var position = [
+                1.5 * 31 + 1.5 * this.row_index * 1.9,
+                1.28 * this.row_index,
+                0.82 * col_index + 75,
             ]
-            var rotation = [0,Math.PI*0.5+Math.PI,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8]+c[9]) { //弧形看台5
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]+c[8])
-            if (i0<1) {
+            var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8] + c[9]) { //弧形看台5
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8])
+            if (i0 < 1) {
                 this.row_index = 8; // 重置行数
                 this.sum_count = 0;
                 this.row_count = 9;
-            } 
+            }
             var col_index = i0 - this.sum_count;
             if (col_index > this.row_count) {
                 this.row_index++;
-                col_index-=this.row_count;
+                col_index -= this.row_count;
                 this.sum_count += this.row_count;
-                this.row_count+=1;
+                this.row_count += 1;
             }
             // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.5*30+1.5*this.row_index*1.9-0.3*col_index,
-                1.28*this.row_index,
-                0.82*col_index+79+this.row_count*0.5,
+            var position = [
+                1.5 * 30 + 1.5 * this.row_index * 1.9 - 0.3 * col_index,
+                1.28 * this.row_index,
+                0.82 * col_index + 79 + this.row_count * 0.5,
             ]
-            var rotation = [0,Math.PI*0.5+Math.PI,0]
+            var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
         }
         else {
-            var position=[
-                0,0,0
+            var position = [
+                0, 0, 0
             ]
-            var rotation = [0,0,0]
+            var rotation = [0, 0, 0]
         }
-        return {pos:position,rot:rotation} 
+        return { pos: position, rot: rotation }
     }
-    getPosRot1(i0){
-        var PosRot=this.getPosRot0(parseInt(i0/9))
-        var j0=i0%9;
-        let k=0.5;
-        PosRot.pos[0]+=(k*parseInt(j0/3))
-        PosRot.pos[2]+=(k*(j0%3))
+    getPosRot1(i0) {
+        var PosRot = this.getPosRot0(parseInt(i0 / 9))
+        var j0 = i0 % 9;
+        let k = 0.5;
+        PosRot.pos[0] += (k * parseInt(j0 / 3))
+        PosRot.pos[2] += (k * (j0 % 3))
         return PosRot
     }
 
     getPosRot() {
-        for (let i=0;i<this.sumModelCount;i++) {
-            let modelType = Math.floor(this.modelIndex*Math.random());
+        for (let i = 0; i < this.sumModelCount; i++) {
+            let modelType = Math.floor(this.modelIndex * Math.random());
             let PosRot = this.getPosRot1(i);
             while (!this.modelList[modelType].setPosRotList(PosRot)) {
-                modelType = Math.floor(this.modelIndex*Math.random());
+                modelType = Math.floor(this.modelIndex * Math.random());
             };
         }
     }
