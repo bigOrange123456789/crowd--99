@@ -26,9 +26,13 @@ export class AvatarManager {
         
         // this.load_model2()
         // this.load_Char47()
+        if(window.id==0){
+            this.load_man_A()
+        }else{
+            this.load_model()
+        }
+        // 
         
-        // this.load_model()
-        this.load_man_A()
 
         // setTimeout(() => {
         //     // this.load_man_D()
@@ -373,88 +377,6 @@ export class AvatarManager {
             console.log(crowd)
         })
     }
-    setParam(crowd,model_index,animtionNum){
-        var crowd_count=100*100+754
-        for(var i0=0;i0<crowd_count;i0++){
-            var scale=[
-                1,
-                Math.random()*0.3+0.85,
-                1,
-            ]
-            for(var i=0;i<3;i++)scale[i]*=1.3
-            var animtionType=Math.floor(animtionNum*Math.random())//12
-            // if(i0<1250){//496){
-            //     if(Math.random()>0.5)animtionType=5
-            //     else animtionType=8
-            // }else if(animtionType==5)animtionType=0
-            // else if(animtionType==8)animtionType=1
-
-            var speed=Math.random()*2.5+2
-            if(animtionType==5)speed+=1.5
-
-            if(i0%2==model_index)continue
-            let i00=Math.floor(i0/2)
-
-            crowd.setSpeed(i00, speed)
-            // crowd.setObesity(i00, 0.85+1.1*Math.random())
-            if(animtionType==5||animtionType==8)
-                crowd.setMoveMaxLength(i00, 4+2*Math.random())
-            crowd.setScale(i00, scale)
-
-            var PosRot=this.getPosRot(i0)
-            crowd.setPosition(i00,PosRot.pos)
-            crowd.setRotation(i00,PosRot.rot)
-
-            crowd.setAnimation(i00,animtionType,10000*Math.random())
-
-            // if(model_index==1){
-            //     crowd.setColor(i00, [
-            //         62*Math.random(),
-            //         62*Math.random(),
-            //         62*Math.random()
-            //     ],"CloW_C_qunzi_geo3456")
-            //     crowd.setColor(i00, [
-            //         -Math.random(),
-            //         -Math.random(),
-            //         -Math.random()
-            //     ],"CloW_C_shangyi_geo")
-            //     crowd.setColor(i00, [
-            //         67*Math.random(),
-            //         67*Math.random(),
-            //         67*Math.random()
-            //     ],"CloW_C_xie_geo")
-            //     crowd.setColor(i00, [
-            //         20*Math.random(),
-            //         12*Math.random(),
-            //         12*Math.random()
-            //     ],"hair")
-            // }else if(model_index==0){
-            //     crowd.setColor(i00, [
-            //         12*Math.random(),
-            //         12*Math.random(),
-            //         12*Math.random()
-            //     ],"CloW_A_kuzi_geo")
-            //     crowd.setColor(i00, [
-            //         12*Math.random(),
-            //         12*Math.random(),
-            //         12*Math.random()
-            //     ],"CloW_A_waitao_geo1")
-            //     crowd.setColor(i00, [
-            //         12*Math.random(),
-            //         12*Math.random(),
-            //         12*Math.random()
-            //     ],"CloW_A_xiezi_geo")
-            //     crowd.setColor(i00, [
-            //         20*Math.random(),
-            //         12*Math.random(),
-            //         12*Math.random()
-            //     ],"hair")
-            // }
-
-        }//end
-        // crowd.count=crowd_count
-
-    }
     setParam2(crowd,model_index,animtionNum){
         var crowd_count=11123
         for(var i0=0;i0<crowd_count;i0++){
@@ -531,13 +453,16 @@ export class AvatarManager {
             for(var i=0;i<3;i++)scale[i]*=0.34
             var animtionType=Math.floor(28*Math.random())//12
             if( animtionType==11) animtionType=0
-            if( animtionType==20) animtionType=1
+            
             if(i0<1250*9/2){//496){
                 //if(Math.random()>0.5)
                 // animtionType=Math.random()>0.5?11:20
                 animtionType=11
                 //11走动 20跑动
             }
+            // if( animtionType==20) 
+            animtionType=Math.random()>0.5?1:2
+
 
             var speed=Math.random()*7+4
 

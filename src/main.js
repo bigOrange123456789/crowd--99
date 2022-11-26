@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
+import {MapControls,OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js'
 //RGBMLoader
@@ -50,7 +50,8 @@ export class Loader{
         window.camera=this.camera
         
         this.scene.add(this.camera)
-        this.orbitControl = new OrbitControls(this.camera,this.renderer.domElement)
+        this.orbitControl = new MapControls(this.camera,this.renderer.domElement)
+        // this.orbitControl = new OrbitControls(this.camera,this.renderer.domElement)
         new LightProducer(this.scene)
         
         this.animate = this.animate.bind(this)
@@ -75,16 +76,20 @@ export class Loader{
         new THREE.Vector3( -64.39189399430883,  8.99856114154391,  -74.3016535116766),
         new THREE.Vector3( -1.5994877198648538,  1.4997407676957795,  -77.1512219063800),
         new THREE.Vector3( -58.92759054201366, 39.57529059951184,  -130.21318894586796),
+        new THREE.Vector3( -54.63874349381954,  18.532468360185952,  46.071540822),
+        
       ]
       var camera_tar = [
         new THREE.Vector3( -65.34712509322323,  9.472649100434154,  -69.41033714095124),
         new THREE.Vector3(-1.9992580266994615,  1.6314769709077197,  -59.25814512545),
         new THREE.Vector3(0,0,0),
+        new THREE.Vector3( -66.03747192556759,  9.679838586814231,  41.845030134054),
       ]
       var inf = {
-        '视点0':0,
-        '视点1':1,
-        '视点2':2
+        '视点4':0,
+        '视点3':1,
+        '视点2':2,
+        '视点1':3,
       }
   
       var self = this;
