@@ -167,7 +167,7 @@ classdef Group < handle
                 end
                 
                 compT = iii/time0;
-                waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 2) * 100), '%']);
+                waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 4) * 100), '%']);
                 if mod(iii,step)==0
                     this.path=strcat('data2/',string(number-iii/step),'.json');
                     disp([this.path,num2str(round(compT, 2) * 100), '%']);

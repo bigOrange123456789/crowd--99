@@ -14,9 +14,7 @@ class modelMessage {
         this.posRotList = [];
         this.animtionTypes = [];
         //modelIndex//
-
     }
-
     setPosRotList(PosRot) {
         if (this.PosRotCount < this.ModelCount) {
             this.posRotList.push(PosRot);
@@ -57,10 +55,12 @@ export class modelManager {
     }
 
     getQueryString(name) {
+        if(window.location.href.split('?').length==1){
+            return "all"
+        }
         let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        console.log(window.location)
         let url = window.location.href.split('?')[1].match(reg);
-        // console.log(url)
+        console.log("url",url)
         if (url != null) {
             let id=decodeURI(url[2])
             window.id=id
@@ -70,39 +70,9 @@ export class modelManager {
         }
     }
     init(){
-        
-        let index=this.getQueryString("id")
-        // let arr=[this.init0(),this.init1(),this.init2(),this.init3(),this.init4(),this.init5(),this.init6(),this.init7(),this.init8()]
-        let arr=[
-            this.init1(),
-            this.init3(),
-            this.init4(),
-            this.init5(),
-            //this.init6(),this.init7(),this.init8()
-        ]
-        // let arr=[this.init0(),this.init1(),this.init2()]
-        // let arr=[this.init2()]//,this.init1()]
-        for(let i=0;i<arr.length;i++){
-            // arr[i].index=i;
-            arr[i].modelCount=Math.floor(9*(11123)/arr.length)
-        }
-        // console.log("typeof(index)",typeof(index))
-        if(index=="all"){
-            // console.log("arr",arr)
-            for(let i=0;i<arr.length;i++){
-                // console.log("arr[i]",arr[i],i)
-                this.addModel(arr[i])
-            }
-        }else{
-            index=parseInt(index)
-            // console.log("index-1",index-1)
-            // console.log(arr)
-            this.addModel(arr[index])
-        }
-    }
-    init0(){
-        return {
-            lod_visible : [
+        let data=[
+            {//0
+                lod_visible : [
                 ["CloM_A_Eye_lash_geo", -1],
                 ["CloM_A_Eyeshell_geo", 1],
                 ["CloM_A_EyeLeft_geo",  10],
@@ -122,7 +92,7 @@ export class modelManager {
                 // ['CloM_A_waitao_geo',   10],
                 ['CloM_A_kuzi_geo',     21],
                 ["CloM_A_head_geo",     21],
-            ],
+                ],
                 useColorTag : [
                     "CloM_A_lingdai_geo",
                     "CloM_A_kuzi_geo",
@@ -138,10 +108,8 @@ export class modelManager {
                 pathLodGeo:"assets/man_ALOD/",
                 animtionNum:28,
                 modelCount:Math.floor(9*(11123))//20000
-        }
-    }
-    init1(){
-        return {
+            },
+            {//1
             lod_visible : [
             ["CloM_A_Eye_lash_geo", -1],
             ["CloM_A_Eyeshell_geo", 1],
@@ -176,10 +144,8 @@ export class modelManager {
             pathLodGeo:"assets/man_ALOD/",
             animtionNum:28,
             modelCount:20000
-        }
-    }
-    init2(){
-        return {
+            },
+            {//2
             lod_visible : [
             ["CloM_B_body_geo2", 19],
             ["CloM_B_chenshan_geo1", 19],
@@ -198,25 +164,23 @@ export class modelManager {
             ["CloM_C_Teeth_geo", -1],
             ["CloM_E_hair_geo", 19],
             ["CloM_E_shorthair_geo", 19],
-        ],
-        useColorTag : [
+            ],
+            useColorTag : [
             "CloM_B_chenshan_geo1",
             "CloM_B_kuzi_geo",
             "CloM_B_waitao_geo2",
-        ],
-        walkAnimationList : [11],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [11],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
 
-        pathModel:"assets/man_B.glb", 
-        pathAnima:"assets/animation_man_B.bin",
-        pathLodGeo:"assets/man_BLOD/",
-        animtionNum:28,
-        modelCount:20000
-        }
-    }
-    init3(){
-        return {
-        lod_visible : [
+            pathModel:"assets/man_B.glb", 
+            pathAnima:"assets/animation_man_B.bin",
+            pathLodGeo:"assets/man_BLOD/",
+            animtionNum:28,
+            modelCount:20000
+            },
+            {//3
+            lod_visible : [
             ["CloW_A_body_geo1", 19],
             ["CloW_A_chenshanxie_geo2", 19],
             ["CloW_A_eyelash_geo", -1],
@@ -229,26 +193,24 @@ export class modelManager {
             ["CloW_A_teeth_geo", -1],
             ["CloW_A_xifu_geo", 22],
             ["head", 20],
-        ],
-        useColorTag : [
+            ],
+            useColorTag : [
             "CloW_A_chenshanxie_geo2",
             "CloW_A_kuzi_geo",
             "CloW_A_xifu_geo",
-        ],
-        walkAnimationList : [9,18],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [9,18],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
 
-        pathModel:"assets/woman_A.gltf", 
-        pathAnima:"assets/animation_woman_A.bin",
-        pathLodGeo:"assets/woman_ALOD/",
-        animtionNum:28,
-        modelCount:10000
+            pathModel:"assets/woman_A.gltf", 
+            pathAnima:"assets/animation_woman_A.bin",
+            pathLodGeo:"assets/woman_ALOD/",
+            animtionNum:28,
+            modelCount:10000
         
-        }
-    }
-    init4(){
-        return {
-        lod_visible : [
+            },
+            {//4
+            lod_visible : [
             ["body1", 20],
             ["CloW_B_meimao_geo", 10],
             ["CloW_B_eyelash_geo", -1],
@@ -263,26 +225,23 @@ export class modelManager {
             ["waitao_geo",22],
             ["xiezi_geo",10],
             ["CloW_B_head_geo", 18],
-        ],
-        useColorTag: [
+            ],
+            useColorTag: [
             "qipao_geo",
             "waitao_geo",
             "xiezi_geo",
-        ],
-        walkAnimationList : [9,19],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [9,19],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27],
 
-        pathModel:"assets/woman_B.gltf", 
-        pathAnima:"assets/animation_woman_B.bin",
-        pathLodGeo:"assets/woman_BLOD/",
-        animtionNum:28,
-        modelCount:10000
-
-        }
-    }
-    init5(){
-        return {
-        lod_visible : [
+            pathModel:"assets/woman_B.gltf", 
+            pathAnima:"assets/animation_woman_B.bin",
+            pathLodGeo:"assets/woman_BLOD/",
+            animtionNum:28,
+            modelCount:10000
+            },
+            {//5
+            lod_visible : [
             ["body1", 20],
             ["CloW_B_eyeRight_geo", 10],
             ["CloW_C_eyelash_geo", -1],
@@ -295,24 +254,22 @@ export class modelManager {
             ["CloW_C_teeth_geo", -1],
             ["CloW_C_xiashen_geo", 19],
             ["Nail_geo",-1],
-        ],
-        useColorTag : [
+            ],
+            useColorTag : [
             "CloW_C_shangyi_geo",
             "CloW_C_xiashen_geo",
-        ],
-        walkAnimationList : [9,18],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [9,18],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
 
-        pathModel:"assets/woman_C.glb", 
-        pathAnima:"assets/animation_woman_C.bin",
-        pathLodGeo:"assets/woman_CLOD/", 
-        animtionNum:28,
-        modelCount:10000
-        }
-    }
-    init6(){
-        return {
-        lod_visible : [
+            pathModel:"assets/woman_C.glb", 
+            pathAnima:"assets/animation_woman_C.bin",
+            pathLodGeo:"assets/woman_CLOD/", 
+            animtionNum:28,
+            modelCount:10000
+            },
+            {//6
+            lod_visible : [
             ["CloW_A_eyelash_geo", -1],
             ["CloW_A_eyeLeft_geo", 10],
             ["CloW_A_eyeRight_geo", 10],
@@ -325,27 +282,24 @@ export class modelManager {
             ["CloW_D_ShangYi_geo_2", 19],
             ["CloW_D_XieZi_geo", 19],
             ["head",19],
-        ],
-        useColorTag : [
+            ],
+            useColorTag : [
             "CloW_D_QunZi_geo",
             "CloW_D_ShangYi_geo_1",
             "CloW_D_ShangYi_geo_2",
             "CloW_D_XieZi_geo",
-        ],
-        walkAnimationList : [9,18],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [9,18],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
 
-        pathModel:"assets/woman_D.glb", 
-        pathAnima:"assets/animation_woman_A.bin", 
-        pathLodGeo:"assets/woman_DLOD/",
-        animtionNum:28,
-        modelCount:10000
-        }
-        
-    }
-    init7(){
-        return {
-        lod_visible : [
+            pathModel:"assets/woman_D.glb", 
+            pathAnima:"assets/animation_woman_A.bin", 
+            pathLodGeo:"assets/woman_DLOD/",
+            animtionNum:28,
+            modelCount:10000
+            },
+            {//7
+            lod_visible : [
             ["CloW_E_Body_geo1", 19],
             ["CloW_E_erhuan_geo", 10],
             ["CloW_E_eyelash_geo", -1],
@@ -360,25 +314,23 @@ export class modelManager {
             ["CloW_E_shangyi_geo",19],
             ["CloW_E_teeth_geo",-1],
             ["CloW_E_xiezi_geo", 19],
-        ],
-        useColorTag : [
+            ],
+            useColorTag : [
             "CloW_E_kuzi_geo",
             "CloW_E_shangyi_geo",
             "CloW_E_xiezi_geo",
-        ],
-        walkAnimationList : [9,18],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [9,18],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
 
-        pathModel:"assets/woman_E.glb", 
-        pathAnima:"assets/animation_woman_A.bin", 
-        pathLodGeo:"assets/woman_ELOD/",
-        animtionNum:28,
-        modelCount:10000
-        }
-    }
-    init8(){
-        return {
-        lod_visible : [
+            pathModel:"assets/woman_E.glb", 
+            pathAnima:"assets/animation_woman_A.bin", 
+            pathLodGeo:"assets/woman_ELOD/",
+            animtionNum:28,
+            modelCount:10000
+            },
+            {//8
+            lod_visible : [
             ["CloW_B_eyelash_geo", -1],
             ["CloW_B_eyeLeft_geo", 10],
             ["CloW_B_eyeRight_geo", 10],
@@ -393,20 +345,34 @@ export class modelManager {
             ["CloW_F_wazi_geo",10],
             ["CloW_F_weiyi_geo",19],
             ["CloW_F_xiezi_geo", 19],
-        ],
-        useColorTag : [
+            ],
+            useColorTag : [
             "CloW_F_kuzi_geo1",
             "CloW_F_weiyi_geo",
             "CloW_F_xiezi_geo",
-        ],
-        walkAnimationList : [9,18],
-        standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
+            ],
+            walkAnimationList : [9,18],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
 
-        pathModel:"assets/woman_F.glb", 
-        pathAnima: "assets/animation_woman_A.bin", 
-        pathLodGeo:"assets/woman_FLOD/",
-        animtionNum:28,
-        modelCount:10000
+            pathModel:"assets/woman_F.glb", 
+            pathAnima: "assets/animation_woman_A.bin", 
+            pathLodGeo:"assets/woman_FLOD/",
+            animtionNum:28,
+            modelCount:10000
+            }
+        ]
+        let index=this.getQueryString("id")
+        if(index=="all"){
+            let arr=[1,3,4,5]
+            for(let i=0;i<arr.length;i++){
+                let config=data[arr[i]]
+                config.modelCount=Math.floor(9*(11123)/arr.length)
+                this.addModel(config)
+            }
+        }else{
+            index=parseInt(index)
+            data[index].modelCount=9*(11123)
+            this.addModel(data[index])
         }
     }
 
