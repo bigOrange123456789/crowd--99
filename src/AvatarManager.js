@@ -16,8 +16,9 @@ export class AvatarManager {
         this.init()
     }
     async init() {
-        // var pathAnima = "assets/animation_man_A.bin"
+        var pathAnima = "assets/animation_man_A.bin"
         window.timeTest.measure("Anima start await")
+
         window.timeTest.measure("Anima end await")
 
         this.modelManager = new modelManager();
@@ -61,12 +62,12 @@ export class AvatarManager {
                     }
                 })
 
-                let lod_distance_max = 20
+                let lod_distance_max = 17
                 let lod_distance = []
                 for (var i = 0; i < 19; i++)
                     lod_distance.push((i + 1) * lod_distance_max / 19)
-                lod_distance.push(lod_distance_max * 3)
-                lod_distance.push(lod_distance_max * 6)
+                lod_distance.push(lod_distance_max * 2.5)
+                lod_distance.push(lod_distance_max * 4)
 
                 let lod_geometry = []
                 for (var i = 0; i <= 20; i++)//20..0
@@ -127,7 +128,8 @@ export class AvatarManager {
                             20*Math.random(),
                             20*Math.random()
                         ],"CloM_A_Hair_geo")
-                        crowd.setObesity(i00, 0.85+1.1*Math.random())
+                        crowd.setObesity(i00, 1)
+                        // crowd.setObesity(i00, 0.85+1.1*Math.random())
 
                     }else{
                         for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
@@ -137,7 +139,8 @@ export class AvatarManager {
                                 20 * Math.random()-10
                             ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
                         }
-                        crowd.setObesity(i00, 0.85 + 1.1 * Math.random())
+                        crowd.setObesity(i00, 1)
+                        // crowd.setObesity(i00, 0.85 + 1.1 * Math.random())
                     }
                 }
                 self.scene.add(crowd)

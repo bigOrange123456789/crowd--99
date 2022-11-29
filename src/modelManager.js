@@ -66,13 +66,20 @@ export class modelManager {
             window.id=id
           return id//decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码。
         } else {
-          return 0
+          return "all"
         }
-      }
+    }
     init(){
         
         let index=this.getQueryString("id")
-        let arr=[this.init0(),this.init1(),this.init2(),this.init3(),this.init4(),this.init5(),this.init6(),this.init7(),this.init8()]
+        // let arr=[this.init0(),this.init1(),this.init2(),this.init3(),this.init4(),this.init5(),this.init6(),this.init7(),this.init8()]
+        let arr=[
+            this.init1(),
+            this.init3(),
+            this.init4(),
+            this.init5(),
+            //this.init6(),this.init7(),this.init8()
+        ]
         // let arr=[this.init0(),this.init1(),this.init2()]
         // let arr=[this.init2()]//,this.init1()]
         for(let i=0;i<arr.length;i++){
@@ -124,7 +131,7 @@ export class modelManager {
                     "CloM_A_Hair_geo"
                 ],
                 walkAnimationList : [11],
-                standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
+                standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,14,15,16,17,18,19,21,22,23,24,25,26,27],
     
                 pathModel:"assets/man_A_4.glb", 
                 pathAnima:"assets/animation_man_B.bin",
@@ -155,14 +162,14 @@ export class modelManager {
             ["CloM_A_head_geo", 21],
             ],
             useColorTag : [
-            "CloM_A_lingdai_geo",
-            "CloM_A_kuzi_geo",
-            "CloM_A_waitao_geo",
+                "CloM_A_lingdai_geo",
+                "CloM_A_kuzi_geo",
+                "CloM_A_waitao_geo",
             "CloM_A_Xiezi_geo",
             "CloM_A_Hair_geo"
             ],
             walkAnimationList : [11],
-            standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
+            standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,14,15,16,17,18,19,21,22,23,24,25,26,27],
 
             pathModel:"assets/man_A_4.glb", 
             pathAnima:"assets/animation_man_B.bin",
@@ -216,12 +223,12 @@ export class modelManager {
             ["CloW_A_eyeLeft_geo", 10],
             ["CloW_A_eyeRight_geo", 10],
             ["CloW_A_hair_geo", 19],
-            ["CloW_A_kuzi_geo", 19],
+            ["CloW_A_kuzi_geo", 20],
             ["CloW_A_Nail_geo", -1],
             ["CloW_A_saliva_geo", -1],
             ["CloW_A_teeth_geo", -1],
-            ["CloW_A_xifu_geo", 19],
-            ["head", 19],
+            ["CloW_A_xifu_geo", 22],
+            ["head", 20],
         ],
         useColorTag : [
             "CloW_A_chenshanxie_geo2",
@@ -242,20 +249,20 @@ export class modelManager {
     init4(){
         return {
         lod_visible : [
-            ["body1", 19],
+            ["body1", 20],
             ["CloW_B_meimao_geo", 10],
             ["CloW_B_eyelash_geo", -1],
             ["CloW_B_eyeLeft_geo", 10],
             ["CloW_B_eyeRight_geo", 10],
             ["hair", 19],
-            ["kouzi_geo", 10],
+            ["kouzi_geo",10],
             ["Nail_geo", -1],
             ["CloW_B_saliva_geo", -1],
             ["CloW_B_teeth_geo", -1],
-            ["qipao_geo", 19],
-            ["waitao_geo",19],
-            ["xiezi_geo",19],
-            ["CloW_B_head_geo", 19],
+            ["qipao_geo", 15],
+            ["waitao_geo",22],
+            ["xiezi_geo",10],
+            ["CloW_B_head_geo", 18],
         ],
         useColorTag: [
             "qipao_geo",
@@ -276,15 +283,15 @@ export class modelManager {
     init5(){
         return {
         lod_visible : [
-            ["body1", 19],
+            ["body1", 20],
             ["CloW_B_eyeRight_geo", 10],
             ["CloW_C_eyelash_geo", -1],
             ["CloW_C_eyeLeft_geo", 10],
-            ["CloW_C_hair_geo", 19],
+            ["CloW_C_hair_geo", 21],
             ["CloW_C_head_geo", 19],
             ["CloW_C_meimao_geo", 10],
             ["CloW_C_saliva_geo", -1],
-            ["CloW_C_shangyi_geo", 19],
+            ["CloW_C_shangyi_geo", 22],
             ["CloW_C_teeth_geo", -1],
             ["CloW_C_xiashen_geo", 19],
             ["Nail_geo",-1],

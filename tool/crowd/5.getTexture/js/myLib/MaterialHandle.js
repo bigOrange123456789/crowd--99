@@ -127,5 +127,4 @@ PicHandle.prototype={
         }*/
         return canvas;
     },
-
 }

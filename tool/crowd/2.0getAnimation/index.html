@@ -41,9 +41,9 @@
     var path0="model/woman01_0.glb"
     var path0="model/1.glb"
     var path0="Char47/Char47.gltf"
-    var path0="model/man_D.gltf"
+    var path0="model/man_B.glb"
     var path_anim =prompt("请输入动画文件名:",path0)
-    var path_model=prompt("请输入模型文件名:",path0)
+    var path_model=path_anim//prompt("请输入模型文件名:",path0)
     loader.load(path_anim, (glb) => {
         console.log("glb1",glb)
         var animationType=prompt(
@@ -64,24 +64,24 @@
         }
         // var animation=glb.animations[animationType];
         loader.load(path_model, (glb) => {
-            glb.scene.traverse(node=>{
-                if(node.material){//if(node instanceof THREE.SkinnedMesh){
-                    delete node.material.aoMap
-                    delete node.material.normalMap
-                    delete node.material.metalnessMap
-                    delete node.material.roughnessMap
-                    node.material.map=null
-                    node.material.aoMap=null
-                    node.material.normalMap=null
-                    node.material.metalnessMap=null
-                    node.material.roughnessMap=null
+            // glb.scene.traverse(node=>{
+            //     if(node.material){//if(node instanceof THREE.SkinnedMesh){
+            //         delete node.material.aoMap
+            //         delete node.material.normalMap
+            //         delete node.material.metalnessMap
+            //         delete node.material.roughnessMap
+            //         node.material.map=null
+            //         node.material.aoMap=null
+            //         node.material.normalMap=null
+            //         node.material.metalnessMap=null
+            //         node.material.roughnessMap=null
                     
-                    if(node.geometry.attributes.uv2)delete node.geometry.attributes.uv2
-                    if(node.geometry.attributes.normal)delete node.geometry.attributes.normal
-                    if(node.geometry.attributes.uv2)node.geometry.attributes.uv2=null
-                    if(node.geometry.attributes.normal)node.geometry.attributes.normal=null
-                }
-            })
+            //         if(node.geometry.attributes.uv2)delete node.geometry.attributes.uv2
+            //         if(node.geometry.attributes.normal)delete node.geometry.attributes.normal
+            //         if(node.geometry.attributes.uv2)node.geometry.attributes.uv2=null
+            //         if(node.geometry.attributes.normal)node.geometry.attributes.normal=null
+            //     }
+            // })
             exportGltf(glb,"model.gltf")
 
             scene.add(glb.scene);
@@ -135,6 +135,16 @@
         return skeleton_all
     }
     function exportGltf(glb,fileName,cb){
+        new THREE.GLTFExporter().parse(glb.scene, function (result) {
+            var myBlob=new Blob([JSON.stringify(result)], { type: 'text/plain' })
+            let link = document.createElement('a')
+            link.href = URL.createObjectURL(myBlob)
+            link.download = fileName
+            link.click()
+            if(cb)cb()
+        })
+    }
+    function exportGltf_old(glb,fileName,cb){
         new THREE.GLTFExporter().parse(glb.scene, function (result) {
             var myBlob=new Blob([JSON.stringify(result)], { type: 'text/plain' })
             let link = document.createElement('a')
