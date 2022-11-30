@@ -179,6 +179,7 @@ export class modelManager {
             animtionNum:28,
             modelCount:20000
             },
+
             {//3
             lod_visible : [
             ["CloW_A_body_geo1", 19],
@@ -208,7 +209,7 @@ export class modelManager {
             animtionNum:28,
             modelCount:10000
         
-            },
+            }, //animation_woman_A
             {//4
             lod_visible : [
             ["body1", 20],
@@ -239,7 +240,7 @@ export class modelManager {
             pathLodGeo:"assets/woman_BLOD/",
             animtionNum:28,
             modelCount:10000
-            },
+            }, //animation_woman_B.bin
             {//5
             lod_visible : [
             ["body1", 20],
@@ -267,7 +268,7 @@ export class modelManager {
             pathLodGeo:"assets/woman_CLOD/", 
             animtionNum:28,
             modelCount:10000
-            },
+            }, //animation_woman_C
             {//6
             lod_visible : [
             ["CloW_A_eyelash_geo", -1],
@@ -297,7 +298,7 @@ export class modelManager {
             pathLodGeo:"assets/woman_DLOD/",
             animtionNum:28,
             modelCount:10000
-            },
+            }, //animation_woman_A
             {//7
             lod_visible : [
             ["CloW_E_Body_geo1", 19],
@@ -328,7 +329,7 @@ export class modelManager {
             pathLodGeo:"assets/woman_ELOD/",
             animtionNum:28,
             modelCount:10000
-            },
+            }, //animation_woman_A
             {//8
             lod_visible : [
             ["CloW_B_eyelash_geo", -1],
@@ -359,8 +360,12 @@ export class modelManager {
             pathLodGeo:"assets/woman_FLOD/",
             animtionNum:28,
             modelCount:10000
-            }
+            } //animation_woman_A
         ]
+        for(let i=3;i<data.length;i++){
+            // data[i].walkAnimationList=[4]
+            // data[i].standAnimationList=[0,1,2,3]
+        }
         let index=this.getQueryString("id")
         if(index=="all"){
             let arr=[1,3,4,5]

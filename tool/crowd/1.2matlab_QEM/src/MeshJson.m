@@ -289,9 +289,6 @@ classdef MeshJson < handle
             o.write(o.file_name+"_save",o.V,o.F);
         end
         function data=getJson(o)
-            %o.uv=reshape(data.uv,2,[])';
-            %o.skinWeight=reshape(data.skinWeight,4,[])';
-            %o.skinIndex=reshape(data.skinIndex,4,[])';%'
             uv0=o.uv;
             skinWeight0=o.skinWeight;
             skinIndex0=o.skinIndex;
@@ -322,9 +319,6 @@ classdef MeshJson < handle
             %data=savejson(data);
         end
         function data=getJson2(o)
-            %o.uv=reshape(data.uv,2,[])';
-            %o.skinWeight=reshape(data.skinWeight,4,[])';
-            %o.skinIndex=reshape(data.skinIndex,4,[])';%'
             
             uv0=o.uv;
             skinWeight0=o.skinWeight;
