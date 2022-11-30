@@ -18,6 +18,15 @@ classdef Group < handle
                 n=n+mesh.nv();
             end
         end
+        function n=nf(this)
+            n=0;
+            cell0=fieldnames(this.children);
+            for i = 1:size(cell0,1)
+                name=cell2mat(cell0(i));
+                mesh=getfield(this.children,name);
+                n=n+mesh.nf();
+            end
+        end
 
         function this = Group(pathJson)
             this.path=pathJson;
@@ -95,15 +104,16 @@ classdef Group < handle
             this.rectifyindex();%删除那些没有被引用的顶点
         end
 
-        function simplify_save(this,percent,number)
-            step=round( (1-percent)/(number-1)*this.nv() );
+        function simplify_save(this,surplus,number)
+            nf0=this.nf();
+            step=round( (nf0-surplus)/(number-1) );
             
             %% Start add waitbar
             hWaitbar = waitbar(0, 'simplify,wait...', 'CreateCancelBtn', 'delete(gcbf)');
             set(hWaitbar, 'Color', [0.9, 0.9, 0.9]);
 
-            time0=step*(number-1); %需要进行坍塌的总次数
-            for iii = 1:time0   %每次删除一个顶点(一条边/一个三角面)
+            pack_index=1; %当前需要输出的数据包的索引
+            while true     %每次删除一个顶点(一条边/一个三角面)
                 min_cost=Inf;   %正无穷
                 min_name="";
                 cell0=fieldnames(this.children);
@@ -126,61 +136,28 @@ classdef Group < handle
                     mesh=getfield(this.children,min_name);
                     mesh.myQEM.simplification_makeStep(); 
                     this.listSim(size(this.listSim,1)+1)=mesh.meshId;
-                    
-                    %{
-                    if mesh.nf()<5
-                        disp("iii")
-                        disp(iii)
-                        disp("v")
-                        disp(size(mesh.V))
-                        disp("e")
-                        disp(size(mesh.E))
-                        disp("f")
-                        disp(mesh.F)
-                        disp("f_size")
-                        disp(size(mesh.F))
-                    end
-                    
-                    if min_name=="CloM_A_Eye_lash_geo"
-                    disp("iii")
-                    disp(iii)
-                    disp("v")
-                    disp(size(mesh.V))
-                    disp("f")
-                    disp(size(mesh.F))
-                    disp("e")
-                    disp(size(mesh.E))
-                    end    
-                    disp("iii")
-                    disp(iii)
-                    disp("v")
-                    disp(mesh.V)
-                    disp("f")
-                    disp(mesh.F)
-                    disp("e")
-                    disp(mesh.E)
-                    %}
 
                 else
                     disp("压缩比太高,对象为空!");
                     break; 
                 end
                 
-                compT = iii/time0;
-                waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 2) * 100), '%']);
-                if mod(iii,step)==0
-                    this.path=strcat('data2/',string(number-iii/step),'.json');
-                    disp([this.path,num2str(round(compT, 2) * 100), '%']);
+                nf=this.nf();
+                compT = 1-(nf-surplus)/(nf0-surplus);
+                waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 4) * 100), '%']);
+                if nf0-nf>pack_index*step
+                    this.path=strcat('data2/',string(number-pack_index),'.json');
+                    disp([this.path,num2str(round(compT, 4) * 100), '%']);
                     this.download2();
-                    if this.path== 'data2/19990.json'
-                        error("中断:用于测试");
+                    if pack_index>=number-1
+                        disp("finish");
+                        break;
                     end
-                end
-                
+                    pack_index=pack_index+1;
+                end                
             end
             close(hWaitbar);
         end
-
         function simplify_old2(this,ratio)
             cell0=fieldnames(this.children);
             for i = 1:size(cell0,1)
@@ -259,10 +236,10 @@ classdef Group < handle
         end
     end%methods(Hidden)
     methods(Static)
-        function process_save(inPath,percent,pack_number)
+        function process_save(inPath,surplus,pack_number)
             avatarGroup=Group(inPath);
             %avatarGroup.children.mesh0.download();
-            avatarGroup.simplify_save(percent,pack_number);
+            avatarGroup.simplify_save(surplus,pack_number);
         end
     end%methods(Static)
     methods(Static,Hidden)
