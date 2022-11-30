@@ -51,7 +51,7 @@ export class AvatarManager {
             new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel, async (glb) => {
                
                 glb.scene.traverse(node => {
-                    if (node instanceof THREE.SkinnedMesh) {
+                    if (node instanceof THREE.Mesh||node instanceof THREE.SkinnedMesh) {
                         let name = node.name
                         node.material.envMapIntensity = 0.3
                         if (name == "CloM_A_head_geo" || name == "GW_man_Body_geo1") //尚未设置这个在modelManager中
@@ -131,6 +131,23 @@ export class AvatarManager {
                         crowd.setObesity(i00, 1)
                         // crowd.setObesity(i00, 0.85+1.1*Math.random())
 
+                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/woman_A.gltf"){
+                        crowd.setColor(i00, [
+                            0.1*Math.random(),
+                            0.1*Math.random(),
+                            0.1*Math.random()
+                        ],"CloW_A_hair_geo")
+                        crowd.setColor(i00, [
+                            150*Math.random(),
+                            150*Math.random(),
+                            150*Math.random()
+                        ],"CloW_A_kuzi_geo")
+                        crowd.setColor(i00, [
+                            50*Math.random(),
+                            50*Math.random(),
+                            50*Math.random()
+                        ],"CloW_A_xifu_geo")
+                        crowd.setObesity(i00, 1)
                     }else{
                         for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                             crowd.setColor(i00, [

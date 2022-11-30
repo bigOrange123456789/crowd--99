@@ -142,15 +142,17 @@
                 //node.geometry
             }
         })
-        // let scene=new THREE.Scene()
-        // glb.scene.traverse(node=>{
-        //     if(node instanceof THREE.Mesh){
-        //         const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        //         const cube = new THREE.Mesh( geometry, node.material );
-        //         cube.name=node.name;
-        //         scene.add( cube );
-        //     }
-        // })
+        let scene=new THREE.Scene()
+        glb.scene.traverse(node=>{
+            if(node instanceof THREE.Mesh){
+                const geometry = node.geometry// THREE.BoxGeometry( 1, 1, 1 );
+                delete node.geometry.index
+                
+                const cube = new THREE.Mesh( geometry, node.material );
+                cube.name=node.name;
+                scene.add( cube );
+            }
+        })
         new THREE.GLTFExporter().parse(scene, function (result) {
             var myBlob=new Blob([JSON.stringify(result)], { type: 'text/plain' })
             let link = document.createElement('a')

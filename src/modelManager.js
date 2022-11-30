@@ -196,9 +196,12 @@ export class modelManager {
             ["head", 20],
             ],
             useColorTag : [
-            "CloW_A_chenshanxie_geo2",
+            // "CloW_A_chenshanxie_geo2",
+            "CloW_A_hair_geo",
             "CloW_A_kuzi_geo",
             "CloW_A_xifu_geo",
+            
+            // 'CloW_A_kuzi_geo'
             ],
             walkAnimationList : [9,18],
             standAnimationList : [0,1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27],
