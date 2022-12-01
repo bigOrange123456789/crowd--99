@@ -762,7 +762,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_D_QunZi_geo",
-                        19
+                        21
                     ],
                     [
                         "CloW_D_ShangYi_geo_1",
@@ -1286,7 +1286,7 @@ export class modelManager {
         //console.log(modelType,this.modelList[modelType].pathAnima)
         if (this.modelList[modelType].pathAnima.indexOf("woman_A") != -1 || this.modelList[modelType].pathAnima.indexOf("woman_C") != -1 ) {
             // console.log("yes")
-            console.log(modelType,this.modelList[modelType].pathAnima)
+            // console.log(modelType,this.modelList[modelType].pathAnima)
             position[1] -= scale[1]*1.25
         }
         else {
