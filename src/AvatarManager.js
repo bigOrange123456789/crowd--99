@@ -116,29 +116,29 @@ export class AvatarManager {
                         if (self.modelManager.modelList[modelType].pathModel == "assets/sim/man_A_4/sim.glb") {
 
                             crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random() - 10
+                                2 * Math.random(),
+                                2 * Math.random(),
+                                2 * Math.random() - 1
                             ], "CloM_A_kuzi_geo")
                             crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random() - 10
+                                2 * Math.random(),
+                                2 * Math.random(),
+                                2 * Math.random() - 1
                             ], "CloM_A_waitao_geo")
                             crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random() - 10
+                                2 * Math.random(),
+                                2 * Math.random(),
+                                2 * Math.random() - 1
                             ], "CloM_A_lingdai_geo")
                             crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random()
+                                2 * Math.random(),
+                                2 * Math.random(),
+                                2 * Math.random()
                             ], "CloM_A_Xiezi_geo")
                             crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random()
+                                2 * Math.random(),
+                                2 * Math.random(),
+                                2 * Math.random()
                             ], "CloM_A_Hair_geo")
                             crowd.setObesity(i00, 1)
                             // crowd.setObesity(i00, 0.85+1.1*Math.random())
@@ -150,22 +150,22 @@ export class AvatarManager {
                                 0.1 * Math.random()
                             ], "CloW_A_hair_geo")
                             crowd.setColor(i00, [
-                                150 * Math.random(),
-                                150 * Math.random(),
-                                150 * Math.random()
+                                15 * Math.random(),
+                                15 * Math.random(),
+                                15 * Math.random()
                             ], "CloW_A_kuzi_geo")
                             crowd.setColor(i00, [
-                                50 * Math.random(),
-                                50 * Math.random(),
-                                50 * Math.random()
+                                5 * Math.random(),
+                                5 * Math.random(),
+                                5 * Math.random()
                             ], "CloW_A_xifu_geo")
                             crowd.setObesity(i00, 1)
                         } else {
                             for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                                 crowd.setColor(i00, [
-                                    20 * Math.random() - 10,
-                                    20 * Math.random() - 10,
-                                    20 * Math.random() - 10
+                                     Math.random() - 0.5,
+                                     Math.random() - 0.5,
+                                     Math.random() - 0.5
                                 ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
                             }
                             crowd.setObesity(i00, 1)
@@ -211,7 +211,7 @@ export class AvatarManager {
             let walkAnimationlen = this.modelManager.modelList[modelType].walkAnimationList.length;
             for (let walkAnimation = 0; walkAnimation < walkAnimationlen; walkAnimation++) {
                 if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]) {
-                    crowd.setMoveMaxLength(i00, 500)
+                    crowd.setMoveMaxLength(i00, 2)
                     break;
                 }
             }
