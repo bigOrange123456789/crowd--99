@@ -1073,16 +1073,16 @@ export class modelManager {
             var i = i0 % col_count
             var j = Math.floor(i0 / col_count)
             var position = [
-                2 * j - 40,
+                2 * (1.8 * i + 1.5 * Math.random() - col_count / 2 - 20 + 11),
                 0,
-                0,
+                2 * (1.8 * j + 1.5 * Math.random() - row_count / 2 - 25 + 5),
             ]
-            var rotation = [0, 0, 0]
+            var rotation = [0, Math.PI * 2 * Math.random(), 0]
 
             let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].walkAnimationList.length);
             var animationType = this.modelList[modelType].walkAnimationList[animationTypeIndex];
-            var speed = 5;
-            var startTime = Math.floor((20 * i) / speed);
+            var speed = speed = Math.random() * 7 + 4;
+            var startTime = 1000 * Math.random();
         }
         else {
             let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].standAnimationList.length);
@@ -1283,7 +1283,7 @@ export class modelManager {
             ]
             var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
         }
-        if (modelType == 1 || modelType == 3) { //对于使用woman_A和woman_C的设置特殊高度
+        if (modelType == 1 || modelType == 2 || modelType == 3) { //对于使用woman_A和woman_C的设置特殊高度
             position[1] -= 0.4
         }
         else {
