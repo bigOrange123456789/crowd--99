@@ -60,6 +60,9 @@ export class AvatarManager {
 
                         node.material.envMapIntensity=0.01
                         node.material.roughness=1
+                        // node.material.color.r=0
+                        // node.material.color.g=0
+                        // node.material.color.b=0
                     }
                 })
 
@@ -86,6 +89,7 @@ export class AvatarManager {
                     count: self.modelManager.modelList[modelType].ModelCount,
                     animPathPre: self.modelManager.modelList[modelType].pathAnima,
                     pathLodGeo: self.modelManager.modelList[modelType].pathLodGeo,
+                    pathTextureConfig: self.modelManager.modelList[modelType].pathTextureConfig,
                     assets: self.assets,
                     useColorTag: self.modelManager.modelList[modelType].useColorTag,
                     lod_distance: lod_distance,
@@ -108,7 +112,7 @@ export class AvatarManager {
                     // 这部分还没整合到分别进行设置
                     let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
                     
-                    if(self.modelManager.modelList[modelType].pathModel=="assets/sim/man_A_4/sim.gltf"){
+                    if(self.modelManager.modelList[modelType].pathModel=="assets/sim/man_A_4/sim.glb"){
 
                         crowd.setColor(i00, [
                             20*Math.random(),
@@ -138,7 +142,7 @@ export class AvatarManager {
                         crowd.setObesity(i00, 1)
                         // crowd.setObesity(i00, 0.85+1.1*Math.random())
 
-                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/sim/woman_A/sim.gltf"){
+                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/sim/woman_A/sim.glb"){
                         crowd.setColor(i00, [
                             0.1*Math.random(),
                             0.1*Math.random(),
@@ -166,6 +170,7 @@ export class AvatarManager {
                         crowd.setObesity(i00, 1)
                         // crowd.setObesity(i00, 0.85 + 1.1 * Math.random())
                     }
+                    crowd.setObesity(i00, 1)
                 }
                 // crowd.visible=false
                 self.scene.add(crowd)
@@ -187,31 +192,32 @@ export class AvatarManager {
                 1,
             ]
             for (var i = 0; i < 3; i++)scale[i] *= 0.34
+            var animtionType =this.modelManager.modelList[modelType].animtionTypes[i0];
+            // console.log("animationType = ",animtionType);
+            var speed = Math.random() * 7 + 4
 
             if(i0%modelCount != modelType)continue
             let i00=Math.floor(i0/modelCount)
             // let i00 = i0
 
-            var PosRot = this.modelManager.getPosRot_9e(i0,modelType)
-            var speed = PosRot.speed;
-            var startTime = PosRot.startTime;
             crowd.setSpeed(i00, speed)
-            crowd.setScale(i00, scale)
-            //this.modelManager.modelList[modelType].posRotList[i0];
             // crowd.setObesity(i00, 0.85+1.1*Math.random())
-            let animtionType = PosRot.ani;
             let walkAnimationlen = this.modelManager.modelList[modelType].walkAnimationList.length;
             for (let walkAnimation = 0; walkAnimation<walkAnimationlen; walkAnimation++) {
                 if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]) 
                 {
-                    crowd.setMoveMaxLength(i00, 500)
+                    crowd.setMoveMaxLength(i00, 4 + 2 * Math.random())
                     break;
                 }
             }
+            crowd.setScale(i00, scale)
+
+            var PosRot = this.modelManager.getPosRot_9e(i0)
+            //this.modelManager.modelList[modelType].posRotList[i0];
             crowd.setPosition(i00, PosRot.pos)
             PosRot.rot[1] += Math.PI;
             crowd.setRotation(i00, PosRot.rot)
-            crowd.setAnimation(i00, animtionType, startTime)
+            crowd.setAnimation(i00, animtionType, 1000 * Math.random())
         }//end
 
     }

@@ -1,5 +1,5 @@
 class modelMessage {
-    constructor(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList, sitAnimationList, standAnimationList, modelCount) {
+    constructor(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList,standAnimationList, modelCount,pathTextureConfig) {
         this.pathModel = pathModel;
         this.pathAnima = pathAnima;
         this.pathLodGeo = pathLodGeo;
@@ -7,9 +7,9 @@ class modelMessage {
         this.useColorTag = useColorTag;
         this.animtionNum = animtionNum;
         this.walkAnimationList = walkAnimationList;
-        this.sitAnimationList = sitAnimationList;
         this.standAnimationList = standAnimationList;
         this.ModelCount = modelCount;
+        this.pathTextureConfig=pathTextureConfig;
 
         this.PosRotCount = 0;
         this.posRotList = [];
@@ -28,30 +28,43 @@ class modelMessage {
 
 export class modelManager {
     constructor() {//lod减少后至多加载5个模型
-        this.arr=[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.arr=[1,3,5,6]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.pathModelName="sim.glb"
+        this.pathLodGeoName="LOD/"
+        this.pathTextureConfig="texture_names.json"
+
         this.modelList = [];
         this.modelIndex = 0;
         this.sumModelCount = 0;
         this.row_index = 0; //在梯形看台中计算当前人物所在看台行数(貌似含义和小看台中正好相反)
         this.sum_count = 0; //当前row_index前面行的人数总和
         this.row_count = 0; //当前行的可放置人数
+
+
         this.init();
-        //this.getPosRot();
+        this.getPosRot();
+        
     }
 
     addModel(opt) {
-        console.log("opt.lod_visible",opt["pathModel"],opt["lod_visible"])
+        console.log(opt["path"],opt["lod_visible"])
+        opt["pathModel"] =opt['path']+this.pathModelName
+        opt["pathLodGeo"]=opt['path']+this.pathLodGeoName
+        opt["pathTextureConfig"]=opt['path']+this.pathTextureConfig
+        // console.log(opt)
+        
         var modelmessage = new modelMessage(
-            opt.pathModel,
-            opt.pathAnima,
-            opt.pathLodGeo,
-            opt.lod_visible,
-            opt.useColorTag,
-            opt.animtionNum,
-            opt.walkAnimationList,
-            opt.sitAnimationList,
-            opt.standAnimationList,
-            opt.modelCount);
+            opt.pathModel, 
+            opt.pathAnima, 
+            opt.pathLodGeo, 
+            opt.lod_visible, 
+            opt.useColorTag, 
+            opt.animtionNum, 
+            opt.walkAnimationList, 
+            opt.standAnimationList, 
+            opt.modelCount,
+            opt.pathTextureConfig
+            );
         this.modelList.push(modelmessage);
         this.modelIndex += 1;
         this.sumModelCount += opt.modelCount;
@@ -65,14 +78,13 @@ export class modelManager {
         let url = window.location.href.split('?')[1].match(reg);
         console.log("url",url)
         if (url != null) {
-            let id = decodeURI(url[2])
-            window.id = id
-            return id//decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码。
+            let id=decodeURI(url[2])
+            window.id=id
+          return id//decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码。
         } else {
-            return "all"
+          return "all"
         }
     }
-
     init(){
         let data=[
             {
@@ -156,13 +168,118 @@ export class modelManager {
                 "walkAnimationList": [
                     11
                 ],
-                "sitAnimationList":[
+                "standAnimationList": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    12,
                     14,
                     15,
                     16,
                     17,
                     18,
                     19,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26,
+                    27
+                ],
+                "path":"assets/sim/man_A_4/",
+                "pathAnima": "assets/animation_man_B.bin",
+                "animtionNum": 28,
+                "modelCount": 100107
+            },
+            {
+                "lod_visible": [
+                    [
+                        "CloM_A_Eye_lash_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_A_Eyeshell_geo",
+                        1
+                    ],
+                    [
+                        "CloM_A_EyeLeft_geo",
+                        10
+                    ],
+                    [
+                        "CloM_A_EyeRight_geo",
+                        10
+                    ],
+                    [
+                        "CloM_A_Saliva_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_A_Teeth_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_A_Hair_geo",
+                        19
+                    ],
+                    [
+                        "CloM_A_EyeEdge_geo",
+                        5
+                    ],
+                    [
+                        "GW_man_Body_geo1",
+                        19
+                    ],
+                    [
+                        "GW_man_Nail_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_A_lingdai_geo",
+                        10
+                    ],
+                    [
+                        "CloM_A_Wazi_geo",
+                        1
+                    ],
+                    [
+                        "CloM_A_Xiezi_geo",
+                        18
+                    ],
+                    [
+                        "CloM_A_chengyi_geo",
+                        19
+                    ],
+                    [
+                        "CloM_A_xiuzi_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_A_kuzi_geo",
+                        21
+                    ],
+                    [
+                        "CloM_A_head_geo",
+                        21
+                    ]
+                ],
+                "useColorTag": [
+                    "CloM_A_lingdai_geo",
+                    "CloM_A_kuzi_geo",
+                    "CloM_A_waitao_geo",
+                    "CloM_A_Xiezi_geo",
+                    "CloM_A_Hair_geo"
+                ],
+                "walkAnimationList": [
+                    11
                 ],
                 "standAnimationList": [
                     0,
@@ -177,6 +294,12 @@ export class modelManager {
                     9,
                     10,
                     12,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
                     21,
                     22,
                     23,
@@ -185,97 +308,122 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/man_A_4/sim.gltf",
+                "path": "assets/sim/man_A_4/",
                 "pathAnima": "assets/animation_man_B.bin",
-                "pathLodGeo": "assets/man_ALOD/",
                 "animtionNum": 28,
-                "modelCount": 100107
+                "modelCount": 20000
             },
-            {//1
-            lod_visible : [
-            ["CloM_A_Eye_lash_geo", -1],
-            ["CloM_A_Eyeshell_geo", 1],
-            ["CloM_A_EyeLeft_geo", 10],
-            ["CloM_A_EyeRight_geo", 10],
-            ["CloM_A_Saliva_geo", -1],
-            ["CloM_A_Teeth_geo", -1],
-            ['CloM_A_Hair_geo', 19],
-            ['CloM_A_EyeEdge_geo', 5],
-            ['GW_man_Body_geo1', 19],
-            ['GW_man_Nail_geo', -1],
-            ['CloM_A_lingdai_geo', 10],
-            ['CloM_A_Wazi_geo', 1],
-            ['CloM_A_Xiezi_geo', 18],
-            ['CloM_A_chengyi_geo', 19],
-            ['CloM_A_xiuzi_geo', -1],
-            ['CloM_A_kuzi_geo', 21],
-            ["CloM_A_head_geo", 21],
-            ],
-            useColorTag : [
-                "CloM_A_lingdai_geo",
-                "CloM_A_kuzi_geo",
-                "CloM_A_waitao_geo",
-            "CloM_A_Xiezi_geo",
-            "CloM_A_Hair_geo"
-            ],
-            walkAnimationList : [11],
-            "sitAnimationList":[
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-            ],
-            standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,21,22,23,24,25,26,27],
-
-            pathModel:"assets/man_A_4.glb", 
-            pathAnima:"assets/animation_man_B.bin",
-            pathLodGeo:"assets/man_ALOD/",
-            animtionNum:28,
-            modelCount:20000
-            },
-            {//2
-            lod_visible : [
-            ["CloM_B_body_geo2", 19],
-            ["CloM_B_chenshan_geo1", 19],
-            ["CloM_B_kuzi_geo", 19],
-            ["CloM_B_lianzi_geo", 10],
-            ["CloM_B_Nail_geo", -1],
-            ["CloM_B_waitao_geo2", 19],
-            ["CloM_B_xianglian_geo", 10],
-            ["CloM_B_xie_geo", 19],
-            ["CloM_C_Eye_lash_geo", -1],
-            ["CloM_C_Eyebrow_geo", -1],
-            ["CloM_C_EyeLeft_geo", 10],
-            ["CloM_C_EyeRight_geo", 10],
-            ["CloM_C_head_geo", 19],
-            ["CloM_C_Saliva_geo", -1],
-            ["CloM_C_Teeth_geo", -1],
-            ["CloM_E_hair_geo", 19],
-            ["CloM_E_shorthair_geo", 19],
-            ],
-            useColorTag : [
-            "CloM_B_chenshan_geo1",
-            "CloM_B_kuzi_geo",
-            "CloM_B_waitao_geo2",
-            ],
-            walkAnimationList : [11],
-            sitAnimationList:[
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-            ],
-            standAnimationList : [0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27],
-
-            pathModel:"assets/man_B.glb", 
-            pathAnima:"assets/animation_man_B.bin",
-            pathLodGeo:"assets/man_BLOD/",
-            animtionNum:28,
-            modelCount:20000
+            {
+                "lod_visible": [
+                    [
+                        "CloM_B_body_geo2",
+                        20
+                    ],
+                    [
+                        "CloM_B_chenshan_geo1",
+                        19
+                    ],
+                    [
+                        "CloM_B_kuzi_geo",
+                        21
+                    ],
+                    [
+                        "CloM_B_lianzi_geo",
+                        10
+                    ],
+                    [
+                        "CloM_B_Nail_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_B_waitao_geo2",
+                        22
+                    ],
+                    [
+                        "CloM_B_xianglian_geo",
+                        10
+                    ],
+                    [
+                        "CloM_B_xie_geo",
+                        15
+                    ],
+                    [
+                        "CloM_C_Eye_lash_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_C_Eyebrow_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_C_EyeLeft_geo",
+                        10
+                    ],
+                    [
+                        "CloM_C_EyeRight_geo",
+                        10
+                    ],
+                    [
+                        "CloM_C_head_geo",
+                        19
+                    ],
+                    [
+                        "CloM_C_Saliva_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_C_Teeth_geo",
+                        -1
+                    ],
+                    [
+                        "CloM_E_hair_geo",
+                        20
+                    ],
+                    [
+                        "CloM_E_shorthair_geo",
+                        19
+                    ]
+                ],
+                "useColorTag": [
+                    "CloM_B_chenshan_geo1",
+                    "CloM_B_kuzi_geo",
+                    "CloM_B_waitao_geo2"
+                ],
+                "walkAnimationList": [
+                    11
+                ],
+                "standAnimationList": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26,
+                    27
+                ],
+                "path": "assets/sim/man_B/",
+                "pathAnima": "assets/animation_man_B.bin",
+                "animtionNum": 28,
+                "modelCount": 20000
             },
             {
                 "lod_visible": [
@@ -337,14 +485,6 @@ export class modelManager {
                     9,
                     18
                 ],
-                "sitAnimationList":[
-                    12,
-                    13,
-                    14,
-                    15,
-                    16,
-                    17,
-                ],
                 "standAnimationList": [
                     0,
                     1,
@@ -357,6 +497,12 @@ export class modelManager {
                     8,
                     10,
                     11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
                     19,
                     20,
                     21,
@@ -367,9 +513,8 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/woman_A/sim.gltf",
+                "path": "assets/sim/woman_A/",
                 "pathAnima": "assets/animation_woman_A.bin",
-                "pathLodGeo": "assets/woman_ALOD/",
                 "animtionNum": 28,
                 "modelCount": 10000
             },
@@ -441,14 +586,6 @@ export class modelManager {
                     9,
                     19
                 ],
-                "sitAnimationList":[
-                    13,
-                    14,
-                    15,
-                    16,
-                    17,
-                    18,
-                ],
                 "standAnimationList": [
                     0,
                     1,
@@ -462,6 +599,12 @@ export class modelManager {
                     10,
                     11,
                     12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
                     20,
                     21,
                     22,
@@ -471,9 +614,8 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/woman_B/sim.gltf",
+                "path": "assets/sim/woman_B/",
                 "pathAnima": "assets/animation_woman_B.bin",
-                "pathLodGeo": "assets/woman_BLOD/",
                 "animtionNum": 28,
                 "modelCount": 10000
             },
@@ -536,14 +678,6 @@ export class modelManager {
                     9,
                     18
                 ],
-                "sitAnimationList":[
-                    12,
-                    13,
-                    14,
-                    15,
-                    16,
-                    17,
-                ],
                 "standAnimationList": [
                     0,
                     1,
@@ -556,6 +690,12 @@ export class modelManager {
                     8,
                     9,
                     10,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
                     18,
                     19,
                     21,
@@ -566,9 +706,8 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/woman_C/sim.gltf",
+                "path": "assets/sim/woman_C/",
                 "pathAnima": "assets/animation_woman_C.bin",
-                "pathLodGeo": "assets/woman_CLOD/",
                 "animtionNum": 28,
                 "modelCount": 10000
             },
@@ -633,14 +772,6 @@ export class modelManager {
                     9,
                     18
                 ],
-                "sitAnimationList":[
-                    12,
-                    13,
-                    14,
-                    15,
-                    16,
-                    17,
-                ],
                 "standAnimationList": [
                     0,
                     1,
@@ -669,9 +800,8 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/woman_D/sim.gltf",
+                "path": "assets/sim/woman_D/",
                 "pathAnima": "assets/animation_woman_A.bin",
-                "pathLodGeo": "assets/woman_DLOD/",
                 "animtionNum": 28,
                 "modelCount": 10000
             },
@@ -743,14 +873,6 @@ export class modelManager {
                     9,
                     18
                 ],
-                "sitAnimationList":[
-                    12,
-                    13,
-                    14,
-                    15,
-                    16,
-                    17,
-                ],
                 "standAnimationList": [
                     0,
                     1,
@@ -779,9 +901,8 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/woman_E/sim.gltf",
+                "path": "assets/sim/woman_E/",
                 "pathAnima": "assets/animation_woman_A.bin",
-                "pathLodGeo": "assets/woman_ELOD/",
                 "animtionNum": 28,
                 "modelCount": 10000
             },
@@ -853,14 +974,6 @@ export class modelManager {
                     9,
                     18
                 ],
-                "sitAnimationList":[
-                    12,
-                    13,
-                    14,
-                    15,
-                    16,
-                    17,
-                ],
                 "standAnimationList": [
                     0,
                     1,
@@ -889,9 +1002,8 @@ export class modelManager {
                     26,
                     27
                 ],
-                "pathModel": "assets/sim/woman_F/sim.gltf",
+                "path": "assets/sim/woman_F/",
                 "pathAnima": "assets/animation_woman_A.bin",
-                "pathLodGeo": "assets/woman_FLOD/",
                 "animtionNum": 28,
                 "modelCount": 10000
             }
@@ -917,7 +1029,7 @@ export class modelManager {
         }
     }
 
-    getPosRot_e(i0, modelType) {
+    getPosRot_e(i0) {
         var c = [//分组情况
             1250,//496,   //运动
             15 * 182,     //大看台1
@@ -930,242 +1042,183 @@ export class modelManager {
             152,    //弧形看台6
             217,    //弧形看台5
         ]
-        if (i0 < c[0]) { //运动的
-            var col_count = 90
-            var row_count = 40
+        if (i0 < c[0]) {
+            var col_count = 25
+            var row_count = 50
             var i = i0 % col_count
             var j = Math.floor(i0 / col_count)
             var position = [
-                2 * j - 40,
+                2 * (1.8 * i + 1.5 * Math.random() - col_count / 2 - 20 + 11),
                 0,
-                0,
+                2 * (1.8 * j + 1.5 * Math.random() - row_count / 2 - 25 + 5),
             ]
-            var rotation = [0, 0, 0]
-            let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].walkAnimationList.length);
-            var animationType = this.modelList[modelType].walkAnimationList[animationTypeIndex];
-            var speed = 5;
-            var startTime = Math.floor((20 * i) / speed);
-            //this.modelList[modelType].animtionTypes.push(this.modelList[modelType].walkAnimationList[animationTypeIndex]);
-        }
-        else {
-            let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].standAnimationList.length);
-            var animationType = this.modelList[modelType].standAnimationList[animationTypeIndex];
-            var speed = Math.random() * 7 + 4;
-            var startTime = 1000 * Math.random();
-            //this.modelList[modelType].animtionTypes.push(this.modelList[modelType].standAnimationList[animationTypeIndex]);
+            var rotation = [0, Math.PI * 2 * Math.random(), 0]
 
-            if (i0 < c[0] + c[1]) {//大看台1
-                i0 -= c[0]
-                var row_count = 182
-                var row = i0 % row_count
-                var col = Math.floor(i0 / row_count) + 1
-                var position = [
-                    1.5 * -31 - 1.5 * (col) * 1.9,
-                    1.3 * col,//
-                    0.82 * row - 75,
-                ]
-                var rotation = [0, -Math.PI * 0.5 + Math.PI, 0]
-            }
-            else if (i0 < c[0] + c[1] + c[2]) {//大看台2
-                i0 -= (c[0] + c[1])
-                var row_count = 182
-                var row = i0 % row_count
-                var col = Math.floor(i0 / row_count) + 1
-                var position = [
-                    1.5 * 31 + 1.5 * col * 1.9,
-                    1.3 * col,
-                    0.82 * row - 75,
-                ]
-                var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
-            }
-            else if (i0 < c[0] + c[1] + c[2] + c[3]) {//小看台1
-                i0 -= (c[0] + c[1] + c[2])
-                var row_count = 60
-                var row = i0 % row_count
-                var col = Math.floor(i0 / row_count)
-                if (col > 12) col += 4
-                var position = [
-                    1. * row - 30,//1.5*(row*0.25-50)*2.01+73,
-                    1.28 * col,
-                    -99 - 1.5 * col * 1.9,
-                ]
-                var rotation = [0, -Math.PI + Math.PI, 0]
-            } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4]) {//小看台2
-                i0 -= (c[0] + c[1] + c[2] + c[3])
-                var row_count = 60
-                var row = i0 % row_count
-                var col = Math.floor(i0 / row_count)
-                if (col > 0) col += 3
-                if (col > 12) col += 4
-                var position = [
-                    1. * row - 30,//1.5*(row*0.25-50)*2.01+73,
-                    1.28 * col,
-                    99 + 1.5 * col * 1.9
-                ]
-                var rotation = [0, 0 + Math.PI, 0]
-                // var position=[-1000,-1000,-1000]
-            } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
-                i0 -= (c[0] + c[1] + c[2] + c[3] + c[4])
-                if (i0 < 2) this.row_index = 0; // 重置行数
-                var col_index = i0 - Math.floor((0 + this.row_index) * (this.row_index + 1) / 2);
-                if (col_index > this.row_index) {
-                    this.row_index++;
-                    col_index -= this.row_index;
-                }
-                var position = [
-                    1. * col_index + 30,
-                    1.28 * this.row_index + 1.28,
-                    99 + 1.5 * this.row_index * 1.9 - col_index * 0.25
-                ]
-                var rotation = [0, 0, 0] // 还需调整方向，目前尚未调整
-            } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6]) { //弧形看台2
-                i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5]);
-                if (i0 < 2) {
-                    this.row_index = 0; // 重置行数
-                    this.sum_count = 0;
-                    this.row_count = 3;
-                }
-                var col_index = i0 - this.sum_count;
-                if (col_index > this.row_count) {
-                    this.row_index++;
-                    col_index -= this.row_count;
-                    this.sum_count += this.row_count;
-                    if (this.row_index % 3 === 0) this.row_count += 2;
-                }
-                var position = [
-                    1. * col_index + 31 + this.row_index,
-                    1.28 * this.row_index,
-                    98 + 1.5 * this.row_index * 1.75 - col_index * 0.6
-                ]
-                var rotation = [0, 0, 0]
-            } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7]) {
-                i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6]);
-                if (i0 < 2) {
-                    this.row_index = 0; // 重置行数
-                    this.sum_count = 0;
-                    this.row_count = 3;
-                }
-                var col_index = i0 - this.sum_count;
-                if (col_index > this.row_count) {
-                    this.row_index++;
-                    col_index -= this.row_count;
-                    this.sum_count += this.row_count;
-                    if (this.row_index % 4 === 0) this.row_count += 2;
-                }
-                // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-                var position = [
-                    1. * col_index + 34.5 + this.row_index * 1.8,
-                    1.28 * this.row_index,
-                    95 + 1.5 * this.row_index * 1.45 - col_index
-                ]
-                var rotation = [0, Math.PI * 1.25, 0]
-            } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8]) { //弧形看台6
-                i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7])
-                if (i0 < 1) {
-                    this.row_index = 8; // 重置行数
-                    this.sum_count = 0;
-                    this.row_count = 8;
-                }
-                var col_index = i0 - this.sum_count;
-                if (col_index > this.row_count) {
-                    this.row_index++;
-                    col_index -= this.row_count;
-                    this.sum_count += this.row_count;
-                    if (this.row_index % 4 === 0) this.row_count += 1;
-                }
-                // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-                var position = [
-                    1.5 * 31 + 1.5 * this.row_index * 1.9,
-                    1.28 * this.row_index,
-                    0.82 * col_index + 75,
-                ]
-                var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
-            } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8] + c[9]) { //弧形看台5
-                i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8])
-                if (i0 < 1) {
-                    this.row_index = 8; // 重置行数
-                    this.sum_count = 0;
-                    this.row_count = 9;
-                }
-                var col_index = i0 - this.sum_count;
-                if (col_index > this.row_count) {
-                    this.row_index++;
-                    col_index -= this.row_count;
-                    this.sum_count += this.row_count;
-                    this.row_count += 1;
-                }
-                // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-                var position = [
-                    1.5 * 30 + 1.5 * this.row_index * 1.9 - 0.3 * col_index,
-                    1.28 * this.row_index,
-                    0.82 * col_index + 79 + this.row_count * 0.5,
-                ]
-                var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
-            }
-            else {
-                var position = [
-                    0, 0, 0
-                ]
-                var rotation = [0, 0, 0]
-            }
+            // var animationTypeIndex = Math.random()*walkAnimationList.length
+            // animationType = walkAnimationList[animationTypeIndex]
         }
-        return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
-    }
-
-    getsitPos_e(i0, modelType) {
-        var c = [//分组情况
-            15 * 182,     //大看台1
-            21 * 182,     //大看台2
-        ]
-        let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].sitAnimationList.length);
-        var animationType = this.modelList[modelType].sitAnimationList[animationTypeIndex];
-        //console.log("animationType=",animationType)
-        var speed = Math.random() * 7 + 4;
-        var startTime = 1000 * Math.random();
-        // 添加坐在前面的一排在两个大看台（其他就暂时不添加了，这个全改调试要好久）
-        if (i0 < c[0]) {//大看台1
+        else if (i0 < c[0] + c[1]) {//大看台1
+            i0 -= c[0]
             var row_count = 182
             var row = i0 % row_count
             var col = Math.floor(i0 / row_count) + 1
             var position = [
-                1.5 * -30 - 1.5 * (col) * 1.9 - 0.15,
+                1.5 * -31 - 1.5 * (col) * 1.9,
                 1.3 * col,//
                 0.82 * row - 75,
             ]
             var rotation = [0, -Math.PI * 0.5 + Math.PI, 0]
         }
-        else {//大看台2
-            i0 -= (c[0])
+        else if (i0 < c[0] + c[1] + c[2]) {//大看台2
+            i0 -= (c[0] + c[1])
             var row_count = 182
             var row = i0 % row_count
             var col = Math.floor(i0 / row_count) + 1
             var position = [
-                1.5 * 30 + 1.5 * col * 1.9 + 0.15,
+                1.5 * 31 + 1.5 * col * 1.9,
                 1.3 * col,
                 0.82 * row - 75,
             ]
             var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
         }
-        if (modelType == 1 || modelType == 3) { //对于使用woman_A和woman_C的设置特殊高度
-            position[1] -= 0.4
+        else if (i0 < c[0] + c[1] + c[2] + c[3]) {//小看台1
+            i0 -= (c[0] + c[1] + c[2])
+            var row_count = 60
+            var row = i0 % row_count
+            var col = Math.floor(i0 / row_count)
+            if (col > 12) col += 4
+            var position = [
+                1. * row - 30,//1.5*(row*0.25-50)*2.01+73,
+                1.28 * col,
+                -99 - 1.5 * col * 1.9,
+            ]
+            var rotation = [0, -Math.PI + Math.PI, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4]) {//小看台2
+            i0 -= (c[0] + c[1] + c[2] + c[3])
+            var row_count = 60
+            var row = i0 % row_count
+            var col = Math.floor(i0 / row_count)
+            if (col > 0) col += 3
+            if (col > 12) col += 4
+            var position = [
+                1. * row - 30,//1.5*(row*0.25-50)*2.01+73,
+                1.28 * col,
+                99 + 1.5 * col * 1.9
+            ]
+            var rotation = [0, 0 + Math.PI, 0]
+            // var position=[-1000,-1000,-1000]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4])
+            if (i0 < 2) this.row_index = 0; // 重置行数
+            var col_index = i0 - Math.floor((0 + this.row_index) * (this.row_index + 1) / 2);
+            if (col_index > this.row_index) {
+                this.row_index++;
+                col_index -= this.row_index;
+            }
+            var position = [
+                1. * col_index + 30,
+                1.28 * this.row_index + 1.28,
+                99 + 1.5 * this.row_index * 1.9 - col_index * 0.25
+            ]
+            var rotation = [0, 0, 0] // 还需调整方向，目前尚未调整
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6]) { //弧形看台2
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5]);
+            if (i0 < 2) {
+                this.row_index = 0; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 3;
+            }
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index -= this.row_count;
+                this.sum_count += this.row_count;
+                if (this.row_index % 3 === 0) this.row_count += 2;
+            }
+            var position = [
+                1. * col_index + 31 + this.row_index,
+                1.28 * this.row_index,
+                98 + 1.5 * this.row_index * 1.75 - col_index * 0.6
+            ]
+            var rotation = [0, 0, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7]) {
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6]);
+            if (i0 < 2) {
+                this.row_index = 0; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 3;
+            }
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index -= this.row_count;
+                this.sum_count += this.row_count;
+                if (this.row_index % 4 === 0) this.row_count += 2;
+            }
+            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            var position = [
+                1. * col_index + 34.5 + this.row_index * 1.8,
+                1.28 * this.row_index,
+                95 + 1.5 * this.row_index * 1.45 - col_index
+            ]
+            var rotation = [0, Math.PI * 1.25, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8]) { //弧形看台6
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7])
+            if (i0 < 1) {
+                this.row_index = 8; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 8;
+            }
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index -= this.row_count;
+                this.sum_count += this.row_count;
+                if (this.row_index % 4 === 0) this.row_count += 1;
+            }
+            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            var position = [
+                1.5 * 31 + 1.5 * this.row_index * 1.9,
+                1.28 * this.row_index,
+                0.82 * col_index + 75,
+            ]
+            var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
+        } else if (i0 < c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8] + c[9]) { //弧形看台5
+            i0 -= (c[0] + c[1] + c[2] + c[3] + c[4] + c[5] + c[6] + c[7] + c[8])
+            if (i0 < 1) {
+                this.row_index = 8; // 重置行数
+                this.sum_count = 0;
+                this.row_count = 9;
+            }
+            var col_index = i0 - this.sum_count;
+            if (col_index > this.row_count) {
+                this.row_index++;
+                col_index -= this.row_count;
+                this.sum_count += this.row_count;
+                this.row_count += 1;
+            }
+            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
+            var position = [
+                1.5 * 30 + 1.5 * this.row_index * 1.9 - 0.3 * col_index,
+                1.28 * this.row_index,
+                0.82 * col_index + 79 + this.row_count * 0.5,
+            ]
+            var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
         }
         else {
-            position[1] -=0.2
+            var position = [
+                0, 0, 0
+            ]
+            var rotation = [0, 0, 0]
         }
-        return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
+        return { pos: position, rot: rotation }
     }
-
-    getPosRot_9e(i0, modelType) {
-        var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
+    getPosRot_9e(i0) {
+        var PosRot = this.getPosRot_e(parseInt(i0 / 9))
         var j0 = i0 % 9;
         let k = 0.5;
         PosRot.pos[0] += (k * parseInt(j0 / 3))
         PosRot.pos[2] += (k * (j0 % 3))
-        if (i0 < 9 * (10022)) {
-            return PosRot
-        }
-        PosRot = this.getsitPos_e(i0 - 9 * 10022, modelType);
-        //console.log(PosRot)
         return PosRot
     }
 
@@ -1180,12 +1233,12 @@ export class modelManager {
             if (i<=1250*9/this.arr.length) {
                 // 运动的
                 // console.log(modelType,this.modelList[modelType].walkAnimationList[animationTypeIndex])
-                let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].walkAnimationList.length);
+                let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].walkAnimationList.length);
                 this.modelList[modelType].animtionTypes.push(this.modelList[modelType].walkAnimationList[animationTypeIndex]);
             }
             else {
                 //静止的
-                let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].standAnimationList.length);
+                let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].standAnimationList.length);
                 this.modelList[modelType].animtionTypes.push(this.modelList[modelType].standAnimationList[animationTypeIndex]);
             }
         }
