@@ -200,7 +200,7 @@ export class AvatarManager {
             let i00 = Math.floor(i0 / modelCount)
             // let i00 = i0
 
-            var PosRot = this.modelManager.getPosRot_9e(i0, modelType)
+            var PosRot = this.modelManager.getPosRot_9e(i0, modelType,scale)
             var speed = PosRot.speed;
             var startTime = PosRot.startTime;
             crowd.setSpeed(i00, speed)
