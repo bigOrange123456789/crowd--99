@@ -1068,8 +1068,8 @@ export class modelManager {
             217,    //弧形看台5
         ]
         if (i0 < c[0]) {
-            var col_count = 90
-            var row_count = 40
+            var col_count = 25
+            var row_count = 50
             var i = i0 % col_count
             var j = Math.floor(i0 / col_count)
             var position = [
@@ -1249,7 +1249,7 @@ export class modelManager {
         return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
     }
 
-    getsitPos_e(i0, modelType) {
+    getsitPos_e(i0, modelType,scale) {
         var c = [//分组情况
             15 * 182,     //大看台1
             21 * 182,     //大看台2
@@ -1283,15 +1283,18 @@ export class modelManager {
             ]
             var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
         }
-        if (modelType == 1 || modelType == 2 || modelType == 3) { //对于使用woman_A和woman_C的设置特殊高度
-            position[1] -= 0.4
+        //console.log(modelType,this.modelList[modelType].pathAnima)
+        if (this.modelList[modelType].pathAnima.indexOf("woman_A") != -1 || this.modelList[modelType].pathAnima.indexOf("woman_C") != -1 ) {
+            // console.log("yes")
+            console.log(modelType,this.modelList[modelType].pathAnima)
+            position[1] -= scale[1]*1.25
         }
         else {
-            position[1] -= 0.2
+            position[1] -= 0.15
         }
         return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
     }
-    getPosRot_9e(i0, modelType) {
+    getPosRot_9e(i0, modelType,scale) {
         var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
         var j0 = i0 % 9;
         let k = 0.5;
@@ -1300,7 +1303,8 @@ export class modelManager {
         if (i0 < 9 * (10022)) {
             return PosRot
         }
-        PosRot = this.getsitPos_e(i0 - 9 * 10022, modelType);
+        PosRot = this.getsitPos_e(parseInt((i0 - 9 * 10022) / 3), modelType,scale);
+        PosRot.pos[2] += (k * (i0%3))
         return PosRot
     }
 
