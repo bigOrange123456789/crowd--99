@@ -756,7 +756,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_D_QunZi_geo",
-                        21
+                        19
                     ],
                     [
                         "CloW_D_ShangYi_geo_1",
@@ -1280,7 +1280,7 @@ export class modelManager {
         //console.log(modelType,this.modelList[modelType].pathAnima)
         if (this.modelList[modelType].pathAnima.indexOf("woman_A") != -1 || this.modelList[modelType].pathAnima.indexOf("woman_C") != -1 ) {
             // console.log("yes")
-            // console.log(modelType,this.modelList[modelType].pathAnima)
+            console.log(modelType,this.modelList[modelType].pathAnima)
             position[1] -= scale[1]*1.25
         }
         else {
@@ -1291,19 +1291,14 @@ export class modelManager {
     getPosRot_9e(i0, modelType,scale) {
         var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
         var j0 = i0 % 9;
-        let k = 0.5;
+        let k = 0.25;
         PosRot.pos[0] += (k * parseInt(j0 / 3))
         PosRot.pos[2] += (k * (j0 % 3))
-        if (i0 < 9 * (7802)) {
+        if (i0 < 9 * (10022)) {
             return PosRot
         }
-        else if (i0 < 2220*3 + 9*7802 ) {
-            PosRot = this.getPosRot_e(parseInt((i0 - 9 * 7802) / 3 + 7802), modelType,scale);
-            PosRot.pos[2] += (k * (j0%3))
-            return PosRot 
-        }
         PosRot = this.getsitPos_e(parseInt((i0 - 9 * 10022) / 3), modelType,scale);
-        PosRot.pos[2] += (k * (j0%3))
+        PosRot.pos[2] += (k * (i0%3))
         return PosRot
     }
 
