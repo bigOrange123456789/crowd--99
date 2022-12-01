@@ -24,6 +24,7 @@ Download.prototype={
         let url;
         if(isPNG)url = canvas.toDataURL("image/png");//得到图片的base64编码数据
         else url = canvas.toDataURL("image/jpeg");
+        console.log(url)
 
         //a标签定义超链接，用于从一张页面链接到另一张页面
         let a = document.createElement("a"); // 生成一个a元素
@@ -51,8 +52,9 @@ Download.prototype={
     },
     //1D文本数据
     jsonDownload:function (json,name) {
+        console.log(name,json)
         return this.strDownload(
-            JSON.stringify(json),
+            JSON.stringify(json, null, 4),//JSON.stringify(json),
             name
         );
     },

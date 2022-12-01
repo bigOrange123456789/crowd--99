@@ -46,6 +46,7 @@ export class AvatarManager {
 
     load_model() {
         var self = this
+        window.model=[]
         function load_next(modelType){
             if(modelType < self.modelManager.modelIndex)
             new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel, async (glb) => {
@@ -68,11 +69,17 @@ export class AvatarManager {
                     lod_distance.push((i + 1) * lod_distance_max / 19)
                 lod_distance.push(lod_distance_max * 2.5)
                 lod_distance.push(lod_distance_max * 4)
+                console.log("lod_distance",lod_distance.length)
 
                 let lod_geometry = []
                 for (var i = 0; i <= 20; i++)//20..0
                     lod_geometry.push(20 - i)
                 lod_geometry.push(0)
+                
+                // let lod_distance = []
+                // let lod_geometry = [20]
+
+                
                 let lod_visible = self.modelManager.modelList[modelType].lod_visible
                 var crowd = new Crowd({
                     camera: self.camera,
@@ -101,7 +108,7 @@ export class AvatarManager {
                     // 这部分还没整合到分别进行设置
                     let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
                     
-                    if(self.modelManager.modelList[modelType].pathModel=="assets/man_A_4.glb"){
+                    if(self.modelManager.modelList[modelType].pathModel=="assets/sim/man_A_4/sim.gltf"){
 
                         crowd.setColor(i00, [
                             20*Math.random(),
@@ -131,7 +138,7 @@ export class AvatarManager {
                         crowd.setObesity(i00, 1)
                         // crowd.setObesity(i00, 0.85+1.1*Math.random())
 
-                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/woman_A.gltf"){
+                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/sim/woman_A/sim.gltf"){
                         crowd.setColor(i00, [
                             0.1*Math.random(),
                             0.1*Math.random(),
@@ -160,7 +167,9 @@ export class AvatarManager {
                         // crowd.setObesity(i00, 0.85 + 1.1 * Math.random())
                     }
                 }
+                // crowd.visible=false
                 self.scene.add(crowd)
+                window.model.push(crowd)
                 window.crowd = crowd
                 crowd.init(glb.scene)
                 console.log(crowd)
