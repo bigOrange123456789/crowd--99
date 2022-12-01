@@ -307,12 +307,6 @@ export class modelManager {
                     9,
                     10,
                     12,
-                    14,
-                    15,
-                    16,
-                    17,
-                    18,
-                    19,
                     21,
                     22,
                     23,
@@ -1061,11 +1055,11 @@ export class modelManager {
             21 * 182,     //大看台2
             20 * 60,   //小看台1
             17 * 60,   //小看台2
-            300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
-            240,         //弧形看台2 
-            192,         //弧形看台3
-            152,    //弧形看台6
-            217,    //弧形看台5
+            // 300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
+            // 240,         //弧形看台2 
+            // 192,         //弧形看台3
+            // 152,    //弧形看台6
+            // 217,    //弧形看台5
         ]
         if (i0 < c[0]) {
             var col_count = 25
@@ -1300,11 +1294,16 @@ export class modelManager {
         let k = 0.5;
         PosRot.pos[0] += (k * parseInt(j0 / 3))
         PosRot.pos[2] += (k * (j0 % 3))
-        if (i0 < 9 * (10022)) {
+        if (i0 < 9 * (7802)) {
             return PosRot
         }
+        else if (i0 < 2220*3 + 9*7802 ) {
+            PosRot = this.getPosRot_e(parseInt((i0 - 9 * 7802) / 3 + 7802), modelType,scale);
+            PosRot.pos[2] += (k * (j0%3))
+            return PosRot 
+        }
         PosRot = this.getsitPos_e(parseInt((i0 - 9 * 10022) / 3), modelType,scale);
-        PosRot.pos[2] += (k * (i0%3))
+        PosRot.pos[2] += (k * (j0%3))
         return PosRot
     }
 
