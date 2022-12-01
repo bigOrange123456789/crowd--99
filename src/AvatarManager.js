@@ -108,7 +108,7 @@ export class AvatarManager {
                     // 这部分还没整合到分别进行设置
                     let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
                     
-                    if(self.modelManager.modelList[modelType].pathModel=="assets/man_A_4.glb"){
+                    if(self.modelManager.modelList[modelType].pathModel=="assets/sim/man_A_4/sim.gltf"){
 
                         crowd.setColor(i00, [
                             20*Math.random(),
@@ -138,7 +138,7 @@ export class AvatarManager {
                         crowd.setObesity(i00, 1)
                         // crowd.setObesity(i00, 0.85+1.1*Math.random())
 
-                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/woman_A.gltf"){
+                    }else if(self.modelManager.modelList[modelType].pathModel=="assets/sim/woman_A/sim.gltf"){
                         crowd.setColor(i00, [
                             0.1*Math.random(),
                             0.1*Math.random(),

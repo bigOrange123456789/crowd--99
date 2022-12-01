@@ -39,7 +39,7 @@ export class modelManager {
     }
 
     addModel(opt) {
-        // console.log("opt",opt)
+        console.log("opt.lod_visible",opt["pathModel"],opt["lod_visible"])
         var modelmessage = new modelMessage(
             opt.pathModel, 
             opt.pathAnima, 
@@ -417,7 +417,7 @@ export class modelManager {
                 "lod_visible": [
                     [
                         "CloW_A_body_geo1",
-                        19
+                        20
                     ],
                     [
                         "CloW_A_chenshanxie_geo2",
@@ -531,7 +531,7 @@ export class modelManager {
                     ],
                     [
                         "hair",
-                        19
+                        21
                     ],
                     [
                         "kouzi_geo",
@@ -563,7 +563,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_B_head_geo",
-                        18
+                        20
                     ]
                 ],
                 "useColorTag": [
@@ -653,7 +653,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_C_xiashen_geo",
-                        19
+                        20
                     ],
                     [
                         "Nail_geo",
@@ -722,7 +722,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_D_Body_geo1",
-                        19
+                        20
                     ],
                     [
                         "CloW_D_Hair_geo",
@@ -738,7 +738,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_D_ShangYi_geo_1",
-                        19
+                        22
                     ],
                     [
                         "CloW_D_ShangYi_geo_2",
@@ -746,7 +746,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_D_XieZi_geo",
-                        19
+                        15
                     ],
                     [
                         "head",
@@ -801,7 +801,7 @@ export class modelManager {
                 "lod_visible": [
                     [
                         "CloW_E_Body_geo1",
-                        19
+                        20
                     ],
                     [
                         "CloW_E_erhuan_geo",
@@ -829,7 +829,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_E_kuzi_geo",
-                        19
+                        21
                     ],
                     [
                         "CloW_E_meimao_geo",
@@ -845,7 +845,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_E_shangyi_geo",
-                        19
+                        22
                     ],
                     [
                         "CloW_E_teeth_geo",
@@ -853,7 +853,7 @@ export class modelManager {
                     ],
                     [
                         "CloW_E_xiezi_geo",
-                        19
+                        15
                     ]
                 ],
                 "useColorTag": [
@@ -1017,6 +1017,7 @@ export class modelManager {
             }
         }else{
             index=parseInt(index)
+            console.log(index)
             data[index].modelCount=9*(11123)
             this.addModel(data[index])
         }
