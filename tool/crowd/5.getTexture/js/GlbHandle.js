@@ -1,7 +1,7 @@
 //将glb分解为多个小文件
 function GlbHandle(){
     this.index=0;
-    this.fileName=name;
+    this.fileName="";
     this.download=new Download();
     this.myGlbSplit=new GlbSplit();
     this.myInDe=new InDe();
@@ -30,28 +30,33 @@ GlbHandle.prototype={
         // this.myInDe.process(this.resourceManager);//使用兴趣度进行排序
 
         //this.duplication.process(this.resourceManager);//模型去重
-
+        var scope=this
         var myMaterialHandle=new MaterialHandle();
         myMaterialHandle.init(this.resourceManager,this.fileName);
-        myMaterialHandle.process();
+        myMaterialHandle.getMap();
+        this.download.jsonDownload(
+            myMaterialHandle.texture_names,
+            "texture_names.json"
+        )
+        this.downloadMap(myMaterialHandle,function () {//下载贴图
+            myMaterialHandle.process();
+            scope.download.sceneDownload(glb.scene,"sim.gltf")
+        })
+
+
+        
 
         // console.log(this.resourceManager);
         // if(needCorrectName)this.correctName();
 
-        this.download.jsonDownload(//下载说明信息
-            this.resourceManager.resourceInfoGet(),"resourceInfo.json"
-        );
+        // this.download.jsonDownload(//下载说明信息
+        //     this.resourceManager.resourceInfoGet(),"resourceInfo.json"
+        // );
+        
+        
+        
 
-        console.log(opt)
-        console.log(needDownload)
-        if(needDownload){
-
-            var scope=this;
-            // this.downloadMap(myMaterialHandle,function () {//下载贴图
-                scope.downloadMaterial(scope)
-                // scope.downloadModel(scope.resourceManager.meshs)//下载网格
-            // });//纹理和网格分开下载
-        }
+        
 
 
     },
