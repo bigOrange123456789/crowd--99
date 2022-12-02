@@ -55,22 +55,19 @@ export class AvatarManager {
                     glb.scene.traverse(node => {
                         if (node instanceof THREE.Mesh || node instanceof THREE.SkinnedMesh) {
                             let name = node.name
-                            node.material.envMapIntensity = 0.3
-                            if (name == "CloM_A_head_geo" || name == "GW_man_Body_geo1") //尚未设置这个在modelManager中
-                                node.material.envMapIntensity = 0.1
+                            // node.material.envMapIntensity = 0.3
+                            // if (name == "CloM_A_head_geo" || name == "GW_man_Body_geo1") //尚未设置这个在modelManager中
+                            //     node.material.envMapIntensity = 0.1
 
-                            node.material.envMapIntensity = 0.01
-                            node.material.roughness = 1
-                            // node.material.color.r=0
-                            // node.material.color.g=0
-                            // node.material.color.b=0
+                            node.material.envMapIntensity = 0.1
+                            node.material.roughness = 0.5
                         }
                     })
 
                     let lod_distance_max = 17
                     let lod_distance = []
                     for (var i = 0; i < 19; i++)
-                        lod_distance.push((i + 1) * lod_distance_max / 19)
+                        lod_distance.push((i + 1) * lod_distance_max / 19+2)
                     lod_distance.push(lod_distance_max * 2.5)
                     lod_distance.push(lod_distance_max * 4)
                     console.log("lod_distance", lod_distance.length)
@@ -116,29 +113,29 @@ export class AvatarManager {
                         if (self.modelManager.modelList[modelType].pathModel == "assets/sim/man_A_4/sim.glb") {
 
                             crowd.setColor(i00, [
-                                2 * Math.random(),
-                                2 * Math.random(),
-                                2 * Math.random() - 1
+                                20 * Math.random(),
+                                20 * Math.random(),
+                                20 * Math.random() - 10
                             ], "CloM_A_kuzi_geo")
                             crowd.setColor(i00, [
-                                2 * Math.random(),
-                                2 * Math.random(),
-                                2 * Math.random() - 1
+                                20 * Math.random(),
+                                20 * Math.random(),
+                                20 * Math.random() - 10
                             ], "CloM_A_waitao_geo")
                             crowd.setColor(i00, [
-                                2 * Math.random(),
-                                2 * Math.random(),
-                                2 * Math.random() - 1
+                                20 * Math.random(),
+                                20 * Math.random(),
+                                20 * Math.random() - 10
                             ], "CloM_A_lingdai_geo")
                             crowd.setColor(i00, [
-                                2 * Math.random(),
-                                2 * Math.random(),
-                                2 * Math.random()
+                                20 * Math.random(),
+                                20 * Math.random(),
+                                20 * Math.random()
                             ], "CloM_A_Xiezi_geo")
                             crowd.setColor(i00, [
-                                2 * Math.random(),
-                                2 * Math.random(),
-                                2 * Math.random()
+                                20 * Math.random(),
+                                20 * Math.random(),
+                                20 * Math.random()
                             ], "CloM_A_Hair_geo")
                             crowd.setObesity(i00, 1)
                             // crowd.setObesity(i00, 0.85+1.1*Math.random())
@@ -200,7 +197,7 @@ export class AvatarManager {
             let i00 = Math.floor(i0 / modelCount)
             // let i00 = i0
 
-            var PosRot = this.modelManager.getPosRot_9e(i0, modelType,scale)
+            var PosRot = this.modelManager.getPosRot_9e(i0, modelType)
             var speed = PosRot.speed;
             var startTime = PosRot.startTime;
             crowd.setSpeed(i00, speed)

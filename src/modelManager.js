@@ -29,7 +29,7 @@ class modelMessage {
 
 export class modelManager {
     constructor() {//lod减少后至多加载5个模型
-        this.arr=[1,3,5,6]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.arr=[1,5]//[1,3,5,6]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
         this.pathModelName="sim.glb"
         this.pathLodGeoName="LOD/"
         this.pathTextureConfig="texture_names.json"
@@ -43,7 +43,6 @@ export class modelManager {
 
 
         this.init();
-        //this.getPosRot();
         
     }
 
@@ -307,6 +306,12 @@ export class modelManager {
                     9,
                     10,
                     12,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
                     21,
                     22,
                     23,
@@ -756,11 +761,11 @@ export class modelManager {
                     ],
                     [
                         "CloW_D_QunZi_geo",
-                        19
+                        22
                     ],
                     [
                         "CloW_D_ShangYi_geo_1",
-                        22
+                        21
                     ],
                     [
                         "CloW_D_ShangYi_geo_2",
@@ -1037,13 +1042,15 @@ export class modelManager {
             let arr = this.arr//[5,3,4]//[1,3,4,5]
             for (let i = 0; i < arr.length; i++) {
                 let config = data[arr[i]]
-                config.modelCount = Math.floor(9 * (11123) / arr.length)
+                config.modelCount = Math.floor( (9 * (11123) / arr.length)  )
+                config.modelCount = Math.floor( ( (11123) / arr.length)  )
                 this.addModel(config)
             }
         } else {
             index = parseInt(index)
-            console.log(index)
+            // console.log(index)
             data[index].modelCount = 9 * (11123)
+            data[index].modelCount =  (11123)
             this.addModel(data[index])
         }
     }
@@ -1055,11 +1062,11 @@ export class modelManager {
             21 * 182,     //大看台2
             20 * 60,   //小看台1
             17 * 60,   //小看台2
-            // 300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
-            // 240,         //弧形看台2 
-            // 192,         //弧形看台3
-            // 152,    //弧形看台6
-            // 217,    //弧形看台5
+            300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
+            240,         //弧形看台2 
+            192,         //弧形看台3
+            152,    //弧形看台6
+            217,    //弧形看台5
         ]
         if (i0 < c[0]) {
             var col_count = 25
@@ -1242,85 +1249,13 @@ export class modelManager {
         }
         return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
     }
-
-    getsitPos_e(i0, modelType,scale) {
-        var c = [//分组情况
-            15 * 182,     //大看台1
-            21 * 182,     //大看台2
-        ]
-        let animationTypeIndex = Math.floor(Math.random() * this.modelList[modelType].sitAnimationList.length);
-        var animationType = this.modelList[modelType].sitAnimationList[animationTypeIndex];
-        //console.log("animationType=",animationType)
-        var speed = Math.random() * 7 + 4;
-        var startTime = 1000 * Math.random();
-        // 添加坐在前面的一排在两个大看台（其他就暂时不添加了，这个全改调试要好久）
-        if (i0 < c[0]) {//大看台1
-            var row_count = 182
-            var row = i0 % row_count
-            var col = Math.floor(i0 / row_count) + 1
-            var position = [
-                1.5 * -30 - 1.5 * (col) * 1.9 - 0.15,
-                1.3 * col,//
-                0.82 * row - 75,
-            ]
-            var rotation = [0, -Math.PI * 0.5 + Math.PI, 0]
-        }
-        else {//大看台2
-            i0 -= (c[0])
-            var row_count = 182
-            var row = i0 % row_count
-            var col = Math.floor(i0 / row_count) + 1
-            var position = [
-                1.5 * 30 + 1.5 * col * 1.9 + 0.15,
-                1.3 * col,
-                0.82 * row - 75,
-            ]
-            var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
-        }
-        //console.log(modelType,this.modelList[modelType].pathAnima)
-        if (this.modelList[modelType].pathAnima.indexOf("woman_A") != -1 || this.modelList[modelType].pathAnima.indexOf("woman_C") != -1 ) {
-            // console.log("yes")
-            console.log(modelType,this.modelList[modelType].pathAnima)
-            position[1] -= scale[1]*1.25
-        }
-        else {
-            position[1] -= 0.15
-        }
-        return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
-    }
-    getPosRot_9e(i0, modelType,scale) {
+    getPosRot_9e(i0, modelType) {
+        return this.getPosRot_e(i0,modelType)
         var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
         var j0 = i0 % 9;
         let k = 0.25;
         PosRot.pos[0] += (k * parseInt(j0 / 3))
         PosRot.pos[2] += (k * (j0 % 3))
-        if (i0 < 9 * (10022)) {
-            return PosRot
-        }
-        PosRot = this.getsitPos_e(parseInt((i0 - 9 * 10022) / 3), modelType,scale);
-        PosRot.pos[2] += (k * (i0%3))
         return PosRot
-    }
-
-    getPosRot() {
-        for (let i = 0; i < this.sumModelCount; i++) {
-            let i0 = i % this.modelIndex;
-            let modelType = i0// Math.floor(this.modelIndex * Math.random());
-            let PosRot = this.getPosRot_9e(i);
-            while (!this.modelList[modelType].setPosRotList(PosRot)) {
-                modelType = Math.floor(this.modelIndex * Math.random());
-            };
-            if (i <= 1250 * 9 / this.arr.length) {
-                // 运动的
-                // console.log(modelType,this.modelList[modelType].walkAnimationList[animationTypeIndex])
-                let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].walkAnimationList.length);
-                this.modelList[modelType].animtionTypes.push(this.modelList[modelType].walkAnimationList[animationTypeIndex]);
-            }
-            else {
-                //静止的
-                let animationTypeIndex = Math.floor(Math.random()*this.modelList[modelType].standAnimationList.length);
-                this.modelList[modelType].animtionTypes.push(this.modelList[modelType].standAnimationList[animationTypeIndex]);
-            }
-        }
     }
 }

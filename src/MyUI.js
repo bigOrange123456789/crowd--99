@@ -37,6 +37,7 @@ class MyUI{
                 var oButton=document.createElement('p');//按钮
                 oButton.innerHTML=html;
                 oButton.style.cssText='font-size:'+size+'px;'//字体大小
+                    +'opacity: 0.5;'
                     +'width:'+width+'px;height:'+height+'px;'//按钮大小
                     +'background:'+color1+';'//字体颜色
                     +'color:white;'//按钮颜色
