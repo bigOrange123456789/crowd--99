@@ -1,6 +1,6 @@
 path_in="../../../dist/assets/textures/"
-path_out="../../../dist/assets/textures_sim2/"
-compress_ratio=0.01
+path_out="../../../dist/assets/textures_sim1/"
+compress_ratio=0.1
 from os import listdir
 from PIL import Image
 

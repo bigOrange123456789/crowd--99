@@ -61,6 +61,66 @@ export class AvatarManager {
 
                             node.material.envMapIntensity = 0.1
                             node.material.roughness = 0.5
+
+                            if(name=="CloM_A_Hair_geo"){//man_A
+                                // alert(name)
+                                console.log(node.material.color)
+                                node.material.color.r=20
+                                node.material.color.g=20
+                                node.material.color.b=20
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_A_hair_geo"){//man_b
+                                console.log(node.material.color)
+                                node.material.color.r=10
+                                node.material.color.g=10
+                                node.material.color.b=10
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_C_hair_geo"){//man_b
+                                node.material.color.r=10
+                                node.material.color.g=10
+                                node.material.color.b=10
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            // console.log(name)
+                            if(name=="CloW_D_Hair_geo"){//man_b
+                                // alert(123)
+                                node.material.color.r=30
+                                node.material.color.g=30
+                                node.material.color.b=30
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+
+                            
                         }
                     })
 
@@ -132,29 +192,34 @@ export class AvatarManager {
                                 20 * Math.random(),
                                 20 * Math.random()
                             ], "CloM_A_Xiezi_geo")
-                            crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random()
-                            ], "CloM_A_Hair_geo")
+                            // crowd.setColor(i00, [
+                            //     20 * Math.random(),
+                            //     20 * Math.random(),
+                            //     20 * Math.random()
+                            // ], "CloM_A_Hair_geo")
+                            // crowd.setColor(i00, [
+                            //     10,
+                            //     10,
+                            //     10
+                            // ], "CloM_A_Hair_geo")
                             crowd.setObesity(i00, 1)
                             // crowd.setObesity(i00, 0.85+1.1*Math.random())
 
                         } else if (self.modelManager.modelList[modelType].pathModel == "assets/sim/woman_A/sim.glb") {
+                            // crowd.setColor(i00, [
+                            //     0.1 * Math.random(),
+                            //     0.1 * Math.random(),
+                            //     0.1 * Math.random()
+                            // ], "CloW_A_hair_geo")
                             crowd.setColor(i00, [
-                                0.1 * Math.random(),
-                                0.1 * Math.random(),
-                                0.1 * Math.random()
-                            ], "CloW_A_hair_geo")
-                            crowd.setColor(i00, [
-                                15 * Math.random(),
-                                15 * Math.random(),
-                                15 * Math.random()
+                                45 * Math.random(),
+                                45 * Math.random(),
+                                45 * Math.random()
                             ], "CloW_A_kuzi_geo")
                             crowd.setColor(i00, [
-                                5 * Math.random(),
-                                5 * Math.random(),
-                                5 * Math.random()
+                                45 * Math.random(),
+                                45 * Math.random(),
+                                45 * Math.random()
                             ], "CloW_A_xifu_geo")
                             crowd.setObesity(i00, 1)
                         } else {
