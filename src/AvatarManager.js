@@ -60,7 +60,8 @@ export class AvatarManager {
                             //     node.material.envMapIntensity = 0.1
 
                             node.material.envMapIntensity = 0.1
-                            node.material.roughness = 0.5
+                            node.material.roughness = 0.5//0.5
+                            node.material.metalness=0.1
 
                             if(name=="CloM_A_Hair_geo"){//man_A
                                 // alert(name)
@@ -104,7 +105,6 @@ export class AvatarManager {
                                 node.material.envMapIntensity = 0.1
                                 node.material.metalness=1
                             }
-                            // console.log(name)
                             if(name=="CloW_D_Hair_geo"){//man_b
                                 // alert(123)
                                 node.material.color.r=30
