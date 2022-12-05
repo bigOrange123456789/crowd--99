@@ -120,6 +120,19 @@ export class AvatarManager {
                                 node.material.metalness=1
                             }
 
+                            if(
+                                name=="CloM_A_head_geo"//1
+                                ||name=="GW_man_Body_geo1"//1
+                                ||name=="head"//3
+                                ||name=="CloW_A_body_geo1"//3
+                                ||name=="CloW_C_head_geo"//5
+                                ||name=="body1"//5
+                                ||name=="CloW_D_Body_geo1"//6
+                                ){
+                                node.material.scattering=true
+                            }
+
+
                             
                         }
                     })
