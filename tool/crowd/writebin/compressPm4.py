@@ -175,8 +175,8 @@ class Meshes:
 
 def process(index):
     name = str(index)+".json.pack.json"
-    inpath = "in/"+name
-    outpath="out/"
+    inpath = "data/"+name
+    outpath="data/"
     
     print("输入数据路径:", inpath)
     file = open(inpath)
