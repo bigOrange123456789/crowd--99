@@ -26,6 +26,15 @@ export class Loader{
             canvas:this.canvas,
             preserveDrawingBuffer:true
         })
+        ////////////////////////////////////////////////////////////////////////
+        this.renderer.physicallyCorrectLights = true //正确的物理灯光照射
+        this.renderer.outputEncoding = THREE.sRGBEncoding //采用sRGBEncoding 
+        // this.renderer.toneMapping = THREE.ACESFilmicToneMapping //aces标准
+        // this.renderer.toneMappingExposure = 1//1.25 //调映射曝光度
+        // this.renderer.shadowMap.enabled = true //阴影
+        // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap //阴影类型（处理运用Shadow Map产生的阴影锯齿）
+        ////////////////////////////////////////////////////////////////////////
+
         this.renderer.setSize(this.body.clientWidth,this.body.clientHeight)
         this.renderer.setPixelRatio(window.devicePixelRatio)
         window.renderer=this.renderer
@@ -42,7 +51,7 @@ export class Loader{
 
         this.scene = new THREE.Scene()
 
-        this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.1,5000)
+        this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.001,5000)
         this.camera.position.set(-43.486343682038736,  2.127206120237504,  -8.698678933445201)
         this.camera.lookAt(0,0,0)
         // this.camera.position.set( -0.6821012446503002,  11.0913040259869,  -0.2459109391034793)
