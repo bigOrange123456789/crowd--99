@@ -1,7 +1,7 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Crowd } from '../lib/crowd/Crowd.js'//let Crowd=Pack// 
 import { CrowdMesh } from '../lib/crowd/CrowdMesh.js'//用于预加载动画数据
-import { UI } from './UI.js'
+import { UI,UICrowd } from './UI.js'
 import { MaterialProcessor1, MaterialProcessor2, MaterialProcessor3 } from './MaterialProcessor.js'
 import * as THREE from "three";
 import { modelManager } from "./modelManager.js";
@@ -23,25 +23,170 @@ export class AvatarManager {
 
         this.modelManager = new modelManager();
 
-        // this.load_model1()
+        if(true){
+            this.load_model()
+        }else{
+            this.test()
+        }
+        
+    }
+    test() {
+        this.modelManager = new modelManager();
+        var self = this
+        window.model = []
+        function load_next(modelType) {
+            if (modelType < self.modelManager.modelIndex) {
+                console.log(self.modelManager.modelList[modelType].pathModel)
+                new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel, async (glb) => {
+                    glb.scene.traverse(node => {
+                        if (node instanceof THREE.Mesh || node instanceof THREE.SkinnedMesh) {
+                            let name = node.name
+                            // node.material.envMapIntensity = 0.3
+                            // if (name == "CloM_A_head_geo" || name == "GW_man_Body_geo1") //尚未设置这个在modelManager中
+                            //     node.material.envMapIntensity = 0.1
 
-        // this.load_model2()
-        // this.load_Char47()
-        // if(window.id==0){
-        //     this.load_man_A()
-        // }else{
+                            node.material.envMapIntensity = 0.1
+                            node.material.roughness = 0.5//0.5
+                            node.material.metalness=0.1
 
-        // }
-        this.load_model()
-        // 
+                            if(name=="CloM_A_Hair_geo"){//man_A
+                                // alert(name)
+                                console.log(node.material.color)
+                                node.material.color.r=20
+                                node.material.color.g=20
+                                node.material.color.b=20
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_A_hair_geo"){//man_b
+                                console.log(node.material.color)
+                                node.material.color.r=10
+                                node.material.color.g=10
+                                node.material.color.b=10
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_C_hair_geo"){//man_b
+                                node.material.color.r=10
+                                node.material.color.g=10
+                                node.material.color.b=10
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_D_Hair_geo"){//man_b
+                                // alert(123)
+                                node.material.color.r=30
+                                node.material.color.g=30
+                                node.material.color.b=30
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+
+                            if(
+                                name=="CloM_A_head_geo"//1
+                                ||name=="GW_man_Body_geo1"//1
+                                ||name=="head"//3
+                                ||name=="CloW_A_body_geo1"//3
+                                ||name=="CloW_C_head_geo"//5
+                                ||name=="body1"//5
+                                ||name=="CloW_D_Body_geo1"//6
+                                ){
+                                node.material.scattering=true
+                            }
 
 
-        // setTimeout(() => {
-        //     // this.load_man_D()
-        // }, 1000)
-        //this.load_woman_A()
-        // this.load_woman_B()
-        new UI(this.scene, new THREE.Object3D())
+                            
+                        }
+                    })
+
+                    let lod_visible = self.modelManager.modelList[modelType].lod_visible
+                    var crowd = new Crowd({
+                        camera: self.camera,
+                        count: 3000,
+                        animPathPre: self.modelManager.modelList[modelType].pathAnima,
+                        pathLodGeo: self.modelManager.modelList[modelType].pathLodGeo,
+                        pathTextureConfig: self.modelManager.modelList[modelType].pathTextureConfig,
+                        assets: self.assets,
+                        useColorTag: self.modelManager.modelList[modelType].useColorTag,
+                        lod_distance: [],
+                        lod_geometry: [20],
+                        lod_set: () => {
+                            for (let i = 0; i < crowd.children.length; i++) {
+                                var crowdGroup0 = crowd.children[i]
+                                for (let j = 0; j < lod_visible.length; j++) {
+                                    if (i >= lod_visible[j][1]) {
+                                        var mesh = crowdGroup0.getMesh(lod_visible[j][0])
+                                        if (mesh) mesh.visible = false
+                                    }
+                                }
+
+                            }
+                        },
+                    })
+
+                    for(let i=0;i<200;i++){
+                        for(let j=0;j<15;j++){
+                            let i00=i*15+j
+                            crowd.setSpeed(i00, 5)
+                            crowd.setScale(i00, [1,1,1])
+                            crowd.setMoveMaxLength(i00, 0)
+                            crowd.setPosition(i00, [i*2,0,j*2])
+                            crowd.setRotation(i00, [0,0,0])
+                            crowd.setAnimation(i00,i%5 , j)
+                            crowd.lodList[i]=i00<100?0:-1
+            
+                        }
+                    }
+                    // self.setParam(crowd, modelType, self.modelManager.modelIndex)
+                    for (var i00 = 0; i00 < crowd.count; i00++) {
+                        // 这部分还没整合到分别进行设置
+                        crowd.setObesity(i00, 1)
+                    }
+                    // crowd.visible=false
+                    self.scene.add(crowd)
+                    window.model.push(crowd)
+                    window.crowd = crowd
+                    crowd.init(glb.scene)
+                    console.log(crowd)
+
+                    crowd.myLodController.open=false
+                    
+                    // new UI(this.scene, new THREE.Object3D())
+                    setTimeout(()=>{
+                        new UICrowd(crowd)
+                    },3000)
+                    
+                    
+
+                    load_next(modelType + 1)
+                })
+            }
+        }
+        load_next(0)
     }
 
     load_model() {
@@ -179,6 +324,7 @@ export class AvatarManager {
                         },
                     })
                     self.setParam(crowd, modelType, self.modelManager.modelIndex)
+                    
                     for (var i00 = 0; i00 < crowd.count; i00++) {
                         // 这部分还没整合到分别进行设置
                         let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
@@ -254,11 +400,16 @@ export class AvatarManager {
                     window.crowd = crowd
                     crowd.init(glb.scene)
                     console.log(crowd)
+
+                    // new UI(this.scene, new THREE.Object3D())
+                    
+
                     load_next(modelType + 1)
                 })
             }
         }
         load_next(0)
+        new UI(this.scene, new THREE.Object3D())
     }
 
 
