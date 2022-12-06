@@ -28,7 +28,7 @@ export class AvatarManager {
         }else{
             this.test()
         }
-        
+        new UI(this.scene, new THREE.Object3D())
     }
     test() {
         this.modelManager = new modelManager();
@@ -154,7 +154,7 @@ export class AvatarManager {
                             crowd.setSpeed(i00, 5)
                             crowd.setScale(i00, [1,1,1])
                             crowd.setMoveMaxLength(i00, 0)
-                            crowd.setPosition(i00, [i*2,0,j*2])
+                            crowd.setPosition(i00, [i*2-30,0,j*2-10])
                             crowd.setRotation(i00, [0,0,0])
                             crowd.setAnimation(i00,i%5 , j)
                             crowd.lodList[i]=i00<100?0:-1
@@ -395,10 +395,12 @@ export class AvatarManager {
                         crowd.setObesity(i00, 1)
                     }
                     // crowd.visible=false
-                    self.scene.add(crowd)
+                    
                     window.model.push(crowd)
                     window.crowd = crowd
-                    crowd.init(glb.scene)
+                    crowd.init(glb.scene,()=>{
+                        self.scene.add(crowd)
+                    })
                     console.log(crowd)
 
                     // new UI(this.scene, new THREE.Object3D())
@@ -409,7 +411,7 @@ export class AvatarManager {
             }
         }
         load_next(0)
-        new UI(this.scene, new THREE.Object3D())
+        
     }
 
 
