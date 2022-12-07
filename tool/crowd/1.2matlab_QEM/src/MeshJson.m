@@ -29,6 +29,10 @@ classdef MeshJson < handle
         recordSize
 
         meshId %由group对象设置的mesh对象编号
+
+        rimE_flag   %标记每一条边是否在网格面的边缘
+        rimV_flag   %标记每一个点是否在网格面的边缘
+
     end
     properties(Constant,Hidden)
       m34=[1 0 0 0;0 1 0 0;0 0 1 0]
@@ -60,6 +64,46 @@ classdef MeshJson < handle
                 end
             end
         end
+        function computeRimE(o)
+            ne=o.ne();
+            e_flag0=zeros(1,ne);
+            for i =1:ne
+                a=o.E(i,1);
+                b=o.E(i,2);
+                f=zeros(size(o.F));
+                f(:)=o.F(:);
+                f(f == b) = a;  %边中e2的索引现在都指向e1
+                
+                temp=sum(f == a, 2) ;
+                e_flag=temp>1 ;
+                %disp(a);
+                %disp(b);
+                %disp([a,b,sum(e_flag)]);
+                %disp([a,b]);
+                %disp(e_flag);
+                %e_flag0=e_flag0+e_flag;
+                e_flag0(i)=sum(temp>1)<2;
+                
+            end
+            o.rimE_flag=e_flag0;
+        end
+        function computeRimV(o)
+            o.computeRimE();
+            nv=o.nv();
+            v_flag0=zeros(1,nv);
+
+            e_flag0=o.rimE_flag;
+            ne=o.ne();
+            for i =1:ne
+                if e_flag0(i)==1
+                    a=o.E(i,1);
+                    b=o.E(i,2);
+                    v_flag0(a)=1;
+                    v_flag0(b)=1;
+                end
+            end
+            o.rimV_flag=v_flag0;
+        end
         function o = MeshJson(file_name)
             o.meshId=0;
             o.matrix0=eye(4);
@@ -81,10 +125,11 @@ classdef MeshJson < handle
             o.skinWeight=reshape(data.skinWeight,4,[])';
             o.skinIndex=reshape(data.skinIndex,4,[])';  %'
 
+            
             %{
             %%#####测试案例########
             o.V=[0,0,0; 5,6,9; 9,1,0; 1,7,9;     9,6,1; 0,8,0; 9,1,8; 9,1,6;  3,1,9 ];
-            o.F=[1,2,3; 2,4,5; 2,3,5; 3,5,6;     4,5,7; 6,7,8; 5,6,8; 7,8,9];
+            o.F=[1,2,3; 2,4,5; 2,3,5; 3,5,6;     4,5,7; 5,6,8; 5,7,8; 7,8,9];
             o.uv=[0,0; 5,6; 9,1; 1,7;     9,6; 0,8; 9,1; 9,1;  3,1 ];
             o.skinWeight=[0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
             o.skinIndex= [0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
@@ -96,6 +141,9 @@ classdef MeshJson < handle
             o.list=o.mergeVertex();
             o.computeNormal();
             o.computeEdge();
+            o.computeRimV();
+            %disp(o.E);
+            %error("test!")
             o.print=0;
             o.voxel_size=min(o.box("size"))/10;
             o.flag0=zeros(o.nv(),1);
@@ -592,7 +640,7 @@ classdef MeshJson < handle
                     a = a'; %'
                 end
                 if size(a,1)<3 && size(a,2)==3
-                    a = a';
+                    a = a';%'
                 end
                 if size(a,1)<=3 && size(a,2)>=3 && sum(abs(a(:,3)))==0
                     % for flat triangles

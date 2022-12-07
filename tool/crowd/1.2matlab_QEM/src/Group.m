@@ -44,9 +44,6 @@ classdef Group < handle
                 %mesh.check();
                 meshId=meshId+1;
                 this.children=setfield(this.children,name,mesh);
-                %this.names(size(this.names,1)+1)='aa';
-                %this.names(size(this.names,1)+1)='CloM_A_Eye_lash_geo';
-                %this.names(size(this.names,1)+1)=name;
                 this.names=strcat(this.names,"^",name);
             end
             this.listSim=[];
@@ -107,6 +104,7 @@ classdef Group < handle
         function simplify_save(this,surplus,number)
             nf0=this.nf();
             step=round( (nf0-surplus)/(number-1) );
+            disp(strcat("三角面个数:",num2str(nf0) ));
             
             %% Start add waitbar
             hWaitbar = waitbar(0, 'simplify,wait...', 'CreateCancelBtn', 'delete(gcbf)');
@@ -130,7 +128,6 @@ classdef Group < handle
                     end
                 end
                 
-                %min_name="CloM_A_Eye_lash_geo"
                 if min_name~=""
                     
                     mesh=getfield(this.children,min_name);
@@ -147,9 +144,12 @@ classdef Group < handle
                 waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 4) * 100), '%']);
                 if nf0-nf>pack_index*step
                     this.path=strcat('data2/',string(number-pack_index),'.json');
-                    disp([this.path,num2str(round(compT, 4) * 100), '%']);
-                    this.download2();
+                    disp([this.path,strcat(num2str(round(compT, 4) * 100),'%'),strcat("三角面个数:",num2str(nf))]);
+                    
+                    
+                    this.downloadPack();
                     if pack_index>=number-1
+                        this.download2();
                         disp("finish");
                         break;
                     end
@@ -192,24 +192,8 @@ classdef Group < handle
             fprintf(file,'%s',str);
             fclose(file);
         end
-        function download2(this)
-            disp(strcat("start download:",this.path));
-            
-            this.rectifyindex2();%现在还不确定在中间是否能够去冗余
-            model_result=struct();
-            cell0=fieldnames(this.children);
-            for i = 1:size(cell0,1)
-                name=cell2mat(cell0(i));
-                mesh=getfield(this.children,name);
-                json0=mesh.getJson2();
-                model_result=setfield(model_result,name,json0);
-            end
-            str=savejson('',model_result);
-            file=fopen(this.path,'w+');
-            fprintf(file,'%s',str);
-            fclose(file);
-
-            disp(strcat("start download:",this.path,".pack.json"));
+        function downloadPack(this)
+            disp(strcat("start pack download:",this.path,".pack.json"));
 
             model_result=struct();
             cell0=fieldnames(this.children);
@@ -223,6 +207,25 @@ classdef Group < handle
             model_result=setfield(model_result,"names",this.names);
             str=savejson('',model_result);
             file=fopen(strcat(this.path,".pack.json"),'w+');
+            fprintf(file,'%s',str);
+            fclose(file);
+
+            disp("end pack download");
+        end
+        function download2(this)
+            disp(strcat("start download:",this.path));
+            
+            this.rectifyindex2(); %%删除那些没有被引用的顶点
+            model_result=struct();
+            cell0=fieldnames(this.children);
+            for i = 1:size(cell0,1)
+                name=cell2mat(cell0(i));
+                mesh=getfield(this.children,name);
+                json0=mesh.getJson2();
+                model_result=setfield(model_result,name,json0);
+            end
+            str=savejson('',model_result);
+            file=fopen(this.path,'w+');
             fprintf(file,'%s',str);
             fclose(file);
 

@@ -23,7 +23,7 @@ export class AvatarManager {
 
         this.modelManager = new modelManager();
 
-        if(true){
+        if(false){
             this.load_model()
         }else{
             this.test()
