@@ -78,7 +78,7 @@
             "CloM_A_Hair_geo"
         ],
         "walkAnimationList": [
-            11
+            10
         ],
         "sitAnimationList": [
             14,
@@ -193,15 +193,34 @@
             "CloM_A_Hair_geo"
         ],
         "walkAnimationList": [
-            11
+            10
         ],
         "sitAnimationList": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            12,
             14,
             15,
             16,
             17,
             18,
-            19
+            19,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27
         ],
         "standAnimationList": [
             0,
@@ -377,7 +396,7 @@
             ],
             [
                 "CloW_A_kuzi_geo",
-                20
+                21
             ],
             [
                 "CloW_A_Nail_geo",
@@ -397,7 +416,7 @@
             ],
             [
                 "head",
-                20
+                21
             ]
         ],
         "useColorTag": [
@@ -589,7 +608,7 @@
             ],
             [
                 "CloW_C_xiashen_geo",
-                20
+                21
             ],
             [
                 "Nail_geo",
@@ -660,7 +679,7 @@
             ],
             [
                 "CloW_D_Hair_geo",
-                19
+                20
             ],
             [
                 "CloW_D_Nail_geo1",
@@ -676,7 +695,7 @@
             ],
             [
                 "CloW_D_ShangYi_geo_2",
-                19
+                20
             ],
             [
                 "CloW_D_XieZi_geo",

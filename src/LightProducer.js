@@ -32,9 +32,10 @@ class LightProducer{
         // scene.add(rectLightHelper);
 
         // const light1=new THREE.Object3D()
-        scene.add(
-            this.getSpotGroup()
-        )
+        setTimeout(()=>{
+            scene.add(this.getSpotGroup())
+        },3000)
+        
         // light1.
 
     }

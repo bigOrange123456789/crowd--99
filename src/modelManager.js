@@ -96,14 +96,14 @@ export class modelManager {
             let arr = this.arr//[5,3,4]//[1,3,4,5]
             for (let i = 0; i < arr.length; i++) {
                 let config = data[arr[i]]
-                config.modelCount = Math.floor( (9 * (11123) / arr.length)  )
+                config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
                 // config.modelCount = Math.floor( ( (11123) / arr.length)  )
                 this.addModel(config)
             }
         } else {
             index = parseInt(index)
             // console.log(index)
-            data[index].modelCount = 9 * (11123)
+            data[index].modelCount = 8 * (11123)
             // data[index].modelCount =  (11123)
             this.addModel(data[index])
         }
@@ -122,7 +122,7 @@ export class modelManager {
             152,    //弧形看台6
             217,    //弧形看台5
         ]
-        if (i0 < c[0]) {
+        if (i0 < c[0]) {//运动
             var col_count = 25
             var row_count = 50
             var i = i0 % col_count
@@ -153,7 +153,7 @@ export class modelManager {
                 var col = Math.floor(i0 / row_count) + 1
                 var position = [
                     1.5 * -31 - 1.5 * (col) * 1.9,
-                    1.3 * col,//
+                    1.28 * col,//
                     0.82 * row - 75,
                 ]
                 var rotation = [0, -Math.PI * 0.5 + Math.PI, 0]
@@ -165,7 +165,7 @@ export class modelManager {
                 var col = Math.floor(i0 / row_count) + 1
                 var position = [
                     1.5 * 31 + 1.5 * col * 1.9,
-                    1.3 * col,
+                    1.28 * col,
                     0.82 * row - 75,
                 ]
                 var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
@@ -305,11 +305,18 @@ export class modelManager {
     }
     getPosRot_9e(i0, modelType) {
         // return this.getPosRot_e(i0,modelType)
-        var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
-        var j0 = i0 % 9;
-        let k = 0.25;
-        PosRot.pos[0] += (k * parseInt(j0 / 3))
-        PosRot.pos[2] += (k * (j0 % 3))
+        // var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
+        // var j0 = i0 % 9;
+        // let k = 0.25;
+        // PosRot.pos[0] += (k * parseInt(j0 / 3))
+        // PosRot.pos[2] += (k * (j0 % 3))
+        // return PosRot
+
+        var PosRot = this.getPosRot_e(parseInt(i0 / 8), modelType)
+        var j0 = i0 % 8;
+        let k = 0.67;
+        PosRot.pos[0] += (k * parseInt(j0 / 2))-1
+        PosRot.pos[2] += ((k-0.3) * (j0 % 2))
         return PosRot
     }
 }

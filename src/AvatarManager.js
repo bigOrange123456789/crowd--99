@@ -23,7 +23,7 @@ export class AvatarManager {
 
         this.modelManager = new modelManager();
 
-        if(false){
+        if(true){
             this.load_model()
         }else{
             this.test()
@@ -282,13 +282,15 @@ export class AvatarManager {
                         }
                     })
 
-                    let lod_distance_max = 17
+                    let lod_distance_max = 10
                     let lod_distance = []
                     for (var i = 0; i < 19; i++)
-                        lod_distance.push((i + 1) * lod_distance_max / 19+2)
-                    lod_distance.push(lod_distance_max * 2.5)
-                    lod_distance.push(lod_distance_max * 4)
+                        lod_distance.push((i + 1) * lod_distance_max / 19)
+                    // lod_distance[lod_distance.length-1]=lod_distance_max * 2
+                    lod_distance.push(lod_distance_max * 2)   //最低精度模型
+                    lod_distance.push(lod_distance_max * 9)     //多个四面体
                     console.log("lod_distance", lod_distance.length)
+
 
                     let lod_geometry = []
                     for (var i = 0; i <= 20; i++)//20..0
@@ -422,7 +424,7 @@ export class AvatarManager {
                 Math.random() * 0.3 + 0.85,
                 1,
             ]
-            for (var i = 0; i < 3; i++)scale[i] *= 0.34
+            for (var i = 0; i < 3; i++)scale[i] *= 0.5
 
             if (i0 % modelCount != modelType) continue
             let i00 = Math.floor(i0 / modelCount)
@@ -438,8 +440,8 @@ export class AvatarManager {
             let animtionType = PosRot.ani;
             let walkAnimationlen = this.modelManager.modelList[modelType].walkAnimationList.length;
             for (let walkAnimation = 0; walkAnimation < walkAnimationlen; walkAnimation++) {
-                if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]) {
-                    crowd.setMoveMaxLength(i00, 2)
+                if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]&&animtionType!==10) {
+                    crowd.setMoveMaxLength(i00, 1.5)
                     break;
                 }
             }

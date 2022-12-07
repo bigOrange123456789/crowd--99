@@ -59,15 +59,16 @@ export class Loader{
         window.camera=this.camera
         
         this.scene.add(this.camera)
-        this.orbitControl = new MapControls(this.camera,this.renderer.domElement)
-        // this.orbitControl = new OrbitControls(this.camera,this.renderer.domElement)
-        new LightProducer(this.scene)
+        // this.orbitControl = new MapControls(this.camera,this.renderer.domElement)
+        this.orbitControl = new OrbitControls(this.camera,this.renderer.domElement)
         
+        
+        new Building(this.scene,this.camera)
         this.animate = this.animate.bind(this)
         requestAnimationFrame(this.animate)
 
         new AvatarManager(this.scene,this.camera)
-        new Building(this.scene,this.camera)
+        new LightProducer(this.scene)
         this.autoMove=this.wander2()
         var scope=this
         setTimeout(()=>{
