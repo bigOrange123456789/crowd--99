@@ -173,8 +173,13 @@ classdef Group < handle
         end
     end%methods(Hidden)
     methods(Static)
-        function process_save(inPath,surplus,pack_number)
+        function process_save(inPath,percentage,pack_number)
             avatarGroup=Group(inPath);
+            if percentage<=1 %输入的是百分比
+                surplus=round( percentage*avatarGroup.nf() );
+            else %输入的是三角面的个数
+                surplus=round( percentage );
+            end
             %avatarGroup.children.mesh0.download();
             avatarGroup.simplify_save(surplus,pack_number);
         end

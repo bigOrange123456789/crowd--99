@@ -80,12 +80,12 @@ classdef QEMJson < handle
                 for i=1:nv
                     if number(i)==0
                         disp("number(i)==0");
-                    else
-                        Q(:,:,i)=Q(:,:,i)/number(i);
+                    %else
+                    %    Q(:,:,i)=Q(:,:,i)/number(i);
                     end
-                    if o.mesh.rimV_flag(i)==1
-                        Q(:,:,i)=Q(:,:,i)+99999;
-                    end
+                    %if o.mesh.rimV_flag(i)==1
+                    %    Q(:,:,i)=Q(:,:,i)+99999;
+                    %end
                 end
                 %{%}
             end
@@ -101,6 +101,9 @@ classdef QEMJson < handle
                 e1=E(:,1);% ne*2 -> ne*1
                 e2=E(:,2);
                 QEdge = Q(:,:,e1) + Q(:,:,e2);% Q:4*4*nv -> QEdge:4*4*ne
+                if o.mesh.rimV_flag(e1)+o.mesh.rimV_flag(e2)==1 %如果这条边一个顶点在边缘,另外一个顶点不在边缘
+                    QEdge=QEdge+99999;
+                end
             end
             
             %3.计算每个边的代价
@@ -126,7 +129,27 @@ classdef QEMJson < handle
                 cost(:,1)=o.get_costi(v(:,1,:),QEdge);  % ne*1
                 cost(:,2)=o.get_costi(v(:,2,:),QEdge);
                 cost(:,3)=o.get_costi(v(:,3,:),QEdge);
-            end
+                %%%%%%%%%%%%%%%%%%%%%%%%开始判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                infinity0=1999999;
+                for i =1:mesh.ne()
+                    a=o.mesh.rimV_flag( mesh.E(i,1) );
+                    b=o.mesh.rimV_flag( mesh.E(i,2) );
+                    if a==1 && b==0
+                        cost(i,1)=cost(i,1)+infinity0;%0;
+                        cost(i,2)=cost(i,2)+infinity0;
+                        cost(i,3)=cost(i,3)+infinity0/2;
+                    elseif a==0 && b==1
+                        cost(i,1)=cost(i,1)+infinity0;
+                        cost(i,2)=cost(i,2)+infinity0;%0;
+                        cost(i,3)=cost(i,3)+infinity0/2;
+                    elseif a==1 && b==1
+                        cost(i,1)=cost(i,1)+infinity0/20;
+                        cost(i,2)=cost(i,2)+infinity0/20;
+                        cost(i,3)=cost(i,3)+infinity0/20;
+                    end
+                end
+                %%%%%%%%%%%%%%%%%%%%%%%%完成判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            end  %getcost
             
         end%pretreatment
         function mesh=deleteEdge(o,k,mesh, vidx)
@@ -211,6 +234,30 @@ classdef QEMJson < handle
             o.cost(pair,1) =o.get_costi(pair_v1,o.QEdge(:,:,pair));
             o.cost(pair,2) =o.get_costi(pair_v2,o.QEdge(:,:,pair));
             o.cost(pair,3) =o.get_costi(pair_vm,o.QEdge(:,:,pair));
+
+            %%%%%%%%%%%%%%%%%%%%%%%%开始判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            infinity0=1999999;
+            for i =1:mesh.ne()
+                if pair(i)  %如果这个点与e1相关
+                    a=o.mesh.rimV_flag( mesh.E(i,1) );
+                    b=o.mesh.rimV_flag( mesh.E(i,2) );
+                    if a==1 && b==0
+                        o.cost(i,1)=o.cost(i,1)+infinity0; %0;
+                        o.cost(i,2)=o.cost(i,2)+infinity0;
+                        o.cost(i,3)=o.cost(i,3)+infinity0/2;
+                    elseif a==0 && b==1
+                        o.cost(i,1)=o.cost(i,1)+infinity0;
+                        o.cost(i,2)=o.cost(i,2)+infinity0; %0;
+                        o.cost(i,3)=o.cost(i,3)+infinity0/2;
+                    elseif a==1 && b==1
+                        o.cost(i,1)=o.cost(i,1)+infinity0/20;
+                        o.cost(i,2)=o.cost(i,2)+infinity0/20;
+                        o.cost(i,3)=o.cost(i,3)+infinity0/20;
+                    end
+                end
+            end
+            %%%%%%%%%%%%%%%%%%%%%%%%完成判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
         end%deleteEdge
     end% methods
     methods(Static)

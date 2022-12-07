@@ -671,14 +671,17 @@ classdef MeshJson < handle
                 end
             end
             
-            recV=zeros(o.nv()-sum,3); %总个数-为空的个数
+            recV     =zeros(o.nv()-sum,3); %总个数-为空的个数
+            rimV_flag=zeros(o.nv()-sum,1); %准备更新边缘点标记
             j=1;
             for i=1:o.nv()
                 if ~isnan(o.V(i,1))
                     recV(j,:)=o.V(i,:);
+                    rimV_flag(j)=o.rimV_flag(i);
                     j=j+1;
                 end
             end
+            o.rimV_flag=rimV_flag;
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             list_new=zeros(size(recV,1),1);
