@@ -124,7 +124,6 @@ classdef MeshJson < handle
             o.uv=reshape(data.uv,2,[])';
             o.skinWeight=reshape(data.skinWeight,4,[])';
             o.skinIndex=reshape(data.skinIndex,4,[])';  %'
-
             
             %{
             %%#####测试案例########
@@ -135,7 +134,6 @@ classdef MeshJson < handle
             o.skinIndex= [0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
             %%#####测试案例########
             %}
-
 
             o.listF=1:o.nf();
             o.list=o.mergeVertex();
@@ -655,48 +653,6 @@ classdef MeshJson < handle
         function computeEdge(o)
             TR = triangulation(o.F,o.V);    %进行三角剖分，梳理出所有三角形
             o.E = edges(TR);                %返回所有边的顶点索引  ne*2
-        end
-        function rectifyindex(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
-            num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数
-            sum=0;  % sum用于统计未被引用的顶点个数
-            for i=1:o.nv()
-                if isnan(o.V(i,1))  % 为空NaN => 这是一个被删除的顶点
-                    sum=sum+1;
-                end
-                num_of_NaN(i)=sum;
-            end
-            
-            recF=zeros(o.nf(),3);
-            for i=1:o.nf() %三角面个数不变，但是由于顶点个改变，三角面的顶点索引需要修改
-                for j=1:3
-                    recF(i,j)=o.F(i,j)-num_of_NaN(o.F(i,j));
-                end
-            end
-            
-            recV=zeros(o.nv-sum,3); %总个数-为空的个数
-            j=1;
-            for i=1:o.nv()
-                if ~isnan(o.V(i,1))
-                    recV(j,:)=o.V(i,:);
-                    j=j+1;
-                end
-            end
-            
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            list_new=zeros(size(recV,1),1);
-            index=1;
-            for i=1:size(num_of_NaN,1)
-                if ~isnan(o.V(i,1))
-                    list_new(index)=o.list(i);
-                    index=index+1;
-                end
-            end
-            o.list=list_new;
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-            o.V=recV;
-            o.F=recF;
-            
         end
         function rectifyindex2(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
             num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数

@@ -49,14 +49,6 @@ classdef Group < handle
             this.listSim=[];
         end
         
-        function rectifyindex(this)%删除那些没有被引用的顶点
-            cell0=fieldnames(this.children);
-            for i = 1:size(cell0,1)
-                name=cell2mat(cell0(i));
-                mesh=getfield(this.children,name);
-                mesh.rectifyindex();
-            end
-        end
         function rectifyindex2(this)%删除那些没有被引用的顶点
             cell0=fieldnames(this.children);
             for i = 1:size(cell0,1)
@@ -64,41 +56,6 @@ classdef Group < handle
                 mesh=getfield(this.children,name);
                 mesh.rectifyindex2();
             end
-        end
-        
-        function simplify(this,percent)
-            %% Start add waitbar
-            hWaitbar = waitbar(0, 'simplify,wait...', 'CreateCancelBtn', 'delete(gcbf)');
-            set(hWaitbar, 'Color', [0.9, 0.9, 0.9]);
-
-            time0=(1-percent)*this.nv(); %需要进行坍塌的总次数
-            for iii = 1:time0  %每次删除一个顶点(一条边/一个三角面)
-                min_cost=999999999;
-                min_name="";
-                cell0=fieldnames(this.children);
-                for i = 1:size(cell0,1)
-                    name=cell2mat(cell0(i));
-                    mesh=getfield(this.children,name);
-                    if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
-                        continue;
-                    end
-                    cost0=mesh.myQEM.simplification_getCost();
-                    if cost0<min_cost
-                        min_name=name;
-                        min_cost=cost0;
-                    end
-                end
-                if min_name==""
-                    break;    
-                end
-                mesh=getfield(this.children,min_name);
-                mesh.myQEM.simplification_makeStep();
-
-                compT = iii/time0;
-                waitbar(compT, hWaitbar, ['simplify:', num2str(round(compT, 2) * 100), '%']);
-            end
-            close(hWaitbar)
-            this.rectifyindex();%删除那些没有被引用的顶点
         end
 
         function simplify_save(this,surplus,number)
@@ -110,8 +67,8 @@ classdef Group < handle
             hWaitbar = waitbar(0, 'simplify,wait...', 'CreateCancelBtn', 'delete(gcbf)');
             set(hWaitbar, 'Color', [0.9, 0.9, 0.9]);
 
-            pack_index=1; %当前需要输出的数据包的索引
-            while true     %每次删除一个顶点(一条边/一个三角面)
+            pack_index=1;   %当前需要输出的数据包的索引
+            while true      %每次删除一个顶点(一条边/一个三角面)
                 min_cost=Inf;   %正无穷
                 min_name="";
                 cell0=fieldnames(this.children);
@@ -129,11 +86,9 @@ classdef Group < handle
                 end
                 
                 if min_name~=""
-                    
                     mesh=getfield(this.children,min_name);
                     mesh.myQEM.simplification_makeStep(); 
                     this.listSim(size(this.listSim,1)+1)=mesh.meshId;
-
                 else
                     disp("压缩比太高,对象为空!");
                     break; 
@@ -145,8 +100,6 @@ classdef Group < handle
                 if nf0-nf>pack_index*step
                     this.path=strcat('data2/',string(number-pack_index),'.json');
                     disp([this.path,strcat(num2str(round(compT, 4) * 100),'%'),strcat("三角面个数:",num2str(nf))]);
-                    
-                    
                     this.downloadPack();
                     if pack_index>=number-1
                         this.download2();
@@ -157,25 +110,6 @@ classdef Group < handle
                 end                
             end
             close(hWaitbar);
-        end
-        function simplify_old2(this,ratio)
-            cell0=fieldnames(this.children);
-            for i = 1:size(cell0,1)
-                name=cell2mat(cell0(i));
-                disp(["simplify",name]);
-                mesh=getfield(this.children,name);
-                mesh_sim=mesh.myQEM.simplification(ratio);
-                setfield(this.children,name,mesh_sim);
-            end
-        end
-
-        function simplify_old(this,ratio)
-            cell0=fieldnames(this.children);
-            for i = 1:size(cell0,1)
-                name=cell2mat(cell0(i));
-                mesh=getfield(this.children,name);
-                mesh.simplify(ratio);
-            end
         end
 
         function download(this)
