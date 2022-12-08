@@ -1,17 +1,18 @@
 import sceneConifg from '../config/sceneConifg.json'
 class modelMessage {
-    constructor(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList,sitAnimationList, standAnimationList, modelCount,pathTextureConfig) {
-        this.pathModel = pathModel;
-        this.pathAnima = pathAnima;
-        this.pathLodGeo = pathLodGeo;
-        this.lod_visible = lod_visible;
-        this.useColorTag = useColorTag;
-        this.animtionNum = animtionNum;
-        this.walkAnimationList = walkAnimationList;
-        this.sitAnimationList = sitAnimationList;
-        this.standAnimationList = standAnimationList;
-        this.ModelCount = modelCount;
-        this.pathTextureConfig=pathTextureConfig;
+    constructor(opt) {
+        this.pathModel = opt.pathModel;
+        this.pathAnima = opt.pathAnima;
+        this.pathLodGeo = opt.pathLodGeo;
+        this.lod_visible = opt.lod_visible;
+        this.meshType=opt.meshType;
+        this.useColorTag = opt.useColorTag;
+        this.animtionNum = opt.animtionNum;
+        this.walkAnimationList = opt.walkAnimationList;
+        this.sitAnimationList = opt.sitAnimationList;
+        this.standAnimationList = opt.standAnimationList;
+        this.ModelCount = opt.modelCount;
+        this.pathTextureConfig=opt.pathTextureConfig;
 
         this.PosRotCount = 0;
         this.posRotList = [];
@@ -30,7 +31,7 @@ class modelMessage {
 
 export class modelManager {
     constructor() {//lod减少后至多加载5个模型
-        this.arr=[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.arr=[3,5]//[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
         this.pathModelName="sim.glb"
         this.pathLodGeoName="LOD/"
         this.pathTextureConfig="texture_names.json"
@@ -54,19 +55,7 @@ export class modelManager {
         opt["pathTextureConfig"]=opt['path']+this.pathTextureConfig
         // console.log(opt)
         
-        var modelmessage = new modelMessage(
-            opt.pathModel, 
-            opt.pathAnima, 
-            opt.pathLodGeo, 
-            opt.lod_visible, 
-            opt.useColorTag, 
-            opt.animtionNum, 
-            opt.walkAnimationList, 
-            opt.sitAnimationList,
-            opt.standAnimationList, 
-            opt.modelCount,
-            opt.pathTextureConfig
-            );
+        var modelmessage = new modelMessage(opt);
         this.modelList.push(modelmessage);
         this.modelIndex += 1;
         this.sumModelCount += opt.modelCount;

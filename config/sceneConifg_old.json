@@ -419,20 +419,6 @@
                 21
             ]
         ],
-        "meshType":{
-            "CloW_A_body_geo1":       "body",
-            "CloW_A_chenshanxie_geo2":"shirt",
-            "CloW_A_eyelash_geo":     "eyelash",
-            "CloW_A_eyeLeft_geo":     "eyeLeft",
-            "CloW_A_eyeRight_geo":    "eyeRight",
-            "CloW_A_hair_geo":        "hair",
-            "CloW_A_kuzi_geo":        "trousers",
-            "CloW_A_Nail_geo":        null,
-            "CloW_A_saliva_geo":      null,
-            "CloW_A_teeth_geo":       "teeth",
-            "CloW_A_xifu_geo":        "coat",
-            "head":                   "head"
-        },
         "useColorTag": [
             "CloW_A_kuzi_geo",
             "CloW_A_xifu_geo"
