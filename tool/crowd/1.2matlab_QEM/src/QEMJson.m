@@ -13,20 +13,6 @@ classdef QEMJson < handle
             o.mesh=mesh;
             o.pretreatment(mesh);
         end
-        function mesh=simplification_old(o,percent )
-            mesh=o.mesh;
-            for iii = 1:(1-percent)*mesh.nv()           %每次删除一个顶点(一条边/一个三角面)
-                if size(mesh.E,1)==0 %如果mesh对象中已经没有边了,就停止算法
-                    break;
-                end
-                [min_cost, vidx] = min(o.cost,[],2);    %返回包含每一行的最小值的列向量
-                % min_cost:ne*1   vidx:ne*1  ---判断每一个点哪种情况的代价最小
-                
-                [~, k] = min(min_cost); %获取代价最小的边序号   ---代价最小的点
-                mesh=o.deleteEdge(k,mesh, vidx); %删除边k
-            end
-            mesh.rectifyindex();%删除那些没有被引用的顶点
-        end%simplification
 
         function mesh=simplification(o,percent )
             mesh=o.mesh;
@@ -47,8 +33,8 @@ classdef QEMJson < handle
                 
             [cost0, k] = min(min_cost); %获取代价最小的边序号   ---代价最小的点
             o.step_inf=struct(...
-                "k",k,...
-                "vidx",vidx...
+                "k",    k,...
+                "vidx", vidx...
             );
         end%simplification
 
@@ -81,14 +67,29 @@ classdef QEMJson < handle
             o.QVex=getQ(mesh.F,QFace,nv);%4*4*nv
             function Q=getQ(F,QFace,nv)
                 Q = zeros(4,4,nv);  %每个顶点都对应一个4*4的矩阵
+                number=zeros(1,nv); %记录每个顶点的邻接点个数
                 nf = size(F,1);     %三角面个数
                 for i = 1:nf        %遍历三角面
                     for j = 1:3     %遍历三角面的顶点
                         v_indx=F(i,j);  %获取三角面上的顶点序号
                         Q(:,:,v_indx) = Q(:,:,v_indx) + QFace(:,:,i);   %顶点的矩阵等于所有所处三角面的矩阵和
+                        number(v_indx)=number(v_indx)+1;
                     end
                 end
+                
+                for i=1:nv
+                    if number(i)==0
+                        disp("number(i)==0");
+                    %else
+                    %    Q(:,:,i)=Q(:,:,i)/number(i);
+                    end
+                    %if o.mesh.rimV_flag(i)==1
+                    %    Q(:,:,i)=Q(:,:,i)+99999;
+                    %end
+                end
+                %{%}
             end
+            
             
             %2.计算每个边矩阵
             %E=getE(mesh.F,mesh.V);%获取所有边
@@ -100,6 +101,9 @@ classdef QEMJson < handle
                 e1=E(:,1);% ne*2 -> ne*1
                 e2=E(:,2);
                 QEdge = Q(:,:,e1) + Q(:,:,e2);% Q:4*4*nv -> QEdge:4*4*ne
+                if o.mesh.rimV_flag(e1)+o.mesh.rimV_flag(e2)==1 %如果这条边一个顶点在边缘,另外一个顶点不在边缘
+                    QEdge=QEdge+99999;
+                end
             end
             
             %3.计算每个边的代价
@@ -125,7 +129,27 @@ classdef QEMJson < handle
                 cost(:,1)=o.get_costi(v(:,1,:),QEdge);  % ne*1
                 cost(:,2)=o.get_costi(v(:,2,:),QEdge);
                 cost(:,3)=o.get_costi(v(:,3,:),QEdge);
-            end
+                %%%%%%%%%%%%%%%%%%%%%%%%开始判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                infinity0=1999999;
+                for i =1:mesh.ne()
+                    a=o.mesh.rimV_flag( mesh.E(i,1) );
+                    b=o.mesh.rimV_flag( mesh.E(i,2) );
+                    if a==1 && b==0
+                        cost(i,1)=cost(i,1)+infinity0;%0;
+                        cost(i,2)=cost(i,2)+infinity0;
+                        cost(i,3)=cost(i,3)+infinity0/2;
+                    elseif a==0 && b==1
+                        cost(i,1)=cost(i,1)+infinity0;
+                        cost(i,2)=cost(i,2)+infinity0;%0;
+                        cost(i,3)=cost(i,3)+infinity0/2;
+                    elseif a==1 && b==1
+                        cost(i,1)=cost(i,1)+infinity0/20;
+                        cost(i,2)=cost(i,2)+infinity0/20;
+                        cost(i,3)=cost(i,3)+infinity0/20;
+                    end
+                end
+                %%%%%%%%%%%%%%%%%%%%%%%%完成判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            end  %getcost
             
         end%pretreatment
         function mesh=deleteEdge(o,k,mesh, vidx)
@@ -167,6 +191,7 @@ classdef QEMJson < handle
             
             % update Q for v1  %更新顶点的代价矩阵,之后要重新计算代价 
             o.QVex(:,:,e(1)) = o.QVex(:,:,e(1)) + o.QVex(:,:,e(2)); %e(1)的代价为之前两个点的代价之和
+            o.QVex(:,:,e(1))=o.QVex(:,:,e(1))/2;
             o.QVex(:,:,e(2)) = NaN;                                 %e(2)的代价为空
             
             %更新三角面
@@ -209,6 +234,30 @@ classdef QEMJson < handle
             o.cost(pair,1) =o.get_costi(pair_v1,o.QEdge(:,:,pair));
             o.cost(pair,2) =o.get_costi(pair_v2,o.QEdge(:,:,pair));
             o.cost(pair,3) =o.get_costi(pair_vm,o.QEdge(:,:,pair));
+
+            %%%%%%%%%%%%%%%%%%%%%%%%开始判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            infinity0=1999999;
+            for i =1:mesh.ne()
+                if pair(i)  %如果这个点与e1相关
+                    a=o.mesh.rimV_flag( mesh.E(i,1) );
+                    b=o.mesh.rimV_flag( mesh.E(i,2) );
+                    if a==1 && b==0
+                        o.cost(i,1)=o.cost(i,1)+infinity0; %0;
+                        o.cost(i,2)=o.cost(i,2)+infinity0;
+                        o.cost(i,3)=o.cost(i,3)+infinity0/2;
+                    elseif a==0 && b==1
+                        o.cost(i,1)=o.cost(i,1)+infinity0;
+                        o.cost(i,2)=o.cost(i,2)+infinity0; %0;
+                        o.cost(i,3)=o.cost(i,3)+infinity0/2;
+                    elseif a==1 && b==1
+                        o.cost(i,1)=o.cost(i,1)+infinity0/20;
+                        o.cost(i,2)=o.cost(i,2)+infinity0/20;
+                        o.cost(i,3)=o.cost(i,3)+infinity0/20;
+                    end
+                end
+            end
+            %%%%%%%%%%%%%%%%%%%%%%%%完成判断是否为边缘%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
         end%deleteEdge
     end% methods
     methods(Static)

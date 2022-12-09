@@ -103,7 +103,7 @@ class UI{
                 //if(t==20)t=19
                 crowdGroup.useLod(t-1)
         } );
-        fSSS.open();
+        // fSSS.open();
     }
     addUI_material(name,material){
         var gui=this.gui_material
@@ -137,17 +137,26 @@ class UI{
                 // value=1-value
                 material.roughness = (value<0.01)?0.01:value;
         } );
-        fSSS.open();
+        // fSSS.open();
     }
     addUI_pointLight(name,dirLight1){
         var gui=this.gui_light
+        // const config_dir1 = {
+        //     intensity: 0.5,
+        // };
         const config_dir1 = {
-            intensity: 0.5,
             posX:dirLight1.position.x,
             posY:dirLight1.position.y,
             posZ:dirLight1.position.z,
             color:'#ffffff',
-        };
+        }
+        for(let tag in dirLight1){
+            let value=dirLight1[tag]
+            if(typeof(value)=="number"){
+                config_dir1[tag]=value
+            }
+        }
+
         const fDir1 = gui.addFolder( name );
         fDir1.add( config_dir1, 'intensity', 0, 1, 0.01 )
         .name( 'Intensity' )
@@ -173,11 +182,20 @@ class UI{
             dirLight1.position.z = config_dir1.posZ;
             // dirLight1.updateMatrix();
         } );
+        fDir1.add(config_dir1,'decay', 0, 2, 0.01)
+        .name('decay')
+        .onChange( function () {
+            dirLight1.decay=config_dir1.decay    
+        } );
+        fDir1.add(config_dir1,'distance', 0, 10000, 1)
+        .name('distance')
+        .onChange( function () {
+            dirLight1.distance=config_dir1.distance
+        } );
         fDir1.addColor(config_dir1,'color')
         .name('Color')
         .onChange( function () {
             dirLight1.color.set(config_dir1.color);
-            
         } );
         fDir1.open();
     }
@@ -244,4 +262,134 @@ class UI{
     }
 
 }
-export { UI };
+class UICrowd{
+    constructor(crowd) {
+        let crowdGroup=crowd.children[crowd.children.length-1]
+
+        console.log("create ui")
+        var gui = new GUI();
+        gui.width = 300;
+        gui.domElement.style.userSelect = 'none';
+        this.gui_light=gui
+        // var gui = new GUI();
+        gui.width = 300;
+        gui.domElement.style.userSelect = 'none';
+        this.gui_material=gui
+
+        let arr=[]
+        for(var i=0;i<crowdGroup.children.length;i++){
+            arr.push(crowdGroup.children[i])
+        }
+        // console.log("crowdGroup",crowdGroup)
+        // console.log("arr",arr)
+
+        this.addUI_crowdGroup("all avatar",crowdGroup,crowd)
+        for(var i in arr){
+            var obj=arr[i]
+            // if(obj&&obj.name)
+            // if(obj.name=="CloM_A_head_geo"){//1
+            //     this.addUI_material("man face Material",obj.material)
+            // }else if(obj.name=="GW_man_Body_geo1"){//1
+            //     this.addUI_material("body Material",obj.material)
+            // }
+            this.addUI_material(obj.name,obj.material)
+        }
+    }
+    addUI_crowdGroup(name,crowdGroup,crowd){
+        var gui=this.gui_material
+        const fSSS = gui.addFolder( name );
+        const config_sss = {
+            avatarCount:100,
+            triangular:1
+        };
+        fSSS.add(config_sss,'avatarCount',0,3000,1)
+            .name('avatarCount')
+            .onChange( function () {
+                let count=Math.floor(config_sss.avatarCount)
+                for(let i=0;i<crowd.lodList.length;i++){
+                    crowd.lodList[i]=
+                        i<count?0:-1
+                }
+                crowd.update()
+        } );
+        fSSS.add(config_sss,'triangular',0.05,1,0.05)
+            .name('triangular')
+            .onChange( function () {
+                var t=Math.floor(20*config_sss.triangular)
+                //if(t==20)t=19
+                crowdGroup.useLod(t)
+        } );
+        // fSSS.open();
+    }
+    addUI_material(name,material){
+        var gui=this.gui_material
+        const fSSS = gui.addFolder( name );
+        const config_sss = {}
+        for(let tag in material){
+            let value=material[tag]
+            if(typeof(value)=="number"){
+                config_sss[tag]=value
+            }
+        }
+        for(let tag in material.uniforms){
+            let value=material.uniforms[tag].value
+            if(typeof(value)=="number"){
+                config_sss[tag]=value
+            }
+        }
+        if(config_sss['sssIntensity']){
+            fSSS.add(config_sss,'sssIntensity',0,2,0.01)
+                .name('sssIntensity')
+                .onChange( function () {
+                    material.uniforms.sssIntensity.value = config_sss.sssIntensity;
+            } );
+        }
+        
+        // fSSS.add(config_sss,'sssIntensity2',0,0.5,0.01)
+        //     .name('sssIntensity2')
+        //     .onChange( function () {
+        //         // console.log(material.uniforms)
+        //         material.uniforms.sssIntensity2.value = config_sss.sssIntensity2;
+        // } );
+        if(config_sss['CurveFactor']){
+            fSSS.add(config_sss,'CurveFactor',0,1.0,0.01)
+                .name('CurveFactor')
+                .onChange( function (value) {
+                    // value=1-value
+                    material.uniforms.CurveFactor.value = config_sss.CurveFactor;
+            } );
+        }
+        
+        // fSSS.add(config_sss,'brightness_specular',0,0.1,0.01)
+        //     .name('Specular Intensity')
+        //     .onChange( function () {
+        //         material.metalness= config_sss.brightness_specular;
+        //         material.uniforms.brightness_specular.value = config_sss.brightness_specular;
+        // } );
+        fSSS.add(config_sss,'roughness',0,1.0,0.01)
+            .name('roughness')
+            .onChange( function (value) {
+                // value=1-value
+                material.roughness = value;
+        } );
+        fSSS.add(config_sss,'metalness',0,1.0,0.01)
+            .name('metalness')
+            .onChange( function (value) {
+                material.metalness =value;
+        } );
+        fSSS.add(config_sss,'emissiveIntensity',0,1.0,0.01)
+            .name('emissiveIntensity')
+            .onChange( function (value) {
+                material.emissiveIntensity =value;
+        } );
+        fSSS.add(config_sss,'envMapIntensity',0,1.0,0.01)
+            .name('envMapIntensity')
+            .onChange( function (value) {
+                material.envMapIntensity =value;
+        } ); 
+        // fSSS.open();
+    }
+
+
+}
+export { UI,UICrowd};

@@ -29,6 +29,10 @@ classdef MeshJson < handle
         recordSize
 
         meshId %由group对象设置的mesh对象编号
+
+        rimE_flag   %标记每一条边是否在网格面的边缘
+        rimV_flag   %标记每一个点是否在网格面的边缘
+
     end
     properties(Constant,Hidden)
       m34=[1 0 0 0;0 1 0 0;0 0 1 0]
@@ -60,6 +64,46 @@ classdef MeshJson < handle
                 end
             end
         end
+        function computeRimE(o)
+            ne=o.ne();
+            e_flag0=zeros(1,ne);
+            for i =1:ne
+                a=o.E(i,1);
+                b=o.E(i,2);
+                f=zeros(size(o.F));
+                f(:)=o.F(:);
+                f(f == b) = a;  %边中e2的索引现在都指向e1
+                
+                temp=sum(f == a, 2) ;
+                e_flag=temp>1 ;
+                %disp(a);
+                %disp(b);
+                %disp([a,b,sum(e_flag)]);
+                %disp([a,b]);
+                %disp(e_flag);
+                %e_flag0=e_flag0+e_flag;
+                e_flag0(i)=sum(temp>1)<2;
+                
+            end
+            o.rimE_flag=e_flag0;
+        end
+        function computeRimV(o)
+            o.computeRimE();
+            nv=o.nv();
+            v_flag0=zeros(1,nv);
+
+            e_flag0=o.rimE_flag;
+            ne=o.ne();
+            for i =1:ne
+                if e_flag0(i)==1
+                    a=o.E(i,1);
+                    b=o.E(i,2);
+                    v_flag0(a)=1;
+                    v_flag0(b)=1;
+                end
+            end
+            o.rimV_flag=v_flag0;
+        end
         function o = MeshJson(file_name)
             o.meshId=0;
             o.matrix0=eye(4);
@@ -80,22 +124,24 @@ classdef MeshJson < handle
             o.uv=reshape(data.uv,2,[])';
             o.skinWeight=reshape(data.skinWeight,4,[])';
             o.skinIndex=reshape(data.skinIndex,4,[])';  %'
-
+            
             %{
             %%#####测试案例########
             o.V=[0,0,0; 5,6,9; 9,1,0; 1,7,9;     9,6,1; 0,8,0; 9,1,8; 9,1,6;  3,1,9 ];
-            o.F=[1,2,3; 2,4,5; 2,3,5; 3,5,6;     4,5,7; 6,7,8; 5,6,8; 7,8,9];
+            o.F=[1,2,3; 2,4,5; 2,3,5; 3,5,6;     4,5,7; 5,6,8; 5,7,8; 7,8,9];
             o.uv=[0,0; 5,6; 9,1; 1,7;     9,6; 0,8; 9,1; 9,1;  3,1 ];
             o.skinWeight=[0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
             o.skinIndex= [0,0,0,0; 5,6,9,0; 9,1,0,0; 1,7,9,0;     9,6,1,0; 0,8,0,0; 9,1,8,0; 9,1,6,0;  3,1,9,0 ];
             %%#####测试案例########
             %}
 
-
             o.listF=1:o.nf();
             o.list=o.mergeVertex();
             o.computeNormal();
             o.computeEdge();
+            o.computeRimV();
+            %disp(o.E);
+            %error("test!")
             o.print=0;
             o.voxel_size=min(o.box("size"))/10;
             o.flag0=zeros(o.nv(),1);
@@ -592,7 +638,7 @@ classdef MeshJson < handle
                     a = a'; %'
                 end
                 if size(a,1)<3 && size(a,2)==3
-                    a = a';
+                    a = a';%'
                 end
                 if size(a,1)<=3 && size(a,2)>=3 && sum(abs(a(:,3)))==0
                     % for flat triangles
@@ -607,48 +653,6 @@ classdef MeshJson < handle
         function computeEdge(o)
             TR = triangulation(o.F,o.V);    %进行三角剖分，梳理出所有三角形
             o.E = edges(TR);                %返回所有边的顶点索引  ne*2
-        end
-        function rectifyindex(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
-            num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数
-            sum=0;  % sum用于统计未被引用的顶点个数
-            for i=1:o.nv()
-                if isnan(o.V(i,1))  % 为空NaN => 这是一个被删除的顶点
-                    sum=sum+1;
-                end
-                num_of_NaN(i)=sum;
-            end
-            
-            recF=zeros(o.nf(),3);
-            for i=1:o.nf() %三角面个数不变，但是由于顶点个改变，三角面的顶点索引需要修改
-                for j=1:3
-                    recF(i,j)=o.F(i,j)-num_of_NaN(o.F(i,j));
-                end
-            end
-            
-            recV=zeros(o.nv-sum,3); %总个数-为空的个数
-            j=1;
-            for i=1:o.nv()
-                if ~isnan(o.V(i,1))
-                    recV(j,:)=o.V(i,:);
-                    j=j+1;
-                end
-            end
-            
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            list_new=zeros(size(recV,1),1);
-            index=1;
-            for i=1:size(num_of_NaN,1)
-                if ~isnan(o.V(i,1))
-                    list_new(index)=o.list(i);
-                    index=index+1;
-                end
-            end
-            o.list=list_new;
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-            o.V=recV;
-            o.F=recF;
-            
         end
         function rectifyindex2(o)    %QEM算法会将删除的顶点设置为空,现在需要将空顶点删除           
             num_of_NaN=zeros(o.nv(),1);%生成一个list,用来记录每个顶点前方空顶点的个数
@@ -667,14 +671,17 @@ classdef MeshJson < handle
                 end
             end
             
-            recV=zeros(o.nv()-sum,3); %总个数-为空的个数
+            recV     =zeros(o.nv()-sum,3); %总个数-为空的个数
+            rimV_flag=zeros(o.nv()-sum,1); %准备更新边缘点标记
             j=1;
             for i=1:o.nv()
                 if ~isnan(o.V(i,1))
                     recV(j,:)=o.V(i,:);
+                    rimV_flag(j)=o.rimV_flag(i);
                     j=j+1;
                 end
             end
+            o.rimV_flag=rimV_flag;
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             list_new=zeros(size(recV,1),1);

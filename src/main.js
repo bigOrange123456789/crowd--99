@@ -51,7 +51,7 @@ export class Loader{
 
         this.scene = new THREE.Scene()
 
-        this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.001,5000)
+        this.camera = new THREE.PerspectiveCamera(50,this.body.clientWidth/this.body.clientHeight,0.1,5000)
         this.camera.position.set(-43.486343682038736,  2.127206120237504,  -8.698678933445201)
         this.camera.lookAt(0,0,0)
         this.camera.name = "camera";
@@ -63,13 +63,13 @@ export class Loader{
         this.orbitControl = new MapControls(this.camera,this.renderer.domElement)
         window.orbitControl = this.orbitControl;
         // this.orbitControl = new OrbitControls(this.camera,this.renderer.domElement)
-        new LightProducer(this.scene)
         
+        new Building(this.scene,this.camera)
         this.animate = this.animate.bind(this)
         requestAnimationFrame(this.animate)
 
         new AvatarManager(this.scene,this.camera)
-        new Building(this.scene,this.camera)
+        new LightProducer(this.scene)
         this.autoMove=this.wander2()
         var scope=this
         setTimeout(()=>{

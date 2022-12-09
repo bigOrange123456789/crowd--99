@@ -1,17 +1,18 @@
 import sceneConifg from '../config/sceneConifg.json'
 class modelMessage {
-    constructor(pathModel, pathAnima, pathLodGeo, lod_visible, useColorTag, animtionNum, walkAnimationList,sitAnimationList, standAnimationList, modelCount,pathTextureConfig) {
-        this.pathModel = pathModel;
-        this.pathAnima = pathAnima;
-        this.pathLodGeo = pathLodGeo;
-        this.lod_visible = lod_visible;
-        this.useColorTag = useColorTag;
-        this.animtionNum = animtionNum;
-        this.walkAnimationList = walkAnimationList;
-        this.sitAnimationList = sitAnimationList;
-        this.standAnimationList = standAnimationList;
-        this.ModelCount = modelCount;
-        this.pathTextureConfig=pathTextureConfig;
+    constructor(opt) {
+        this.pathModel = opt.pathModel;
+        this.pathAnima = opt.pathAnima;
+        this.pathLodGeo = opt.pathLodGeo;
+        this.lod_visible = opt.lod_visible;
+        this.meshType=opt.meshType;
+        this.useColorTag = opt.useColorTag;
+        this.animtionNum = opt.animtionNum;
+        this.walkAnimationList = opt.walkAnimationList;
+        this.sitAnimationList = opt.sitAnimationList;
+        this.standAnimationList = opt.standAnimationList;
+        this.ModelCount = opt.modelCount;
+        this.pathTextureConfig=opt.pathTextureConfig;
 
         this.PosRotCount = 0;
         this.posRotList = [];
@@ -30,7 +31,7 @@ class modelMessage {
 
 export class modelManager {
     constructor() {//lod减少后至多加载5个模型
-        this.arr=[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.arr=[3,5]//[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
         this.pathModelName="sim.glb"
         this.pathLodGeoName="LOD/"
         this.pathTextureConfig="texture_names.json"
@@ -48,25 +49,13 @@ export class modelManager {
     }
 
     addModel(opt) {
-        console.log(opt["path"],opt["lod_visible"])
+        // console.log(opt["path"],opt["lod_visible"])
         opt["pathModel"] =opt['path']+this.pathModelName
         opt["pathLodGeo"]=opt['path']+this.pathLodGeoName
         opt["pathTextureConfig"]=opt['path']+this.pathTextureConfig
         // console.log(opt)
         
-        var modelmessage = new modelMessage(
-            opt.pathModel, 
-            opt.pathAnima, 
-            opt.pathLodGeo, 
-            opt.lod_visible, 
-            opt.useColorTag, 
-            opt.animtionNum, 
-            opt.walkAnimationList, 
-            opt.sitAnimationList,
-            opt.standAnimationList, 
-            opt.modelCount,
-            opt.pathTextureConfig
-            );
+        var modelmessage = new modelMessage(opt);
         this.modelList.push(modelmessage);
         this.modelIndex += 1;
         this.sumModelCount += opt.modelCount;
@@ -96,14 +85,16 @@ export class modelManager {
             let arr = this.arr//[5,3,4]//[1,3,4,5]
             for (let i = 0; i < arr.length; i++) {
                 let config = data[arr[i]]
-                config.modelCount = Math.floor( (9 * (11123) / arr.length)  )
+                config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
+                config.modelCount = Math.floor( ((1123) / arr.length)  )
                 // config.modelCount = Math.floor( ( (11123) / arr.length)  )
                 this.addModel(config)
             }
         } else {
             index = parseInt(index)
             // console.log(index)
-            data[index].modelCount = 9 * (11123)
+            data[index].modelCount = 8 * (11123)
+            data[index].modelCount =  (1123)
             // data[index].modelCount =  (11123)
             this.addModel(data[index])
         }
@@ -122,7 +113,7 @@ export class modelManager {
             152,    //弧形看台6
             217,    //弧形看台5
         ]
-        if (i0 < c[0]) {
+        if (i0 < c[0]) {//运动
             var col_count = 25
             var row_count = 50
             var i = i0 % col_count
@@ -153,7 +144,7 @@ export class modelManager {
                 var col = Math.floor(i0 / row_count) + 1
                 var position = [
                     1.5 * -31 - 1.5 * (col) * 1.9,
-                    1.3 * col,//
+                    1.28 * col,//
                     0.82 * row - 75,
                 ]
                 var rotation = [0, -Math.PI * 0.5 + Math.PI, 0]
@@ -165,7 +156,7 @@ export class modelManager {
                 var col = Math.floor(i0 / row_count) + 1
                 var position = [
                     1.5 * 31 + 1.5 * col * 1.9,
-                    1.3 * col,
+                    1.28 * col,
                     0.82 * row - 75,
                 ]
                 var rotation = [0, Math.PI * 0.5 + Math.PI, 0]
@@ -305,11 +296,18 @@ export class modelManager {
     }
     getPosRot_9e(i0, modelType) {
         // return this.getPosRot_e(i0,modelType)
-        var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
-        var j0 = i0 % 9;
-        let k = 0.25;
-        PosRot.pos[0] += (k * parseInt(j0 / 3))
-        PosRot.pos[2] += (k * (j0 % 3))
+        // var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
+        // var j0 = i0 % 9;
+        // let k = 0.25;
+        // PosRot.pos[0] += (k * parseInt(j0 / 3))
+        // PosRot.pos[2] += (k * (j0 % 3))
+        // return PosRot
+
+        var PosRot = this.getPosRot_e(parseInt(i0 / 8), modelType)
+        var j0 = i0 % 8;
+        let k = 0.67;
+        PosRot.pos[0] += (k * parseInt(j0 / 2))-1
+        PosRot.pos[2] += ((k-0.3) * (j0 % 2))
         return PosRot
     }
 }

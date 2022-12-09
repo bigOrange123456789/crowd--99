@@ -419,20 +419,6 @@
                 21
             ]
         ],
-        "meshType":{
-            "CloW_A_body_geo1":       "body",
-            "CloW_A_chenshanxie_geo2":"shirt",
-            "CloW_A_eyelash_geo":     "eyelash",
-            "CloW_A_eyeLeft_geo":     "eyeLeft",
-            "CloW_A_eyeRight_geo":    "eyeRight",
-            "CloW_A_hair_geo":        "hair",
-            "CloW_A_kuzi_geo":        "trousers",
-            "CloW_A_Nail_geo":        null,
-            "CloW_A_saliva_geo":      null,
-            "CloW_A_teeth_geo":       "teeth",
-            "CloW_A_xifu_geo":        "coat",
-            "head":                   "head"
-        },
         "useColorTag": [
             "CloW_A_kuzi_geo",
             "CloW_A_xifu_geo"
@@ -629,20 +615,6 @@
                 -1
             ]
         ],
-        "meshType": {
-            "body1":"body",
-            "CloW_B_eyeRight_geo":"eyeRight",
-            "CloW_C_eyelash_geo":"eyelash",
-            "CloW_C_eyeLeft_geo":"eyeLeft",
-            "CloW_C_hair_geo":      "hair",
-            "CloW_C_head_geo":      "head",
-            "CloW_C_meimao_geo":"eyebrow",
-            "CloW_C_saliva_geo":null,
-            "CloW_C_shangyi_geo":"coat",
-            "CloW_C_teeth_geo":"teeth",
-            "CloW_C_xiashen_geo":"trousers",
-            "Nail_geo":null
-        },
         "useColorTag": [
             "CloW_C_shangyi_geo",
             "CloW_C_xiashen_geo"
