@@ -1,18 +1,8 @@
 [
-    {
-        "lod_visible": [
-            ["coat",22],
-            ["hair",22],
-            ["trousers",22],
-
-            ["eyelash",22],
-            ["eyeRight",22],
-            ["eyeLeft",22],
-            ["eyebrow",22],
-            ["head",22],
-
-            ["body",22],
-            ["shirt",-1]
+    { 
+        "path": [
+            "assets/sim/woman_A/",
+            "assets/sim/woman_C/"
         ],
         "meshType":[
            {
@@ -48,10 +38,26 @@
             "Nail_geo":null
           }
         ],
+        "lod_visible": [
+            ["coat",22],
+            ["hair",22],
+            ["trousers",22],
+
+            ["eyelash",22],
+            ["eyeRight",22],
+            ["eyeLeft",22],
+            ["eyebrow",22],
+            ["head",22],
+
+            ["body",22],
+            ["shirt",-1]
+        ],
         "useColorTag": [
             "coat",
             "trousers"
         ],
+        
+
         "walkAnimationList": [
             18
         ],
@@ -85,16 +91,11 @@
             26,
             27
         ],
-        "path": [
-            "assets/sim/woman_A/",
-            "assets/sim/woman_C/"
-        ],
         "pathAnima": 
             [
                 "assets/animation_woman_A.bin",
                 "assets/animation_woman_C.bin"
             ],
-        
         "animtionNum": 28,
         "modelCount": 10000
     }
