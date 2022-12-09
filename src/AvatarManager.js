@@ -270,12 +270,15 @@ export class AvatarManager {
     load_model() {
         var self = this
         window.model = []
-        function load_next(modelType) {
-            // const modelType=0
+        function load_next() {
+            const modelType=0
             if (modelType < self.modelManager.modelIndex) {
                 // console.log(self.modelManager.modelList[modelType].pathModel)
-                new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel, async (glb) => {
-                    self.materialSet(glb)
+              new GLTFLoader().load(self.modelManager.modelList[0].pathModel, async (glb0) => {
+                self.materialSet(glb0)
+                new GLTFLoader().load(self.modelManager.modelList[1].pathModel, async (glb1) => {
+                    self.materialSet(glb1)
+
                     let lod_distance_max = 10
                     let lod_distance = []
                     for (var i = 0; i < 19; i++)
@@ -296,33 +299,36 @@ export class AvatarManager {
                     var crowd = new Crowd({
                         camera: self.camera,
                         count: self.modelManager.modelList[modelType].ModelCount,
-                        animPathPre: self.modelManager.modelList[modelType].pathAnima,
+                        animPathPre: [
+                            self.modelManager.modelList[0].pathAnima,
+                            self.modelManager.modelList[1].pathAnima
+                        ],
 
                         pathLodGeo: 
-                            self.modelManager.modelList[modelType].pathLodGeo,
+                            [
+                                self.modelManager.modelList[0].pathLodGeo,
+                                self.modelManager.modelList[1].pathLodGeo
+                            ],
                         pathTextureConfig: 
-                            self.modelManager.modelList[modelType].pathTextureConfig,
+                            [
+                                self.modelManager.modelList[0].pathTextureConfig,
+                                self.modelManager.modelList[1].pathTextureConfig
+                            ],
                         useColorTag: 
-                            self.modelManager.modelList[modelType].useColorTag,
+                            [
+                                self.modelManager.modelList[0].useColorTag,
+                                self.modelManager.modelList[1].useColorTag
+                            ],
                         meshType:
-                            self.modelManager.modelList[modelType].meshType,
+                            [
+                                self.modelManager.modelList[0].meshType,
+                                self.modelManager.modelList[1].meshType
+                            ],
                         
                         assets: self.assets,
                         lod_distance: lod_distance,
                         lod_geometry: lod_geometry,
                         lod_visible:lod_visible,
-                        // lod_set: () => {
-                        //     for (let i = 0; i < crowd.children.length; i++) {
-                        //         var crowdGroup0 = crowd.children[i]
-                        //         for (let j = 0; j < lod_visible.length; j++) {
-                        //             if (i >= lod_visible[j][1]) {
-                        //                 var mesh = crowdGroup0.getMesh(lod_visible[j][0])
-                        //                 if (mesh) mesh.visible = false
-                        //             }
-                        //         }
-
-                        //     }
-                        // },
                     })
                     self.setParam(crowd, modelType, self.modelManager.modelIndex)
                     
@@ -384,15 +390,21 @@ export class AvatarManager {
                     
                     window.model.push(crowd)
                     window.crowd = crowd
-                    crowd.init(glb.scene)
+                    crowd.init(
+                        [
+                            glb0.scene,
+                            glb1.scene
+                        ]
+                    )
                     self.scene.add(crowd)
                     console.log(crowd)
 
                     // new UI(this.scene, new THREE.Object3D())
                     
 
-                    load_next(modelType + 1)
+                    // load_next(modelType + 1)
                 })
+              })
             }
         }
         load_next(0)
