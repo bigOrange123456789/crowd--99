@@ -86,7 +86,7 @@ export class modelManager {
             for (let i = 0; i < arr.length; i++) {
                 let config = data[arr[i]]
                 config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
-                config.modelCount = Math.floor( ((11123) / arr.length)  )
+                config.modelCount = Math.floor( (8 *(11123) / arr.length)  )
                 // config.modelCount = Math.floor( ( (11123) / arr.length)  )
                 this.addModel(config)
             }
