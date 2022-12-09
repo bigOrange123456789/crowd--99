@@ -1,4 +1,5 @@
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js'//dat.gui.module.js';
+import * as THREE from "three";
 class UI{
     constructor(scene,crowdGroup) {
         console.log("create ui")
@@ -10,6 +11,7 @@ class UI{
         gui.width = 300;
         gui.domElement.style.userSelect = 'none';
         this.gui_material=gui
+        this.gui_viewpoint = gui
 
         var arr=[]
         for(var i=0;i<scene.children.length;i++){
@@ -34,8 +36,53 @@ class UI{
                 this.addUI_AmbientLight("ambient light",obj)
             }
         }
+        console.log(scene)
+        var camera = scene.getObjectByName("camera");
+        this.addUI_viewPoint("choose viewpoint",camera)
         // this.addUI_crowdGroup("crowdGroup",crowdGroup)
     }
+
+    addUI_viewPoint(name,camera) {
+        var camera_pos = [
+            new THREE.Vector3(-43.486343682038736,  2.127206120237504,  -8.698678933445201),
+            new THREE.Vector3(48.55640273290092,  1.9142025592268763,  -7.314690567468844),
+            new THREE.Vector3(47.298827892375,  1.7232932395224025,  -7.348360792773678),
+            new THREE.Vector3( -58.92759054201366, 39.57529059951184,  -130.21318894586796),
+            new THREE.Vector3(-1.0911605157232827,  0.7075214699744158,  -99.90313103529786),
+            new THREE.Vector3( -64.39189399430883,  8.99856114154391,  -74.3016535116766),
+            new THREE.Vector3( -1.5994877198648538,  1.4997407676957795,  -77.1512219063800),
+            new THREE.Vector3( -54.63874349381954,  18.532468360185952,  46.071540822),
+          ]
+          var camera_tar = [
+            new THREE.Vector3(0,0,0),
+            new THREE.Vector3( 51.03516532171532,  2.290497364346837,  -7.248324342451475),
+            new THREE.Vector3( 51.03516532171532,  2.290497364346837,  -7.248324342451475),
+            new THREE.Vector3(0,0,0),
+            new THREE.Vector3(-0.9868855788301696,  0.7075214699744165,  -99.03513139079297),
+            new THREE.Vector3( -65.34712509322323,  9.472649100434154,  -69.41033714095124),
+            new THREE.Vector3(-1.9992580266994615,  1.6314769709077197,  -59.25814512545),
+            new THREE.Vector3( -66.03747192556759,  9.679838586814231,  41.845030134054),
+            
+          ]
+          var opt = ["默认视点","视点1","视点2","视点3","视点4","视点5","视点6","视点7"]
+          var viewpointState = {
+            viewpoint:"默认视点"
+          }
+          var gui = this.gui_viewpoint
+          const folder = gui.addFolder(name)
+          var viewpoint = folder.add(viewpointState,'viewpoint').options(opt)
+          viewpoint.onChange(function() {
+            let id = 0;
+            for (let i=0;i<7;i++) {
+                if (viewpointState.viewpoint == opt[i]) id = i;
+            }
+            console.log("change",id)
+            camera.position.copy(camera_pos[id])
+            camera.lookAt(camera_tar[id])
+            window.orbitControl.target = camera_tar[id].clone()
+          })
+    }
+
     addUI_crowdGroup(name,crowdGroup){
         var gui=this.gui_material
         const fSSS = gui.addFolder( name );
