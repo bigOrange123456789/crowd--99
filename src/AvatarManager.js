@@ -189,9 +189,11 @@ export class AvatarManager {
         load_next(0)
     }
     materialSet(glb){
+        console.log(glb)
         glb.scene.traverse(node => {
             if (node instanceof THREE.Mesh || node instanceof THREE.SkinnedMesh) {
                 let name = node.name
+                console.log(name)
                 node.material.envMapIntensity = 0.1
                 node.material.roughness = 0.5//0.5
                 node.material.metalness=0.1
@@ -270,132 +272,85 @@ export class AvatarManager {
     load_model() {
         var self = this
         window.model = []
+        const modelType=0
         function load_next() {
-            const modelType=0
             if (modelType < self.modelManager.modelIndex) {
-                // console.log(self.modelManager.modelList[modelType].pathModel)
               new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[0], async (glb0) => {
                 self.materialSet(glb0)
                 new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[1], async (glb1) => {
                     self.materialSet(glb1)
-
-                    let lod_distance_max = 10
-                    let lod_distance = []
-                    for (var i = 0; i < 19; i++)
-                        lod_distance.push((i + 1) * lod_distance_max / 19)
-                    // lod_distance[lod_distance.length-1]=lod_distance_max * 2
-                    lod_distance.push(lod_distance_max * 2)   //最低精度模型
-                    lod_distance.push(lod_distance_max * 9)     //多个四面体
-                    // console.log("lod_distance", lod_distance.length)
-
-                    let lod_geometry = []
-                    for (var i = 0; i <= 20; i++)//20..0
-                        lod_geometry.push(20 - i)
-                    lod_geometry.push(0)
-                    // let lod_distance = []
-                    // let lod_geometry = [20]
-
-                    let lod_visible = self.modelManager.modelList[modelType].lod_visible
-                    var crowd = new Crowd({
-                        camera: self.camera,
-                        count: self.modelManager.modelList[modelType].ModelCount,
-                        animPathPre: 
-                            self.modelManager.modelList[modelType].pathAnima
-                        ,
-
-                        pathLodGeo: 
-                            self.modelManager.modelList[modelType].pathLodGeo,
-
-                        pathTextureConfig: 
-                            self.modelManager.modelList[modelType].pathTextureConfig,
-                        useColorTag: 
-                            self.modelManager.modelList[modelType].useColorTag,
-                        meshType:
-                            self.modelManager.modelList[modelType].meshType,
-                        
-                        assets: self.assets,
-                        lod_distance: lod_distance,
-                        lod_geometry: lod_geometry,
-                        lod_visible:lod_visible,
-                    })
-                    self.setParam(crowd, modelType, self.modelManager.modelIndex)
-                    
-                    for (var i00 = 0; i00 < crowd.count; i00++) {
-                        // 这部分还没整合到分别进行设置
-                        let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
-
-                        if (self.modelManager.modelList[modelType].pathModel == "assets/sim/man_A_4/sim.glb") {
-
-                            crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random() - 10
-                            ], "CloM_A_kuzi_geo")
-                            crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random() - 10
-                            ], "CloM_A_waitao_geo")
-                            crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random() - 10
-                            ], "CloM_A_lingdai_geo")
-                            crowd.setColor(i00, [
-                                20 * Math.random(),
-                                20 * Math.random(),
-                                20 * Math.random()
-                            ], "CloM_A_Xiezi_geo")
-                            crowd.setObesity(i00, 1)
-                            // crowd.setObesity(i00, 0.85+1.1*Math.random())
-
-                        } else if (self.modelManager.modelList[modelType].pathModel == "assets/sim/woman_A/sim.glb") {
-                            crowd.setColor(i00, [
-                                45 * Math.random(),
-                                45 * Math.random(),
-                                45 * Math.random()
-                            ], "CloW_A_kuzi_geo")
-                            crowd.setColor(i00, [
-                                45 * Math.random(),
-                                45 * Math.random(),
-                                45 * Math.random()
-                            ], "CloW_A_xifu_geo")
-                            crowd.setObesity(i00, 1)
-                        } else {
-                            for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
-                                crowd.setColor(i00, [
-                                     Math.random() - 0.5,
-                                     Math.random() - 0.5,
-                                     Math.random() - 0.5
-                                ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
-                            }
-                            crowd.setObesity(i00, 1)
-                            // crowd.setObesity(i00, 0.85 + 1.1 * Math.random())
-                        }
-                        crowd.setObesity(i00, 1)
-                    }
-                    // crowd.visible=false
-                    
-                    window.model.push(crowd)
-                    window.crowd = crowd
-                    crowd.init(
-                        [
-                            glb0.scene,
-                            glb1.scene
-                        ]
-                    )
-                    self.scene.add(crowd)
-                    console.log(crowd)
-
-                    // new UI(this.scene, new THREE.Object3D())
-                    
-
-                    // load_next(modelType + 1)
+                    process([glb0.scene, glb1.scene])
                 })
               })
+            //   new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[0], async (glb0) => {
+            //     self.materialSet(glb0)
+            //     process([glb0.scene])
+            //   })
             }
         }
         load_next(0)
+        function process(scenes){
+            let lod_distance_max = 10
+            let lod_distance = []
+            for (var i = 0; i < 19; i++)
+                lod_distance.push((i + 1) * lod_distance_max / 19)
+            // lod_distance[lod_distance.length-1]=lod_distance_max * 2
+            lod_distance.push(lod_distance_max * 2)   //最低精度模型
+            lod_distance.push(lod_distance_max * 9)     //多个四面体
+            // console.log("lod_distance", lod_distance.length)
+
+            let lod_geometry = []
+            for (var i = 0; i <= 20; i++)//20..0
+                lod_geometry.push(20 - i)
+            lod_geometry.push(0)
+            // let lod_distance = []
+            // let lod_geometry = [20]
+
+            let lod_visible = self.modelManager.modelList[modelType].lod_visible
+            var crowd = new Crowd({
+                camera: self.camera,
+                count: self.modelManager.modelList[modelType].ModelCount,
+                animPathPre: 
+                    self.modelManager.modelList[modelType].pathAnima
+                ,
+
+                pathLodGeo: 
+                    self.modelManager.modelList[modelType].pathLodGeo,
+
+                pathTextureConfig: 
+                    self.modelManager.modelList[modelType].pathTextureConfig,
+                useColorTag: 
+                    self.modelManager.modelList[modelType].useColorTag,
+                meshType:
+                    self.modelManager.modelList[modelType].meshType,
+                
+                assets: self.assets,
+                lod_distance: lod_distance,
+                lod_geometry: lod_geometry,
+                lod_visible:lod_visible,
+            })
+            self.setParam(crowd, modelType, self.modelManager.modelIndex)
+            
+            for (var i00 = 0; i00 < crowd.count; i00++) {
+                // 这部分还没整合到分别进行设置
+                let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
+
+                for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
+                    crowd.setColor(i00, [
+                         Math.random() - 0.5,
+                         Math.random() - 0.5,
+                         Math.random() - 0.5
+                    ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
+                }
+                crowd.setObesity(i00, 1)
+            }
+            // crowd.visible=false
+            
+            window.model.push(crowd)
+            window.crowd = crowd
+            crowd.init(scenes)
+            self.scene.add(crowd)
+        }
         
     }
 

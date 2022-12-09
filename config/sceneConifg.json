@@ -40,16 +40,16 @@
         ],
         "lod_visible": [
             ["coat",22],
-            ["hair",22],
-            ["trousers",22],
+            ["hair",21],
+            ["trousers",21],
 
-            ["eyelash",22],
-            ["eyeRight",22],
-            ["eyeLeft",22],
-            ["eyebrow",22],
-            ["head",22],
+            ["eyelash",10],
+            ["eyeRight",10],
+            ["eyeLeft",10],
+            ["eyebrow",10],
+            ["head",20],
 
-            ["body",22],
+            ["body",20],
             ["shirt",-1]
         ],
         "useColorTag": [
@@ -96,6 +96,101 @@
                 "assets/animation_woman_A.bin",
                 "assets/animation_woman_C.bin"
             ],
+        "animtionNum": 28,
+        "modelCount": 10000
+    },
+    { 
+        "path": [
+            "assets/sim/woman_A/",
+            "assets/sim/woman_E/"
+        ],
+        "meshType":[
+            {
+                "CloW_A_body_geo1":       null,
+                "CloW_A_chenshanxie_geo2":"coat",
+                "CloW_A_eyelash_geo":     null,
+                "CloW_A_eyeLeft_geo":     null,
+                "CloW_A_eyeRight_geo":    null,
+                "CloW_A_hair_geo":        "hair",
+                "CloW_A_kuzi_geo":        "trousers",
+                "CloW_A_Nail_geo":        null,
+                "CloW_A_saliva_geo":      null,
+                "CloW_A_teeth_geo":       null,
+                "CloW_A_xifu_geo":        "coat",
+                "head":                   null
+              },
+           {
+            "CloW_E_eyelash_geo":"eyelash",
+            "CloW_E_hair_geo":"hair",
+            "CloW_E_meimao_geo":"eyebrow",
+            "CloW_E_Body_geo1":"body",
+
+            "CloW_E_erhuan_geo":null,
+            "CloW_E_shangyi_geo":"coat",
+            "CloW_E_xiezi_geo":"shoes",
+            "CloW_E_eyeLeft_geo":"eyeRight",
+            "CloW_E_eyeRight_geo":"eyeRight",
+            "CloW_E_head_geo":"head",
+            "CloW_E_kuzi_geo":"trousers",
+            "CloW_E_Nail_geo":null,
+            "CloW_E_saliva_geo":null,
+            "CloW_E_teeth_geo":null
+          }
+        ],
+        "lod_visible": [
+            ["coat",22],
+            ["hair",21],
+            ["trousers",21],
+
+            ["eyelash",10],
+            ["eyeRight",10],
+            ["eyeLeft",10],
+            ["eyebrow",10],
+            ["head",20],
+
+            ["body",20],
+            ["shoes",10]
+        ],
+        "useColorTag": [
+            "coat",
+            "trousers"
+        ],
+        
+
+        "walkAnimationList": [
+            18
+        ],
+        "sitAnimationList": [
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+        ],
+        "standAnimationList": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            10,
+            11,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27
+        ],
+        "pathAnima":  "assets/animation_woman_A.bin" ,
         "animtionNum": 28,
         "modelCount": 10000
     }
