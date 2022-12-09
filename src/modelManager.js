@@ -31,7 +31,7 @@ class modelMessage {
 
 export class modelManager {
     constructor() {//lod减少后至多加载5个模型
-        this.arr=[3,5]//[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.arr=[0]//[3,5]//[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
         this.pathModelName="sim.glb"
         this.pathLodGeoName="LOD/"
         this.pathTextureConfig="texture_names.json"
@@ -50,10 +50,21 @@ export class modelManager {
 
     addModel(opt) {
         // console.log(opt["path"],opt["lod_visible"])
-        opt["pathModel"] =opt['path']+this.pathModelName
-        opt["pathLodGeo"]=opt['path']+this.pathLodGeoName
-        opt["pathTextureConfig"]=opt['path']+this.pathTextureConfig
+        // opt["pathModel"] =opt['path']+this.pathModelName
+        // opt["pathLodGeo"]=opt['path']+this.pathLodGeoName
+        // opt["pathTextureConfig"]=opt['path']+this.pathTextureConfig
         // console.log(opt)
+
+        const path=opt["path"]
+        opt["pathModel"] =[]
+        opt["pathLodGeo"]=[]
+        opt["pathTextureConfig"]=[]
+        for(let i=0;i<path.length;i++){
+            const path0=path[i]
+            opt["pathModel"].push( path0+this.pathModelName)
+            opt["pathLodGeo"].push( path0+this.pathLodGeoName)
+            opt["pathTextureConfig"].push( path0+this.pathTextureConfig)
+        }
         
         var modelmessage = new modelMessage(opt);
         this.modelList.push(modelmessage);
@@ -86,7 +97,7 @@ export class modelManager {
             for (let i = 0; i < arr.length; i++) {
                 let config = data[arr[i]]
                 config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
-                config.modelCount = Math.floor( (8 *(11123) / arr.length)  )
+                config.modelCount = Math.floor( ((1123) / arr.length)  )
                 // config.modelCount = Math.floor( ( (11123) / arr.length)  )
                 this.addModel(config)
             }
