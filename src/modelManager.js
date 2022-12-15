@@ -306,7 +306,9 @@ export class modelManager {
         return { pos: position, rot: rotation, ani: animationType, speed: speed, startTime: startTime }
     }
     getPosRot_9e(i0, modelType) {
+
         // return this.getPosRot_e(i0,modelType)
+
         // var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
         // var j0 = i0 % 9;
         // let k = 0.25;

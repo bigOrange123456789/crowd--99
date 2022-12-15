@@ -272,24 +272,22 @@ export class AvatarManager {
     load_model() {
         var self = this
         window.model = []
-        const modelType=0
-        function load_next() {
-            if (modelType < self.modelManager.modelIndex) {
-              new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[0], async (glb0) => {
-                self.materialSet(glb0)
-                new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[1], async (glb1) => {
-                    self.materialSet(glb1)
-                    process([glb0.scene, glb1.scene])
+        crowd_next(0)
+        function crowd_next(modelType) {
+            const scenes=[]
+            gltfloader_next(0)
+            function gltfloader_next(gltf_index){
+                new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[gltf_index], async (glb0) => {
+                    self.materialSet(glb0)
+                    scenes.push(glb0.scene)
+                    if(gltf_index+1<self.modelManager.modelList[modelType].pathModel.length) gltfloader_next(gltf_index+1)
+                    else process(scenes,modelType)
                 })
-              })
-            //   new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[0], async (glb0) => {
-            //     self.materialSet(glb0)
-            //     process([glb0.scene])
-            //   })
             }
+            if (modelType+1 < self.modelManager.modelIndex) crowd_next(modelType+1)
         }
-        load_next(0)
-        function process(scenes){
+        function process(scenes,modelType){
+            console.log("scenes",scenes)
             let lod_distance_max = 10
             let lod_distance = []
             for (var i = 0; i < 19; i++)
