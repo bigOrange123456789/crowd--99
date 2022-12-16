@@ -31,7 +31,7 @@ class modelMessage {
 
 export class modelManager {
     constructor() {//lod减少后至多加载5个模型
-        this.arr=[1]//[3,5]//[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
+        this.arr=[0]//[3,5]//[1,3,5,6]//[1,5]//[0,1,2,3,4,5,6,7,8]//[1,3,4,5]
         this.pathModelName="sim.glb"
         this.pathLodGeoName="LOD/"
         this.pathTextureConfig="texture_names.json"

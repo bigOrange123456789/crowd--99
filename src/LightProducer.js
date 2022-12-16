@@ -41,7 +41,7 @@ class LightProducer{
     }
     getSpotGroup(){
         const light=new THREE.Object3D()
-        for(let i=0;i<15;i++){
+        for(let i=0;i<3;i++){
             light.add(this.getSpotLight())
         }
         return light
@@ -51,19 +51,20 @@ class LightProducer{
             Math.floor(0xffffff*Math.random()),//0xffffff,
             10 ,
             10000,
-            Math.PI*(Math.random()*3+3)/60,
+            Math.PI*(Math.random()*5+4.5)/60,
             0,
             0,
             );
         spotLight.position.set(0,50,0)
+        // spotLight.castShadow = true
         this.scene.add(spotLight.target)
-        const speed=0.01*Math.random()
+        const speed=0.01*(Math.random()+0.2)
 
         const tool=new THREE.Object3D();
         tool.rotation.y=Math.random()*100
-        const x=80*Math.random()-0.5;
+        const x=80*(Math.random()+0.01);
         const y=-0.1;
-        const z=80*Math.random()-0.5;
+        const z=80*(Math.random()+0.01);
         setInterval(()=>{
             tool.rotation.y+=speed
             tool.updateMatrix();

@@ -31,7 +31,7 @@ export class Loader{
         this.renderer.outputEncoding = THREE.sRGBEncoding //采用sRGBEncoding 
         // this.renderer.toneMapping = THREE.ACESFilmicToneMapping //aces标准
         // this.renderer.toneMappingExposure = 1//1.25 //调映射曝光度
-        // this.renderer.shadowMap.enabled = true //阴影
+        this.renderer.shadowMap.enabled = true //阴影
         // this.renderer.shadowMap.type = THREE.PCFSoftShadowMap //阴影类型（处理运用Shadow Map产生的阴影锯齿）
         ////////////////////////////////////////////////////////////////////////
 

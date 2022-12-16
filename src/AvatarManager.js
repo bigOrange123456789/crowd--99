@@ -14,6 +14,146 @@ export class AvatarManager {
         // this.sum_count = 0; //当前row_index前面行的人数总和
         // this.row_count = 0; //当前行的可放置人数
         this.init()
+
+        // let scope=this
+        // test1()
+        function test1(){
+            const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            const material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+            const mesh = new THREE.InstancedMesh(geometry, material, 10*100*100);    
+            for(let i=0;i<mesh.count;i++){
+                for(let j=0;j<16;j++){
+                    var x=i%300-70
+                    var y=0
+                    var z=i/300-70
+                    var s=0.1//0.001//0.000001
+                    var e=[s,0,0,0, 0,s,0,0, 0,0,s,0, 0.5*x,0.5*y,0.5*z,1]
+                    mesh.instanceMatrix.array[16*i+j]=e[j]
+                }  
+            }
+            scope.scene.add(mesh);
+        }
+        function test2(){
+            // // const map = new THREE.TextureLoader().load( 'dist/assets/textures_sim1/CloW_A_hair_BaseColor.png' );
+            // const map = new THREE.TextureLoader().load( 'dist/assets/textures_sim1/CloM_A_body_Basecolor.jpg' );
+            // const material = new THREE.SpriteMaterial( { map: map } );
+
+            // const sprite = new THREE.Sprite( material );
+            // scope.scene.add( sprite );
+            // window.s=sprite
+            // console.log(sprite)
+
+            const vertexShader = `
+                uniform float u_time;  //时间累计
+                uniform vec3 u_gravity; //粒子重力加速度
+                attribute vec3 velocity; //粒子速度
+                void main() {
+                    vec3 vel = velocity * u_time; //根据时间计算速度  
+                    vel = vel + u_gravity * u_time * u_time; //根据时间计算加速度 
+                    vec3 pos = position + vel;  //计算位置偏移
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = 3.0;
+                }
+`
+            const fragmentShader = `
+                void main() {
+                    vec3 color = vec3(1.0);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+` 
+              const uniforms = {
+                u_time: { value: 0 },//时间
+                u_gravity: { value: new THREE.Vector3(0, -5, 0) }//加速度
+              }
+              const material = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader,
+                fragmentShader
+              })
+              const COUNT = 100
+              const positions = new Float32Array(COUNT*3)
+              const velocity = new Float32Array(COUNT*3)
+              const geometry = new THREE.BufferGeometry()
+              const size = 0
+              const speed = 20
+              for(let i = 0; i < positions.length; i++) {
+                positions[i] = (Math.random() - 0.5) * size //设施粒子位置
+                velocity[i] = (Math.random() - 0.5) * speed //设置粒子运动速度
+              }
+              geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+              geometry.setAttribute('velocity', new THREE.BufferAttribute(velocity, 3))
+              const mesh = new THREE.Points(geometry, material)
+              mesh.position.y=2
+              scope.scene.add(mesh)
+            //   setTimeout(()=>{
+            //     uniforms.u_time.value+=0.1
+            //   },1)
+              setInterval(()=>{
+                uniforms.u_time.value+=0.005
+              })
+        }
+        function test3(){
+            const vertexShader = `
+                void main() {
+                    vec3 pos = position;  //计算位置偏移
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = 3.0;
+                }
+`
+            const fragmentShader = `
+                void main() {
+                    vec3 color = vec3(1.0);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+` 
+              const material = new THREE.ShaderMaterial({
+                uniforms: {},
+                vertexShader,
+                fragmentShader
+              })
+              const COUNT = 10*100*100
+              const positions = new Float32Array(COUNT*3)
+              const geometry = new THREE.BufferGeometry()
+              for(let i = 0; i < COUNT; i++) {
+                positions[3*i+0] =i%300-70
+                positions[3*i+2] =i/300-70
+              }
+              geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+              const mesh = new THREE.Points(geometry, material)
+              mesh.position.y=2
+              scope.scene.add(mesh)
+        }
+        function test4(){
+            const vertexShader = `
+                void main() {
+                    vec3 pos = position;  //计算位置偏移
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = 3.0;
+                }
+`
+            const fragmentShader = `
+                void main() {
+                    vec3 color = vec3(1.0);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+` 
+              const material = new THREE.ShaderMaterial({
+                uniforms: {},
+                vertexShader,
+                fragmentShader
+              })
+              const COUNT = 10*100*100
+              const positions = new Float32Array(COUNT*3)
+              const geometry = new THREE.BufferGeometry()
+              for(let i = 0; i < COUNT; i++) {
+                positions[3*i+0] =i%300-70
+                positions[3*i+2] =i/300-70
+              }
+              geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+              const mesh = new THREE.Points(geometry, material)
+              mesh.position.y=2
+              scope.scene.add(mesh)
+        }
     }
     async init() {
         var pathAnima = "assets/animation_man_A.bin"
@@ -288,6 +428,7 @@ export class AvatarManager {
         }
         function process(scenes,modelType){
             console.log("scenes",scenes)
+
             let lod_distance_max = 10
             let lod_distance = []
             for (var i = 0; i < 19; i++)
@@ -301,8 +442,11 @@ export class AvatarManager {
             for (var i = 0; i <= 20; i++)//20..0
                 lod_geometry.push(20 - i)
             lod_geometry.push(0)
+
+
             // let lod_distance = []
-            // let lod_geometry = [20]
+            // let lod_geometry = [0]
+            // alert("test2")
 
             let lod_visible = self.modelManager.modelList[modelType].lod_visible
             var crowd = new Crowd({
