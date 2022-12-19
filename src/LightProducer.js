@@ -33,7 +33,7 @@ class LightProducer{
 
         // const light1=new THREE.Object3D()
         setTimeout(()=>{
-            scene.add(this.getSpotGroup())
+            // scene.add(this.getSpotGroup())
         },3000)
         
         // light1.

@@ -20,50 +20,36 @@
                 "head":                   null
               },
            {
-            "CloW_E_shangyi_geo":"coat",
-            "CloW_E_hair_geo":"hair",
-            "CloW_E_kuzi_geo":"trousers",
-
             "CloW_E_eyelash_geo":"eyelash",
+            "CloW_E_hair_geo":"hair",
             "CloW_E_meimao_geo":"eyebrow",
             "CloW_E_Body_geo1":"body",
+
+            "CloW_E_erhuan_geo":null,
+            "CloW_E_shangyi_geo":"coat",
             "CloW_E_xiezi_geo":"shoes",
             "CloW_E_eyeLeft_geo":"eyeRight",
             "CloW_E_eyeRight_geo":"eyeRight",
             "CloW_E_head_geo":"head",
-
-            "CloW_E_erhuan_geo":null,
+            "CloW_E_kuzi_geo":"trousers",
             "CloW_E_Nail_geo":null,
             "CloW_E_saliva_geo":null,
             "CloW_E_teeth_geo":null
           }
         ],
         "lod_visible": [
-            {
-                "CloW_A_chenshanxie_geo2":5,
-                "CloW_A_hair_geo":        7,
-                "CloW_A_kuzi_geo":        7,
-                "CloW_A_xifu_geo":        7
-              },
-           {
-            "CloW_E_shangyi_geo":7,
-            "CloW_E_hair_geo":7,
-            "CloW_E_kuzi_geo":7,
+            ["coat",22],
+            ["hair",21],
+            ["trousers",21],
 
-            
+            ["eyelash",10],
+            ["eyeRight",10],
+            ["eyeLeft",10],
+            ["eyebrow",10],
+            ["head",20],
 
-            "CloW_E_Body_geo1":5,
-            "CloW_E_xiezi_geo":5,
-            "CloW_E_head_geo":5,
-
-            
-            "CloW_E_eyeLeft_geo":4,
-            "CloW_E_eyeRight_geo":4,
-
-            "CloW_E_eyelash_geo":3,
-            "CloW_E_meimao_geo":3
-
-          }
+            ["body",20],
+            ["shoes",10]
         ],
         "useColorTag": [
             "coat",

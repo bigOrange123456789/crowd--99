@@ -97,7 +97,7 @@ export class modelManager {
             for (let i = 0; i < arr.length; i++) {
                 let config = data[arr[i]]
                 config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
-                // config.modelCount = Math.floor( ((1123) / arr.length)  )
+                config.modelCount = Math.floor( ((11123) / arr.length)  )
                 // config.modelCount = Math.floor( ( (11123) / arr.length)  )
                 this.addModel(config)
             }
@@ -106,7 +106,7 @@ export class modelManager {
             // console.log(index)
             data[index].modelCount = 8 * (11123)
             // data[index].modelCount =  (5123)
-            // data[index].modelCount =  (11123)
+            data[index].modelCount =  (11123)
             this.addModel(data[index])
         }
     }
@@ -307,7 +307,7 @@ export class modelManager {
     }
     getPosRot_9e(i0, modelType) {
 
-        // return this.getPosRot_e(i0,modelType)
+        return this.getPosRot_e(i0,modelType)
 
         // var PosRot = this.getPosRot_e(parseInt(i0 / 9), modelType)
         // var j0 = i0 % 9;

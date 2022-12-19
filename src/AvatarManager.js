@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { modelManager } from "./modelManager.js";
 export class AvatarManager {
     constructor(scene, camera) {
+        window.scene=scene
         this.scene = scene
         this.camera = camera
         this.assets = {}//为了防止资源重复加载，相同路径的资源只加载一次
@@ -429,24 +430,49 @@ export class AvatarManager {
         function process(scenes,modelType){
             console.log("scenes",scenes)
 
-            let lod_distance_max = 10
-            let lod_distance = []
-            for (var i = 0; i < 19; i++)
-                lod_distance.push((i + 1) * lod_distance_max / 19)
-            // lod_distance[lod_distance.length-1]=lod_distance_max * 2
-            lod_distance.push(lod_distance_max * 2)   //最低精度模型
-            lod_distance.push(lod_distance_max * 9)     //多个四面体
-            // console.log("lod_distance", lod_distance.length)
-
-            let lod_geometry = []
-            for (var i = 0; i <= 20; i++)//20..0
-                lod_geometry.push(20 - i)
-            lod_geometry.push(0)
-
-
+            // let lod_distance_max = 10
             // let lod_distance = []
-            // let lod_geometry = [0]
+            // for (var i = 0; i < 19; i++)
+            //     lod_distance.push((i + 1) * lod_distance_max / 19)
+            // lod_distance.push(lod_distance_max * 2)   //最低精度模型
+            // lod_distance.push(lod_distance_max * 9)     //多个四面体
+
+            // let lod_geometry = []
+            // for (var i = 0; i <= 20; i++)//20..0
+            //     lod_geometry.push(20 - i)
+            // lod_geometry.push(0)
+
+            // let lod_distance_max = 10
+            // let lod_distance = []
+            // for (var i = 0; i < 9; i++)
+            //     lod_distance.push((i + 1) * lod_distance_max / 9)
+            // lod_distance.push(lod_distance_max * 2)   //最低精度模型
+            // lod_distance.push(lod_distance_max * 9)     //多个四面体
+
+            // let lod_geometry = []
+            // for (var i = 0; i <= 10; i++)//20..0
+            //     lod_geometry.push(20 - 2*i)
+            // lod_geometry.push(0)
+
+
+            let lod_distance = [1,  2, 3,   5,  30, 50]
+            let lod_geometry = [17, 14,11,  8,  1,  0,0]
             // alert("test2")
+            // lod_distance=[
+            //     0.5263157894736842, 1.0526315789473684, 1.5789473684210527, 
+            //     2.1052631578947367, 2.6315789473684212, 3.1578947368421053, 
+            //     3.6842105263157894, 4.2105263157894735, 4.7368421052631575, 
+            //     5.2631578947368425, 5.7894736842105265, 
+            //     6.315789473684211, 6.842105263157895, 7.368421052631579, 
+            //     7.894736842105263, 8.421052631578947, 8.947368421052632, 9.473684210526315, 10, 20, 90]
+            // lod_geometry=[20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0]
+
+            
+            // lod_distance=[]
+            // lod_geometry=[0]
+
+            console.log("lod_distance",lod_distance)
+            console.log("lod_geometry",lod_geometry)
 
             let lod_visible = self.modelManager.modelList[modelType].lod_visible
             var crowd = new Crowd({
@@ -492,6 +518,8 @@ export class AvatarManager {
             window.crowd = crowd
             crowd.init(scenes)
             self.scene.add(crowd)
+            self.scene.add(crowd.CrowdPoints)
+            window.p=crowd.CrowdPoints
         }
         
     }
