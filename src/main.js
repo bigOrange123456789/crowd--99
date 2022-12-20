@@ -73,7 +73,7 @@ export class Loader{
         // this.autoMove=this.wander2()
         var scope=this
         setTimeout(()=>{
-          scope.initSky()
+          // scope.initSky()
           // scope.autoMove.stopFlag = false;
         },1000)
         
