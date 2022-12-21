@@ -502,12 +502,12 @@ export class AvatarManager {
             for (var i00 = 0; i00 < crowd.count; i00++) {
                 // 这部分还没整合到分别进行设置
                 let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
-
+                const test_k=1//00000
                 for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                     crowd.setColor(i00, [
-                         Math.random() - 0.5,
-                         Math.random() - 0.5,
-                         Math.random() - 0.5
+                        test_k*Math.random() - 0.5,
+                        test_k* Math.random() - 0.5,
+                        test_k* Math.random() - 0.5
                     ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
                 }
                 crowd.setObesity(i00, 1)
@@ -532,7 +532,7 @@ export class AvatarManager {
                 Math.random() * 0.3 + 0.85,
                 1,
             ]
-            for (var i = 0; i < 3; i++)scale[i] *= 0.5
+            for (var i = 0; i < 3; i++)scale[i] *= 0.2
 
             if (i0 % modelCount != modelType) continue
             let i00 = Math.floor(i0 / modelCount)
@@ -549,7 +549,7 @@ export class AvatarManager {
             let walkAnimationlen = this.modelManager.modelList[modelType].walkAnimationList.length;
             for (let walkAnimation = 0; walkAnimation < walkAnimationlen; walkAnimation++) {
                 if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]&&animtionType!==10) {
-                    crowd.setMoveMaxLength(i00, 1.5)
+                    crowd.setMoveMaxLength(i00, 2*(1+Math.random()) )
                     break;
                 }
             }
