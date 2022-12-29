@@ -58,7 +58,7 @@ class LightProducer{
         spotLight.position.set(0,50,0)
         // spotLight.castShadow = true
         this.scene.add(spotLight.target)
-        const speed=0.01*(Math.random()+0.2)
+        const speed=0.003*(Math.random()+0.2)
 
         const tool=new THREE.Object3D();
         tool.rotation.y=Math.random()*100

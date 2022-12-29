@@ -6,7 +6,7 @@
         ],
         "meshType":[
             {
-                "CloW_A_body_geo1":       null,
+                "CloW_A_body_geo1":       "coat",
                 "CloW_A_chenshanxie_geo2":"coat",
                 "CloW_A_eyelash_geo":     null,
                 "CloW_A_eyeLeft_geo":     null,
@@ -26,7 +26,7 @@
 
             "CloW_E_eyelash_geo":"eyelash",
             "CloW_E_meimao_geo":"eyebrow",
-            "CloW_E_Body_geo1":"body",
+            "CloW_E_Body_geo1":"coat",
             "CloW_E_xiezi_geo":"coat",
             "CloW_E_eyeLeft_geo":"eyeRight",
             "CloW_E_eyeRight_geo":"eyeRight",
@@ -40,34 +40,42 @@
         ],
         "lod_visible": [
             {
-                "CloW_A_chenshanxie_geo2":5,
-                "CloW_A_hair_geo":        6,
-                "CloW_A_kuzi_geo":        6,
-                "CloW_A_xifu_geo":        7
-              },
-           {
-            "CloW_E_shangyi_geo":7,
-            "CloW_E_hair_geo":6,
-            "CloW_E_kuzi_geo":6,
+                "CloW_A_xifu_geo":        5,
+
+
+                "CloW_A_hair_geo":        4,
+                "CloW_A_kuzi_geo":        5,
+
+                "CloW_A_chenshanxie_geo2":2,
+                "CloW_A_body_geo1":2
+            },
+            {
+            "CloW_E_shangyi_geo":5,
+            
+            "CloW_E_hair_geo":4,
+            "CloW_E_kuzi_geo":5,
 
             
 
-            "CloW_E_Body_geo1":5,
-            "CloW_E_xiezi_geo":5,
-            "CloW_E_head_geo":5,
+            "CloW_E_Body_geo1":3,
+            "CloW_E_xiezi_geo":3,
+            "CloW_E_head_geo":4,
 
             
-            "CloW_E_eyeLeft_geo":4,
-            "CloW_E_eyeRight_geo":4,
+            "CloW_E_eyeLeft_geo":2,
+            "CloW_E_eyeRight_geo":2,
 
-            "CloW_E_eyelash_geo":3,
-            "CloW_E_meimao_geo":3
+            "CloW_E_eyelash_geo":1,
+            "CloW_E_meimao_geo":1
 
-          }
+           }
         ],
         "useColorTag": [
-            "coat",
-            "trousers"
+            "CloW_A_xifu_geo",
+            "CloW_A_kuzi_geo",
+            
+            "CloW_E_shangyi_geo",
+            "CloW_E_kuzi_geo"
         ],
         
 
