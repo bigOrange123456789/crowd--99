@@ -455,8 +455,9 @@ export class AvatarManager {
             // lod_geometry.push(0)
 
 
-            let lod_distance = [1,  2, 3,   5,  30, 50]
-            let lod_geometry = [17, 14,11,  8,  1,  0,0]
+            let lod_distance =   [ 2,   3,   5,    30,  50 ]
+            let lod_geometry =   [ 10,  9,   8,    1,   0  ]
+            let lod_avatarCount= [ 50, 100, 170,  800+1100, 2500+800]
             // alert("test2")
             // lod_distance=[
             //     0.5263157894736842, 1.0526315789473684, 1.5789473684210527, 
@@ -496,19 +497,20 @@ export class AvatarManager {
                 lod_distance: lod_distance,
                 lod_geometry: lod_geometry,
                 lod_visible:lod_visible,
+                lod_avatarCount:lod_avatarCount
             })
             self.setParam(crowd, modelType, self.modelManager.modelIndex)
             
             for (var i00 = 0; i00 < crowd.count; i00++) {
                 // 这部分还没整合到分别进行设置
                 let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
-                const test_k=1//00000
                 for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                     crowd.setColor(i00, [
-                        test_k*Math.random() - 0.5,
-                        test_k* Math.random() - 0.5,
-                        test_k* Math.random() - 0.5
+                        Math.random() - 0.5,
+                        Math.random() - 0.5,
+                        Math.random() - 0.5
                     ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
+                    // console.log(self.modelManager.modelList[modelType].useColorTag[meshIndex])
                 }
                 crowd.setObesity(i00, 1)
             }
