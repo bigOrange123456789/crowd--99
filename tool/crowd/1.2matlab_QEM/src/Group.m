@@ -84,7 +84,6 @@ classdef Group < handle
                         min_cost=cost0;
                     end
                 end
-                
                 if min_name~=""
                     mesh=getfield(this.children,min_name);
                     mesh.myQEM.simplification_makeStep(); 

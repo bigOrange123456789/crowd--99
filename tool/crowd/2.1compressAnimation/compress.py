@@ -59,5 +59,5 @@ if __name__ == "__main__":
         ],
         result["animation"],
         result["animation2"],
-        "test.bin"
+        "animation.bin"
     )

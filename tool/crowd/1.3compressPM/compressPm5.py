@@ -175,8 +175,8 @@ class Meshes:
 
 def process(index):
     name = str(index)+".json.pack.json"
-    inpath = "data/"+name
-    outpath="out/"
+    inpath = "../1.2matlab_QEM/data2/"+name #"data/"+name
+    outpath="LOD/"
     
     print("输入数据路径:", inpath)
     file = open(inpath)
@@ -194,3 +194,8 @@ if __name__ == "__main__":
     for i in range(19):
         process(i+1)
     # process(19)
+
+    import os
+    import shutil
+    # os.chdir('E:\\HH')
+    shutil.copy('../1.2matlab_QEM/data2/1.json', 'LOD/1.json')

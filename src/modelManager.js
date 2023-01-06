@@ -1,19 +1,11 @@
-import sceneConifg from '../config/sceneConifg.json'
+import sceneConifg from '../config/sceneConifg_woman01.json'
 class modelMessage {
     constructor(opt) {
-        this.pathModel = opt.pathModel;
-        this.pathAnima = opt.pathAnima;
-        this.pathLodGeo = opt.pathLodGeo;
-        this.lod_visible = opt.lod_visible;
-        this.meshType=opt.meshType;
-        this.useColorTag = opt.useColorTag;
-        this.animtionNum = opt.animtionNum;
-        this.walkAnimationList = opt.walkAnimationList;
-        this.sitAnimationList = opt.sitAnimationList;
-        this.standAnimationList = opt.standAnimationList;
+        for(const i in opt)
+            this[i]=opt[i]
+
         this.ModelCount = opt.modelCount;
         this.pathTextureConfig=opt.pathTextureConfig;
-
         this.PosRotCount = 0;
         this.posRotList = [];
         this.animtionTypes = [];
@@ -65,7 +57,8 @@ export class modelManager {
             opt["pathLodGeo"].push( path0+this.pathLodGeoName)
             opt["pathTextureConfig"].push( path0+this.pathTextureConfig)
         }
-        
+        // console.log(opt,opt["pathTexture"])
+        // alert(opt["pathTexture"])
         var modelmessage = new modelMessage(opt);
         this.modelList.push(modelmessage);
         this.modelIndex += 1;
@@ -89,13 +82,12 @@ export class modelManager {
     }
 
     init() {
-        let data = sceneConifg
         // console.log(JSON.stringify(data, null, 4))
         let index = this.getQueryString("id")
         if (index == "all") {
             let arr = this.arr//[5,3,4]//[1,3,4,5]
             for (let i = 0; i < arr.length; i++) {
-                let config = data[arr[i]]
+                let config = sceneConifg[arr[i]]
                 config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
                 // config.modelCount = Math.floor( ((11123) / arr.length)  )
                 // config.modelCount = Math.floor( ( (11123) / arr.length)  )
@@ -104,10 +96,10 @@ export class modelManager {
         } else {
             index = parseInt(index)
             // console.log(index)
-            data[index].modelCount = 8 * (11123)
+            sceneConifg[index].modelCount = 8 * (11123)
             // data[index].modelCount =  (5123)
             // data[index].modelCount =  (11123)
-            this.addModel(data[index])
+            this.addModel(sceneConifg[index])
         }
     }
 

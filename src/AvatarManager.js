@@ -456,8 +456,8 @@ export class AvatarManager {
 
 
             let lod_distance =   [ 2,   3,   5,    30,  50 ]
-            let lod_geometry =   [ 10,  9,   8,    1,   0  ]
-            let lod_avatarCount= [ 50, 100, 170,  800+1100, 2500+800]
+            let lod_geometry =   [ 20,  19,   10,    5,   1  ]//[ 10,  9,   8,    1,   0  ]
+            // let lod_avatarCount= [ 2*50, 2*100, 2*170,  2*(800+1100), 2*(2500+800)]//[ 50, 100, 170,  800+1100, 2500+800]
             // alert("test2")
             // lod_distance=[
             //     0.5263157894736842, 1.0526315789473684, 1.5789473684210527, 
@@ -471,11 +471,15 @@ export class AvatarManager {
             
             // lod_distance=[]
             // lod_geometry=[0]
+            let lod_avatarCount0=self.modelManager.modelList[modelType].lod_avatarCount
+            let lod_avatarCount= []//[ 2*50, 2*100, 2*170,  2*(800+1100), 2*(2500+800)]//[ 50, 100, 170,  800+1100, 2500+800]
+            for(let i=0;i<lod_avatarCount0.length;i++){
+                lod_avatarCount.push(
+                    Math.floor(lod_avatarCount0[i]/self.modelManager.modelList[modelType].pathModel.length)
+                )
+            }
 
-            console.log("lod_distance",lod_distance)
-            console.log("lod_geometry",lod_geometry)
 
-            let lod_visible = self.modelManager.modelList[modelType].lod_visible
             var crowd = new Crowd({
                 camera: self.camera,
                 count: self.modelManager.modelList[modelType].ModelCount,
@@ -492,12 +496,16 @@ export class AvatarManager {
                     self.modelManager.modelList[modelType].useColorTag,
                 meshType:
                     self.modelManager.modelList[modelType].meshType,
+
+                pathTexture:
+                    self.modelManager.modelList[modelType].pathTexture,
                 
                 assets: self.assets,
-                lod_distance: lod_distance,
-                lod_geometry: lod_geometry,
-                lod_visible:lod_visible,
-                lod_avatarCount:lod_avatarCount
+                
+                lod_visible:self.modelManager.modelList[modelType].lod_visible,
+                lod_distance: self.modelManager.modelList[modelType].lod_distance,
+                lod_geometry: self.modelManager.modelList[modelType].lod_geometry,
+                lod_avatarCount:self.modelManager.modelList[modelType].lod_avatarCount
             })
             self.setParam(crowd, modelType, self.modelManager.modelIndex)
             
@@ -534,7 +542,7 @@ export class AvatarManager {
                 Math.random() * 0.3 + 0.85,
                 1,
             ]
-            for (var i = 0; i < 3; i++)scale[i] *= 0.2
+            for (var i = 0; i < 3; i++)scale[i] *= 0.5//0.2
 
             if (i0 % modelCount != modelType) continue
             let i00 = Math.floor(i0 / modelCount)

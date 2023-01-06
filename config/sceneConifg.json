@@ -4,6 +4,10 @@
             "assets/sim/woman_A/",
             "assets/sim/woman_E/"
         ],
+        "pathTexture":[
+            "./assets/textures_sim1/",
+            "./assets/textures_sim1/"
+        ],
         "meshType":[
             {
                 "CloW_A_body_geo1":       "coat",
@@ -18,7 +22,7 @@
                 "CloW_A_teeth_geo":       null,
                 "CloW_A_xifu_geo":        "coat",
                 "head":                   null
-              },
+            },
            {
             "CloW_E_shangyi_geo":"coat",
             "CloW_E_hair_geo":"hair",
@@ -42,7 +46,6 @@
             {
                 "CloW_A_xifu_geo":        5,
 
-
                 "CloW_A_hair_geo":        4,
                 "CloW_A_kuzi_geo":        5,
 
@@ -50,24 +53,20 @@
                 "CloW_A_body_geo1":2
             },
             {
-            "CloW_E_shangyi_geo":5,
+                "CloW_E_shangyi_geo":5,
             
-            "CloW_E_hair_geo":4,
-            "CloW_E_kuzi_geo":5,
+                "CloW_E_hair_geo":4,
+                "CloW_E_kuzi_geo":5,
 
-            
+                "CloW_E_Body_geo1":3,
+                "CloW_E_xiezi_geo":3,
+                "CloW_E_head_geo":4,
 
-            "CloW_E_Body_geo1":3,
-            "CloW_E_xiezi_geo":3,
-            "CloW_E_head_geo":4,
+                "CloW_E_eyeLeft_geo":2,
+                "CloW_E_eyeRight_geo":2,
 
-            
-            "CloW_E_eyeLeft_geo":2,
-            "CloW_E_eyeRight_geo":2,
-
-            "CloW_E_eyelash_geo":1,
-            "CloW_E_meimao_geo":1
-
+                "CloW_E_eyelash_geo":1,
+                "CloW_E_meimao_geo":1
            }
         ],
         "useColorTag": [
@@ -113,7 +112,9 @@
             27
         ],
         "pathAnima":  "assets/animation_woman_A.bin" ,
-        "animtionNum": 28,
-        "modelCount": 10000
+
+        "lod_distance":[ 2,   3,   5,    30,  50 ],
+        "lod_geometry":    [ 10,  9,   8,    1,   0    ],
+        "lod_avatarCount": [ 100, 200, 340,  3800, 6600]
     }
 ]

@@ -14,29 +14,28 @@
 <script src="lib/GLTFLoader.js"></script>
 <script src="lib/GLTFExporter.js"></script>
 <script type="module">
-    var path0 =prompt("请输入数据路径:","man_B2.glb")//"monkey.glb")
+    var pathPre =prompt("请输入数据路径:","model/")
     var loader= new THREE.GLTFLoader();
-    process()
-    function process(){
-        // var path0="monkey.glb"//pathPre+index+".glb"
+    process(1)
+    function process(index){
+        var path0=pathPre+index+".glb"
         loader.load(path0, (glb) => {
             var result={};
             glb.scene.traverse( node => {
-                if(node instanceof THREE.Mesh){
+                if(node instanceof THREE.SkinnedMesh){
                     saveGeometry(node,result)
                 }
             })
             console.log(result)
-            exportJson(result,"20.json")
-            // if(index<20)process(index+1)
+            exportJson(result,index+".json")
+            if(index<20)process(index+1)
         });
     }
     
     function saveGeometry(node,result){
         // node.geometry = node.geometry.toNonIndexed();
         result[node.name]={}
-        var tags=['position','uv']//,'skinIndex','skinWeight']//,'normal']//normal可以在前端根据拓扑关系重新计算，不需要传输
-        var tags=['position','uv','skinIndex','skinWeight']
+        var tags=['position','uv','skinIndex','skinWeight','uv']//,'normal']//normal可以在前端根据拓扑关系重新计算，不需要传输
         var attributes=node.geometry.attributes
         for(var i=0;i<tags.length;i++ ){
             var t=tags[i]
