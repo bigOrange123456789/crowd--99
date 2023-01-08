@@ -34,17 +34,20 @@
             }
         ],
         "useColorTag": [
+                "qipao22",
+                "waitao1",
+                "xiezi"
         ],
         
 
         "walkAnimationList": [
-            7,11
+            5,8
         ],
         "sitAnimationList": [
             
         ],
         "standAnimationList": [
-            0,1,2,3,4,5,6,8,9,10,12,13,14,15
+            0,1,2,3,4,6,7,9,10,11,12
         ],
         "pathAnima":  "assets/animation_woman0.bin" ,
 

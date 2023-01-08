@@ -411,7 +411,9 @@ export class AvatarManager {
         })
     }
     load_model() {
+        
         var self = this
+        // console.log("self.modelManager.modelList",self.modelManager.modelList)
         window.model = []
         crowd_next(0)
         function crowd_next(modelType) {
@@ -425,7 +427,8 @@ export class AvatarManager {
                     else process(scenes,modelType)
                 })
             }
-            if (modelType+1 < self.modelManager.modelIndex) crowd_next(modelType+1)
+            // alert(modelType)
+            if (modelType+1 < self.modelManager.modelList.length) crowd_next(modelType+1)
         }
         function process(scenes,modelType){
             console.log("scenes",scenes)
@@ -475,7 +478,7 @@ export class AvatarManager {
             let lod_avatarCount= []//[ 2*50, 2*100, 2*170,  2*(800+1100), 2*(2500+800)]//[ 50, 100, 170,  800+1100, 2500+800]
             for(let i=0;i<lod_avatarCount0.length;i++){
                 lod_avatarCount.push(
-                    Math.floor(lod_avatarCount0[i]/self.modelManager.modelList[modelType].pathModel.length)
+                    Math.floor(lod_avatarCount0[i]/(self.modelManager.modelList[modelType].pathModel.length*2))
                 )
             }
 
@@ -514,9 +517,9 @@ export class AvatarManager {
                 let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
                 for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                     crowd.setColor(i00, [
-                        Math.random() - 0.5,
-                        Math.random() - 0.5,
-                        Math.random() - 0.5
+                        50*Math.random() - 0.5,
+                        50*Math.random() - 0.5,
+                        50*Math.random() - 0.5
                     ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
                     // console.log(self.modelManager.modelList[modelType].useColorTag[meshIndex])
                 }

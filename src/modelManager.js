@@ -1,4 +1,4 @@
-import sceneConifg from '../config/sceneConifg_woman01.json'
+import sceneConifg from '../config/sceneConifg_0.json'
 class modelMessage {
     constructor(opt) {
         for(const i in opt)
@@ -83,23 +83,31 @@ export class modelManager {
 
     init() {
         // console.log(JSON.stringify(data, null, 4))
-        let index = this.getQueryString("id")
-        if (index == "all") {
-            let arr = this.arr//[5,3,4]//[1,3,4,5]
-            for (let i = 0; i < arr.length; i++) {
-                let config = sceneConifg[arr[i]]
-                config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
-                // config.modelCount = Math.floor( ((11123) / arr.length)  )
-                // config.modelCount = Math.floor( ( (11123) / arr.length)  )
-                this.addModel(config)
-            }
-        } else {
-            index = parseInt(index)
-            // console.log(index)
-            sceneConifg[index].modelCount = 8 * (11123)
-            // data[index].modelCount =  (5123)
-            // data[index].modelCount =  (11123)
-            this.addModel(sceneConifg[index])
+        // let index = this.getQueryString("id")
+        // if (index == "all") {
+        //     let arr = this.arr//[5,3,4]//[1,3,4,5]
+        //     for (let i = 0; i < arr.length; i++) {
+        //         let config = sceneConifg[arr[i]]
+        //         config.modelCount = Math.floor( (8 * (11123) / arr.length)  )
+        //         // config.modelCount = Math.floor( ((11123) / arr.length)  )
+        //         // config.modelCount = Math.floor( ( (11123) / arr.length)  )
+        //         this.addModel(config)
+        //     }
+        // } else {
+        //     index = parseInt(index)
+        //     // console.log(index)
+        //     sceneConifg[index].modelCount = 8 * (11123)
+        //     // data[index].modelCount =  (5123)
+        //     // data[index].modelCount =  (11123)
+        //     this.addModel(sceneConifg[index])
+        // }
+
+        for (let i = 0; i < sceneConifg.length; i++) {
+            let config = sceneConifg[i]
+            config.modelCount = Math.floor( (8 * (11123) / sceneConifg.length)  )
+            // config.modelCount = Math.floor( ((11123) / arr.length)  )
+            // config.modelCount = Math.floor( ( (11123) / arr.length)  )
+            this.addModel(config)
         }
     }
 
