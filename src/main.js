@@ -152,6 +152,7 @@ export class Loader{
         this.getCubeMapTexture('assets/environment/royal_esplanade_1k.hdr').then(
             ({ envMap }) => {
                 scope.scene.environment = envMap
+                scope.scene.background = envMap
                 if(cb)cb()
             }
         )
