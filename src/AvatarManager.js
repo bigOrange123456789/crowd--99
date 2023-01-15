@@ -1,656 +1,578 @@
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader.js";
-//RGBMLoader
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Crowd } from '../lib/crowd/Crowd.js'//let Crowd=Pack// 
 import { CrowdMesh } from '../lib/crowd/CrowdMesh.js'//用于预加载动画数据
-import { UI } from './UI.js'
-import {MaterialProcessor1,MaterialProcessor2,MaterialProcessor3 } from './MaterialProcessor.js'
+import { UI,UICrowd } from './UI.js'
+import { MaterialProcessor1, MaterialProcessor2, MaterialProcessor3 } from './MaterialProcessor.js'
 import * as THREE from "three";
-export class AvatarManager{
-    constructor(scene,camera){
-        this.scene=scene
-        this.camera=camera
-        this.assets={}//为了防止资源重复加载，相同路径的资源只加载一次
-        this.row_index = 0; //在梯形看台中计算当前人物所在看台行数(貌似含义和小看台中正好相反)
-        this.sum_count = 0; //当前row_index前面行的人数总和
-        this.row_count = 0; //当前行的可放置人数
+import { modelManager } from "./modelManager.js";
+export class AvatarManager {
+    constructor(scene, camera) {
+        window.scene=scene
+        this.scene = scene
+        this.camera = camera
+        this.assets = {}//为了防止资源重复加载，相同路径的资源只加载一次
+        // this.row_index = 0; //在梯形看台中计算当前人物所在看台行数(貌似含义和小看台中正好相反)
+        // this.sum_count = 0; //当前row_index前面行的人数总和
+        // this.row_count = 0; //当前行的可放置人数
         this.init()
-    }
-    async init(){
-        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
-        window.timeTest.measure("Anima start await")
-        this.assets[pathAnima]=await CrowdMesh.loadAnimJSON(pathAnima)
-        window.timeTest.measure("Anima end await")
-        // this.load_model1()
-        // this.load_model2()
-        this.load_Char47()
-        new UI(this.scene,new THREE.Object3D())
-    }
-    load_model1(){
-        var self = this
-        var pathModel="assets/woman01.gltf"//woman01_0.glb"
-        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
-        var pathLodGeo="assets/woman01LOD/"
-        window.timeTest.measure("gltf load start")
-        new GLTFLoader().load(pathModel, async (glb) => {
-            window.timeTest.measure("gltf load end")
-            console.log(glb)
-            const p=new MaterialProcessor1(glb)
-            await p.init()
-            window.timeTest.measure("MaterialProcessor1 end")
-            var crowd=new Crowd({
-                camera:self.camera,
-                count:100*100/2+754/2,//5*100*100,
-                animPathPre:pathAnima,
-                pathLodGeo:pathLodGeo,
-                assets:self.assets,
-                useColorTag:[//需要进行颜色编辑的区域mesh名称
-                    "CloW_A_kuzi_geo","CloW_A_waitao_geo1","CloW_A_xiezi_geo","hair"
-                ],
-                lod_distance:[10,20,45,70,90],//6级LOD
-                lod_geometry:[19,13,8,4,2,0],
-                lod_set:()=>{
-                    for(let i=0;i<crowd.children.length;i++){
-                        var crowdGroup0=crowd.children[i]
-                        crowdGroup0.getMesh("teeth").visible=false
-                        if(i==0){
-                        }else if(i==1){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        }else if(i==2){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        }else if(i==3){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_A_xiezi_geo").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        }else if(i==4){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_A_xiezi_geo").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                            crowdGroup0.getMesh("hair").visible=false
-                        }else if(i==5){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_A_xiezi_geo").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                            crowdGroup0.getMesh("hair").visible=false
-                        }
-                    }
-                },
-            })
-            window.timeTest.measure("set param start")
-            self.setParam(crowd,0,12)
-            window.timeTest.measure("set param end")
-            console.log(crowd)
-            self.scene.add(crowd)
-            window.timeTest.measure("init start")
-            crowd.init(
-                glb.scene,
-                ()=>{
-                    window.timeTest.measure("init finish")
-                    new UI(this.scene,crowd.children[0])
+
+        // let scope=this
+        // test1()
+        function test1(){
+            const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            const material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+            const mesh = new THREE.InstancedMesh(geometry, material, 10*100*100);    
+            for(let i=0;i<mesh.count;i++){
+                for(let j=0;j<16;j++){
+                    var x=i%300-70
+                    var y=0
+                    var z=i/300-70
+                    var s=0.1//0.001//0.000001
+                    var e=[s,0,0,0, 0,s,0,0, 0,0,s,0, 0.5*x,0.5*y,0.5*z,1]
+                    mesh.instanceMatrix.array[16*i+j]=e[j]
+                }  
+            }
+            scope.scene.add(mesh);
+        }
+        function test2(){
+            // // const map = new THREE.TextureLoader().load( 'dist/assets/textures_sim1/CloW_A_hair_BaseColor.png' );
+            // const map = new THREE.TextureLoader().load( 'dist/assets/textures_sim1/CloM_A_body_Basecolor.jpg' );
+            // const material = new THREE.SpriteMaterial( { map: map } );
+
+            // const sprite = new THREE.Sprite( material );
+            // scope.scene.add( sprite );
+            // window.s=sprite
+            // console.log(sprite)
+
+            const vertexShader = `
+                uniform float u_time;  //时间累计
+                uniform vec3 u_gravity; //粒子重力加速度
+                attribute vec3 velocity; //粒子速度
+                void main() {
+                    vec3 vel = velocity * u_time; //根据时间计算速度  
+                    vel = vel + u_gravity * u_time * u_time; //根据时间计算加速度 
+                    vec3 pos = position + vel;  //计算位置偏移
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = 3.0;
                 }
-            )
-        })
+`
+            const fragmentShader = `
+                void main() {
+                    vec3 color = vec3(1.0);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+` 
+              const uniforms = {
+                u_time: { value: 0 },//时间
+                u_gravity: { value: new THREE.Vector3(0, -5, 0) }//加速度
+              }
+              const material = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader,
+                fragmentShader
+              })
+              const COUNT = 100
+              const positions = new Float32Array(COUNT*3)
+              const velocity = new Float32Array(COUNT*3)
+              const geometry = new THREE.BufferGeometry()
+              const size = 0
+              const speed = 20
+              for(let i = 0; i < positions.length; i++) {
+                positions[i] = (Math.random() - 0.5) * size //设施粒子位置
+                velocity[i] = (Math.random() - 0.5) * speed //设置粒子运动速度
+              }
+              geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+              geometry.setAttribute('velocity', new THREE.BufferAttribute(velocity, 3))
+              const mesh = new THREE.Points(geometry, material)
+              mesh.position.y=2
+              scope.scene.add(mesh)
+            //   setTimeout(()=>{
+            //     uniforms.u_time.value+=0.1
+            //   },1)
+              setInterval(()=>{
+                uniforms.u_time.value+=0.005
+              })
+        }
+        function test3(){
+            const vertexShader = `
+                void main() {
+                    vec3 pos = position;  //计算位置偏移
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = 3.0;
+                }
+`
+            const fragmentShader = `
+                void main() {
+                    vec3 color = vec3(1.0);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+` 
+              const material = new THREE.ShaderMaterial({
+                uniforms: {},
+                vertexShader,
+                fragmentShader
+              })
+              const COUNT = 10*100*100
+              const positions = new Float32Array(COUNT*3)
+              const geometry = new THREE.BufferGeometry()
+              for(let i = 0; i < COUNT; i++) {
+                positions[3*i+0] =i%300-70
+                positions[3*i+2] =i/300-70
+              }
+              geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+              const mesh = new THREE.Points(geometry, material)
+              mesh.position.y=2
+              scope.scene.add(mesh)
+        }
+        function test4(){
+            const vertexShader = `
+                void main() {
+                    vec3 pos = position;  //计算位置偏移
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    gl_PointSize = 3.0;
+                }
+`
+            const fragmentShader = `
+                void main() {
+                    vec3 color = vec3(1.0);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+` 
+              const material = new THREE.ShaderMaterial({
+                uniforms: {},
+                vertexShader,
+                fragmentShader
+              })
+              const COUNT = 10*100*100
+              const positions = new Float32Array(COUNT*3)
+              const geometry = new THREE.BufferGeometry()
+              for(let i = 0; i < COUNT; i++) {
+                positions[3*i+0] =i%300-70
+                positions[3*i+2] =i/300-70
+              }
+              geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+              const mesh = new THREE.Points(geometry, material)
+              mesh.position.y=2
+              scope.scene.add(mesh)
+        }
     }
-    load_model2(){
+    async init() {
+        var pathAnima = "assets/animation_man_A.bin"
+        window.timeTest.measure("Anima start await")
+
+        window.timeTest.measure("Anima end await")
+
+        this.modelManager = new modelManager();
+
+        if(true){
+            this.load_model()
+        }else{
+            this.test()
+        }
+        new UI(this.scene, new THREE.Object3D())
+    }
+    test() {
+        this.modelManager = new modelManager();
         var self = this
-        var pathModel="assets/woman02.gltf"//woman01_0.glb"
-        var pathAnima="assets/animation_woman.bin"//"assets/animation_woman.json"
-        var pathLodGeo="assets/woman02LOD/"
-        new GLTFLoader().load(pathModel, async (glb) => {
-            const p=new MaterialProcessor2(glb)
-            await p.init()
-            var crowd=new Crowd({
-                camera:self.camera,
-                count:100,//100*100/2+754/2,//5*100*100,
-                animPathPre:pathAnima,
-                pathLodGeo:pathLodGeo,
-                assets:self.assets,
-                useColorTag:[//需要进行颜色编辑的区域mesh名称
-                    "CloW_C_qunzi_geo3456",
-                    "CloW_C_shangyi_geo",
-                    "CloW_C_xie_geo",
-                    "hair"
-                ],
-                lod_distance:[10,20,45,70,90],//6级LOD
-                lod_geometry:[19,13,8,4,2,0],
-                lod_set:()=>{
-                    for(let i=0;i<crowd.children.length;i++){
-                        var crowdGroup0=crowd.children[i]
-                        crowdGroup0.getMesh("teeth").visible=false
-                        if(i==0){
-                        }else if(i==1){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        }else if(i==2){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        }else if(i==3){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_C_xie_geo").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        }else if(i==4){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_C_xie_geo").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                            crowdGroup0.getMesh("hair").visible=false
-                        }else if(i==5){
-                            crowdGroup0.getMesh("eyelash").visible=false
-                            crowdGroup0.getMesh("CloW_C_xie_geo").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                            crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                            crowdGroup0.getMesh("hair").visible=false
+        window.model = []
+        function load_next(modelType) {
+            if (modelType < self.modelManager.modelIndex) {
+                console.log(self.modelManager.modelList[modelType].pathModel)
+                new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel, async (glb) => {
+                    glb.scene.traverse(node => {
+                        if (node instanceof THREE.Mesh || node instanceof THREE.SkinnedMesh) {
+                            let name = node.name
+                            // node.material.envMapIntensity = 0.3
+                            // if (name == "CloM_A_head_geo" || name == "GW_man_Body_geo1") //尚未设置这个在modelManager中
+                            //     node.material.envMapIntensity = 0.1
+
+                            node.material.envMapIntensity = 0.1
+                            node.material.roughness = 0.5//0.5
+                            node.material.metalness=0.1
+
+                            if(name=="CloM_A_Hair_geo"){//man_A
+                                // alert(name)
+                                console.log(node.material.color)
+                                node.material.color.r=20
+                                node.material.color.g=20
+                                node.material.color.b=20
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_A_hair_geo"){//man_b
+                                console.log(node.material.color)
+                                node.material.color.r=10
+                                node.material.color.g=10
+                                node.material.color.b=10
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_C_hair_geo"){//man_b
+                                node.material.color.r=10
+                                node.material.color.g=10
+                                node.material.color.b=10
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+                            if(name=="CloW_D_Hair_geo"){//man_b
+                                // alert(123)
+                                node.material.color.r=30
+                                node.material.color.g=30
+                                node.material.color.b=30
+                                node.material.transparent=true
+                                node.material.alphaTest = 0.7;
+                                node.material.depthWrite = true;
+                                node.material.side=THREE.DoubleSide
+
+                                node.material.roughness = 0.9
+                                node.material.envMapIntensity = 0.1
+                                node.material.metalness=1
+                            }
+
+                            if(
+                                name=="CloM_A_head_geo"//1
+                                ||name=="GW_man_Body_geo1"//1
+                                ||name=="head"//3
+                                ||name=="CloW_A_body_geo1"//3
+                                ||name=="CloW_C_head_geo"//5
+                                ||name=="body1"//5
+                                ||name=="CloW_D_Body_geo1"//6
+                                ){
+                                node.material.scattering=true
+                            }
+
+
+                            
+                        }
+                    })
+
+                    let lod_visible = self.modelManager.modelList[modelType].lod_visible
+                    var crowd = new Crowd({
+                        camera: self.camera,
+                        count: 3000,
+                        animPathPre: self.modelManager.modelList[modelType].pathAnima,
+                        pathLodGeo: self.modelManager.modelList[modelType].pathLodGeo,
+                        pathTextureConfig: self.modelManager.modelList[modelType].pathTextureConfig,
+                        assets: self.assets,
+                        useColorTag: self.modelManager.modelList[modelType].useColorTag,
+                        lod_distance: [],
+                        lod_geometry: [20],
+                        lod_set: () => {
+                            for (let i = 0; i < crowd.children.length; i++) {
+                                var crowdGroup0 = crowd.children[i]
+                                for (let j = 0; j < lod_visible.length; j++) {
+                                    if (i >= lod_visible[j][1]) {
+                                        var mesh = crowdGroup0.getMesh(lod_visible[j][0])
+                                        if (mesh) mesh.visible = false
+                                    }
+                                }
+
+                            }
+                        },
+                    })
+
+                    for(let i=0;i<200;i++){
+                        for(let j=0;j<15;j++){
+                            let i00=i*15+j
+                            crowd.setSpeed(i00, 5)
+                            crowd.setScale(i00, [1,1,1])
+                            crowd.setMoveMaxLength(i00, 0)
+                            crowd.setPosition(i00, [i*2-30,0,j*2-10])
+                            crowd.setRotation(i00, [0,0,0])
+                            crowd.setAnimation(i00,i%5 , j)
+                            crowd.lodList[i]=i00<100?0:-1
+            
                         }
                     }
-                },
-            })
-            self.setParam(crowd,1,12)
-            self.scene.add(crowd)
-            window.crowd=crowd
-            console.log(crowd)
-            crowd.init(
-                glb.scene
-            )
-        })
-    }
-    load_Char47(){
-        var self = this
-        var pathModel="assets/Char47.gltf"//woman01_0.glb"
-        var pathAnima="assets/animation_Char47.bin"//"assets/animation_woman.json"
-        var pathLodGeo="assets/Char47LOD/"
-        new GLTFLoader().load(pathModel, async (glb) => {
-            console.log(glb)
-            const p=new MaterialProcessor3(glb)
-            await p.init()
-            var crowd=new Crowd({
-                camera:self.camera,
-                count:5*100*100,//100*100/2+754/2,//5*100*100,
-                animPathPre:pathAnima,
-                pathLodGeo:pathLodGeo,
-                assets:self.assets,
-                useColorTag:[//需要进行颜色编辑的区域mesh名称
-                    // "CloW_C_qunzi_geo3456",
-                    // "CloW_C_shangyi_geo",
-                    // "CloW_C_xie_geo",
-                    // "hair"
-                    "Ch23_Belt",
-                    "Ch23_Pants",
-                    "Ch23_Shirt",
-                    "Ch23_Shoes",
-                    "Ch23_Suit"
-                ],
-                lod_distance:[10,30,50,70,90,110,130],//6级LOD
-                lod_geometry:[19,17,15,10, 8,4,2,0],
-                lod_set:()=>{
-                    for(let i=0;i<crowd.children.length;i++){
-                        var crowdGroup0=crowd.children[i]
-                        crowdGroup0.getMesh("Ch23_Hair").visible=false
-                        // crowdGroup0.getMesh("Ch23_Belt").visible=false
-                        if(i>1){
-                            // Ch23_Eyelashes
-                            crowdGroup0.getMesh("Ch23_Eyelashes").visible=false
-                            crowdGroup0.getMesh("Ch23_Belt").visible=false
-                        }
-                        if(i>4){
-                            crowdGroup0.getMesh("Ch23_Shoes").visible=false
-                        }
-                        // if(i==0){
-                        // }else if(i==1){
-                        //     crowdGroup0.getMesh("eyelash").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        // }else if(i==2){
-                        //     crowdGroup0.getMesh("eyelash").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        // }else if(i==3){
-                        //     crowdGroup0.getMesh("eyelash").visible=false
-                        //     crowdGroup0.getMesh("CloW_C_xie_geo").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        // }else if(i==4){
-                        //     crowdGroup0.getMesh("eyelash").visible=false
-                        //     crowdGroup0.getMesh("CloW_C_xie_geo").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        //     crowdGroup0.getMesh("hair").visible=false
-                        // }else if(i==5){
-                        //     crowdGroup0.getMesh("eyelash").visible=false
-                        //     crowdGroup0.getMesh("CloW_C_xie_geo").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeRight_geo01").visible=false
-                        //     crowdGroup0.getMesh("CloW_E_eyeLeft_geo02").visible=false
-                        //     crowdGroup0.getMesh("hair").visible=false
-                        // }
+                    // self.setParam(crowd, modelType, self.modelManager.modelIndex)
+                    for (var i00 = 0; i00 < crowd.count; i00++) {
+                        // 这部分还没整合到分别进行设置
+                        crowd.setObesity(i00, 1)
                     }
-                },
-            })
-            self.setParam2(crowd,1,5)
-            self.scene.add(crowd)
-            window.crowd=crowd
-            console.log(crowd)
-            crowd.init(
-                glb.scene
-            )
+                    // crowd.visible=false
+                    self.scene.add(crowd)
+                    window.model.push(crowd)
+                    window.crowd = crowd
+                    crowd.init(glb.scene)
+                    console.log(crowd)
+
+                    crowd.myLodController.open=false
+                    
+                    // new UI(this.scene, new THREE.Object3D())
+                    setTimeout(()=>{
+                        new UICrowd(crowd)
+                    },3000)
+                    
+                    
+
+                    load_next(modelType + 1)
+                })
+            }
+        }
+        load_next(0)
+    }
+    materialSet(glb){
+        console.log(glb)
+        glb.scene.traverse(node => {
+            if (node instanceof THREE.Mesh || node instanceof THREE.SkinnedMesh) {
+                let name = node.name
+                console.log(name)
+                node.material.envMapIntensity = 0.1
+                node.material.roughness = 0.5//0.5
+                node.material.metalness=0.1
+
+                if(name=="CloM_A_Hair_geo"){//man_A
+                    node.material.color.r=20
+                    node.material.color.g=20
+                    node.material.color.b=20
+                    node.material.transparent=true
+                    node.material.alphaTest = 0.7;
+                    node.material.depthWrite = true;
+                    node.material.side=THREE.DoubleSide
+
+                    node.material.roughness = 0.9
+                    node.material.envMapIntensity = 0.1
+                    node.material.metalness=1
+                }
+                if(name=="CloW_A_hair_geo"){//man_b
+                    node.material.color.r=10
+                    node.material.color.g=10
+                    node.material.color.b=10
+                    node.material.transparent=true
+                    node.material.alphaTest = 0.7;
+                    node.material.depthWrite = true;
+                    node.material.side=THREE.DoubleSide
+
+                    node.material.roughness = 0.9
+                    node.material.envMapIntensity = 0.1
+                    node.material.metalness=1
+                }
+                if(name=="CloW_C_hair_geo"){//man_b
+                    node.material.color.r=10
+                    node.material.color.g=10
+                    node.material.color.b=10
+                    node.material.transparent=true
+                    node.material.alphaTest = 0.7;
+                    node.material.depthWrite = true;
+                    node.material.side=THREE.DoubleSide
+
+                    node.material.roughness = 0.9
+                    node.material.envMapIntensity = 0.1
+                    node.material.metalness=1
+                }
+                if(name=="CloW_D_Hair_geo"){//man_b
+                    // alert(123)
+                    node.material.color.r=30
+                    node.material.color.g=30
+                    node.material.color.b=30
+                    node.material.transparent=true
+                    node.material.alphaTest = 0.7;
+                    node.material.depthWrite = true;
+                    node.material.side=THREE.DoubleSide
+
+                    node.material.roughness = 0.9
+                    node.material.envMapIntensity = 0.1
+                    node.material.metalness=1
+                }
+
+                if(
+                    name=="CloM_A_head_geo"//1
+                    ||name=="GW_man_Body_geo1"//1
+                    ||name=="head"//3
+                    ||name=="CloW_A_body_geo1"//3
+                    ||name=="CloW_C_head_geo"//5
+                    ||name=="body1"//5
+                    ||name=="CloW_D_Body_geo1"//6
+                    ){
+                    node.material.scattering=true
+                }
+
+
+                
+            }
         })
     }
-    setParam(crowd,model_index,animtionNum){
-        var crowd_count=100*100+754
-        for(var i0=0;i0<crowd_count;i0++){
-            var scale=[
+    load_model() {
+        
+        var self = this
+        // console.log("self.modelManager.modelList",self.modelManager.modelList)
+        window.model = []
+        crowd_next(0)
+        function crowd_next(modelType) {
+            const scenes=[]
+            gltfloader_next(0)
+            function gltfloader_next(gltf_index){
+                new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[gltf_index], async (glb0) => {
+                    self.materialSet(glb0)
+                    scenes.push(glb0.scene)
+                    if(gltf_index+1<self.modelManager.modelList[modelType].pathModel.length) gltfloader_next(gltf_index+1)
+                    else process(scenes,modelType)
+                })
+            }
+            // alert(modelType)
+            if (modelType+1 < self.modelManager.modelList.length) crowd_next(modelType+1)
+        }
+        function process(scenes,modelType){
+            console.log("scenes",scenes)
+
+            // let lod_distance_max = 10
+            // let lod_distance = []
+            // for (var i = 0; i < 19; i++)
+            //     lod_distance.push((i + 1) * lod_distance_max / 19)
+            // lod_distance.push(lod_distance_max * 2)   //最低精度模型
+            // lod_distance.push(lod_distance_max * 9)     //多个四面体
+
+            // let lod_geometry = []
+            // for (var i = 0; i <= 20; i++)//20..0
+            //     lod_geometry.push(20 - i)
+            // lod_geometry.push(0)
+
+            // let lod_distance_max = 10
+            // let lod_distance = []
+            // for (var i = 0; i < 9; i++)
+            //     lod_distance.push((i + 1) * lod_distance_max / 9)
+            // lod_distance.push(lod_distance_max * 2)   //最低精度模型
+            // lod_distance.push(lod_distance_max * 9)     //多个四面体
+
+            // let lod_geometry = []
+            // for (var i = 0; i <= 10; i++)//20..0
+            //     lod_geometry.push(20 - 2*i)
+            // lod_geometry.push(0)
+
+
+            let lod_distance =   [ 2,   3,   5,    30,  50 ]
+            let lod_geometry =   [ 20,  19,   10,    5,   1  ]//[ 10,  9,   8,    1,   0  ]
+            // let lod_avatarCount= [ 2*50, 2*100, 2*170,  2*(800+1100), 2*(2500+800)]//[ 50, 100, 170,  800+1100, 2500+800]
+            // alert("test2")
+            // lod_distance=[
+            //     0.5263157894736842, 1.0526315789473684, 1.5789473684210527, 
+            //     2.1052631578947367, 2.6315789473684212, 3.1578947368421053, 
+            //     3.6842105263157894, 4.2105263157894735, 4.7368421052631575, 
+            //     5.2631578947368425, 5.7894736842105265, 
+            //     6.315789473684211, 6.842105263157895, 7.368421052631579, 
+            //     7.894736842105263, 8.421052631578947, 8.947368421052632, 9.473684210526315, 10, 20, 90]
+            // lod_geometry=[20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0]
+
+            
+            // lod_distance=[]
+            // lod_geometry=[0]
+            let lod_avatarCount0=self.modelManager.modelList[modelType].lod_avatarCount
+            let lod_avatarCount= []//[ 2*50, 2*100, 2*170,  2*(800+1100), 2*(2500+800)]//[ 50, 100, 170,  800+1100, 2500+800]
+            for(let i=0;i<lod_avatarCount0.length;i++){
+                lod_avatarCount.push(
+                    Math.floor(lod_avatarCount0[i]/(self.modelManager.modelList[modelType].pathModel.length*2))
+                )
+            }
+
+
+            var crowd = new Crowd({
+                camera: self.camera,
+                count: self.modelManager.modelList[modelType].ModelCount,
+                animPathPre: 
+                    self.modelManager.modelList[modelType].pathAnima
+                ,
+
+                pathLodGeo: 
+                    self.modelManager.modelList[modelType].pathLodGeo,
+
+                pathTextureConfig: 
+                    self.modelManager.modelList[modelType].pathTextureConfig,
+                useColorTag: 
+                    self.modelManager.modelList[modelType].useColorTag,
+                meshType:
+                    self.modelManager.modelList[modelType].meshType,
+
+                pathTexture:
+                    self.modelManager.modelList[modelType].pathTexture,
+                
+                assets: self.assets,
+                
+                lod_visible:self.modelManager.modelList[modelType].lod_visible,
+                lod_distance: self.modelManager.modelList[modelType].lod_distance,
+                lod_geometry: self.modelManager.modelList[modelType].lod_geometry,
+                lod_avatarCount:self.modelManager.modelList[modelType].lod_avatarCount
+            })
+            self.setParam(crowd, modelType, self.modelManager.modelIndex)
+            
+            for (var i00 = 0; i00 < crowd.count; i00++) {
+                // 这部分还没整合到分别进行设置
+                let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
+                for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
+                    crowd.setColor(i00, [
+                        50*Math.random() - 0.5,
+                        50*Math.random() - 0.5,
+                        50*Math.random() - 0.5
+                    ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
+                    // console.log(self.modelManager.modelList[modelType].useColorTag[meshIndex])
+                }
+                crowd.setObesity(i00, 1)
+            }
+            // crowd.visible=false
+            
+            window.model.push(crowd)
+            window.crowd = crowd
+            crowd.init(scenes)
+            self.scene.add(crowd)
+            self.scene.add(crowd.CrowdPoints)
+            window.p=crowd.CrowdPoints
+        }
+        
+    }
+
+
+    setParam(crowd, modelType, modelCount) {
+        for (var i0 = 0; i0 < modelCount * crowd.count; i0++) {
+            var scale = [
                 1,
-                Math.random()*0.3+0.85,
+                Math.random() * 0.3 + 0.85,
                 1,
             ]
-            for(var i=0;i<3;i++)scale[i]*=1.3
-            var animtionType=Math.floor(animtionNum*Math.random())//12
-            // if(i0<1250){//496){
-            //     if(Math.random()>0.5)animtionType=5
-            //     else animtionType=8
-            // }else if(animtionType==5)animtionType=0
-            // else if(animtionType==8)animtionType=1
+            for (var i = 0; i < 3; i++)scale[i] *= 0.5//0.2
 
-            var speed=Math.random()*2.5+2
-            if(animtionType==5)speed+=1.5
-            
-            if(i0%2==model_index)continue
-            let i00=Math.floor(i0/2)
+            if (i0 % modelCount != modelType) continue
+            let i00 = Math.floor(i0 / modelCount)
+            // let i00 = i0
 
+            var PosRot = this.modelManager.getPosRot_9e(i0, modelType)
+            var speed = PosRot.speed;
+            var startTime = PosRot.startTime;
             crowd.setSpeed(i00, speed)
-            crowd.setObesity(i00, 0.85+1.1*Math.random())
-            if(animtionType==5||animtionType==8)
-                crowd.setMoveMaxLength(i00, 4+2*Math.random())
             crowd.setScale(i00, scale)
-
-            var PosRot=this.getPosRot(i0)
-            crowd.setPosition(i00,PosRot.pos)
-            crowd.setRotation(i00,PosRot.rot)
-
-            crowd.setAnimation(i00,animtionType,10000*Math.random())
-
-            if(model_index==1){
-                crowd.setColor(i00, [
-                    62*Math.random(),
-                    62*Math.random(),
-                    62*Math.random()
-                ],"CloW_C_qunzi_geo3456")
-                crowd.setColor(i00, [
-                    -Math.random(),
-                    -Math.random(),
-                    -Math.random()
-                ],"CloW_C_shangyi_geo")
-                crowd.setColor(i00, [
-                    67*Math.random(),
-                    67*Math.random(),
-                    67*Math.random()
-                ],"CloW_C_xie_geo")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"hair")
-            }else if(model_index==0){
-                crowd.setColor(i00, [
-                    12*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"CloW_A_kuzi_geo")
-                crowd.setColor(i00, [
-                    12*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"CloW_A_waitao_geo1")
-                crowd.setColor(i00, [
-                    12*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"CloW_A_xiezi_geo")
-                crowd.setColor(i00, [
-                    20*Math.random(),
-                    12*Math.random(),
-                    12*Math.random()
-                ],"hair")
+            //this.modelManager.modelList[modelType].posRotList[i0];
+            // crowd.setObesity(i00, 0.85+1.1*Math.random())
+            let animtionType = PosRot.ani;
+            let walkAnimationlen = this.modelManager.modelList[modelType].walkAnimationList.length;
+            for (let walkAnimation = 0; walkAnimation < walkAnimationlen; walkAnimation++) {
+                if (animtionType == this.modelManager.modelList[modelType].walkAnimationList[walkAnimation]&&animtionType!==10) {
+                    crowd.setMoveMaxLength(i00, 2*(1+Math.random()) )
+                    break;
+                }
             }
+            crowd.setPosition(i00, PosRot.pos)
+            PosRot.rot[1] += Math.PI;
+            crowd.setRotation(i00, PosRot.rot)
+            crowd.setAnimation(i00, animtionType, startTime)
         }//end
-        // crowd.count=crowd_count
 
     }
-    setParam2(crowd,model_index,animtionNum){
-        var crowd_count=100*100+754
-        for(var i0=0;i0<crowd_count;i0++){
-            var scale=[
-                1,
-                Math.random()*0.3+0.85,
-                1,
-            ]
-            for(var i=0;i<3;i++)scale[i]*=1.1
-            var animtionType=Math.floor(animtionNum*Math.random())//12
-            if(i0<1250){//496){
-                animtionType=3
-            }
-            else if(animtionType==3)animtionType=4
-            // else if(animtionType==4)animtionType=1
 
-            var speed=(Math.random()*2.5+2)*2.5
-            if(animtionType==5)speed+=1.5
-            
-            // if(i0%2==model_index)continue
-            // let i00=Math.floor(i0/2)
-            let i00=i0
 
-            crowd.setSpeed(i00, speed)
-            crowd.setObesity(i00, 0.85+1.1*Math.random())
-            if(animtionType==3)
-                crowd.setMoveMaxLength(i00, 4+2*Math.random())
-            crowd.setScale(i00, scale)
-
-            var PosRot=this.getPosRot2(i0)
-            crowd.setPosition(i00,PosRot.pos)
-            crowd.setRotation(i00,PosRot.rot)
-
-            crowd.setAnimation(i00,animtionType,10000*Math.random())
-
-            crowd.setColor(i00, [
-                12*Math.random(),
-                12*Math.random(),
-                12*Math.random()
-            ],"Ch23_Belt")
-            crowd.setColor(i00, [
-                2*Math.random(),
-                2*Math.random(),
-                2*Math.random()
-            ],"Ch23_Pants")
-            crowd.setColor(i00, [
-                3*Math.random()-1,
-                3*Math.random()-2,
-                3*Math.random()-2
-            ],"Ch23_Shirt")
-            crowd.setColor(i00, [
-                20*Math.random(),
-                15*Math.random(),
-                15*Math.random()
-            ],"Ch23_Shoes")
-            crowd.setColor(i00, [
-                20*Math.random(),
-                20*Math.random(),
-                20*Math.random()
-            ],"Ch23_Suit")
-        }//end
-        // crowd.count=crowd_count
-
-    }
-    getPosRot(i0) {
-        var c=[//分组情况
-            1250,//496,   //运动
-            15*182,     //大看台1
-            21*182,     //大看台2
-            20*60,   //小看台1
-            17*60,   //小看台2
-            300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
-            240,         //弧形看台2 
-            192,         //弧形看台3
-        ]
-        if(i0<c[0]){
-            var col_count=25
-            var row_count=50
-            var i=i0%col_count
-            var j=Math.floor(i0/col_count)
-            var position=[
-                2*(1.8*i+1.5*Math.random()-col_count/2-20+11),
-                0,
-                2*(1.8*j+1.5*Math.random()-row_count/2-25+5),
-            ]
-            var rotation=[0,Math.PI*2*Math.random(),0]
-        }
-        else if(i0<c[0]+c[1]){//大看台1
-            i0-=c[0]
-            var row_count=182
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)+1
-            var position=[
-                1.5*-31-1.5*(col)*1.9,
-                1.3*col,//
-                0.82*row-75,
-            ]
-            var rotation=[0,-Math.PI*0.5,0]
-        }
-        else if(i0<c[0]+c[1]+c[2]){//大看台2
-            i0-=(c[0]+c[1])
-            var row_count=182
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)+1
-            var position=[
-                1.5*31+1.5*col*1.9,
-                1.3*col,
-                0.82*row-75,
-            ]
-            var rotation=[0,Math.PI*0.5,0]
-        }
-        else if(i0<c[0]+c[1]+c[2]+c[3]){//小看台1
-            i0-=(c[0]+c[1]+c[2])
-            var row_count=60
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)
-            if(col>12)col+=4
-            var position=[
-                1.*row-30,//1.5*(row*0.25-50)*2.01+73,
-                1.28*col,
-                -99-1.5*col*1.9,
-            ]
-            var rotation=[0,-Math.PI,0]
-        }else if(i0<c[0]+c[1]+c[2]+c[3]+c[4]){//小看台2
-            i0-=(c[0]+c[1]+c[2]+c[3])
-            var row_count=60
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)
-            if(col>0)col+=3
-            if(col>12)col+=4
-            var position=[
-                1.*row-30,//1.5*(row*0.25-50)*2.01+73,
-                1.28*col,
-                99+1.5*col*1.9
-            ]
-            var rotation=[0,0,0]
-            // var position=[-1000,-1000,-1000]
-        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4])
-            if (i0<2) this.row_index = 0; // 重置行数
-            var col_index=i0 - Math.floor((0+this.row_index)*(this.row_index+1)/2);
-            if (col_index > this.row_index) {
-                this.row_index++;
-                col_index-=this.row_index;
-            }
-            var position=[
-                1.*col_index+30,
-                1.28*this.row_index+1.28,
-                99+1.5*this.row_index*1.9-col_index*0.25
-            ]
-            var rotation=[0,0,0] // 还需调整方向，目前尚未调整
-        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]) { //弧形看台2
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]);
-            if (i0<2) {
-                this.row_index = 0; // 重置行数
-                this.sum_count = 0;
-                this.row_count = 3;
-            }
-            var col_index = i0 - this.sum_count;
-            if (col_index > this.row_count) {
-                this.row_index++;
-                col_index-=this.row_count;
-                this.sum_count += this.row_count;
-                if (this.row_index%3 === 0) this.row_count+=2;
-            }
-            var position=[
-                1.*col_index+31+this.row_index,
-                1.28*this.row_index,
-                98+1.5*this.row_index*1.75-col_index*0.6
-            ]
-            var rotation = [0,0,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]) {
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]);
-            if (i0<2) {
-                this.row_index = 0; // 重置行数
-                this.sum_count = 0;
-                this.row_count = 3;
-            } 
-            var col_index = i0 - this.sum_count;
-            if (col_index > this.row_count) {
-                this.row_index++;
-                col_index-=this.row_count;
-                this.sum_count += this.row_count;
-                if (this.row_index%4 === 0) this.row_count+=2;
-            }
-            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.*col_index+34.5+this.row_index*1.8,
-                1.28*this.row_index,
-                95+1.5*this.row_index*1.45-col_index
-            ]
-            var rotation = [0,0,0]
-        } else {
-            
-        }
-        return {pos:position,rot:rotation} 
-    }
-    getPosRot2(i0) {
-        var c=[//分组情况
-            1250,//496,   //运动
-            15*182,     //大看台1
-            21*182,     //大看台2
-            20*60,   //小看台1
-            17*60,   //小看台2
-            300,        //弧形看台1 （从小看台到大看台旁边的顺序排列）
-            240,         //弧形看台2 
-            192,         //弧形看台3
-        ]
-        if(i0<c[0]){
-            var col_count=25
-            var row_count=50
-            var i=i0%col_count
-            var j=Math.floor(i0/col_count)
-            var position=[
-                2*(1.8*i+1.5*Math.random()-col_count/2-20+11),
-                0,
-                2*(1.8*j+1.5*Math.random()-row_count/2-25+5),
-            ]
-            var rotation=[0,Math.PI*2*Math.random(),0]
-        }
-        else if(i0<c[0]+c[1]){//大看台1
-            i0-=c[0]
-            var row_count=182
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)+1
-            var position=[
-                1.5*-31-1.5*(col)*1.9,
-                1.3*col,//
-                0.82*row-75,
-            ]
-            var rotation=[0,-Math.PI*0.5+Math.PI,0]
-        }
-        else if(i0<c[0]+c[1]+c[2]){//大看台2
-            i0-=(c[0]+c[1])
-            var row_count=182
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)+1
-            var position=[
-                1.5*31+1.5*col*1.9,
-                1.3*col,
-                0.82*row-75,
-            ]
-            var rotation=[0,Math.PI*0.5+Math.PI,0]
-        }
-        else if(i0<c[0]+c[1]+c[2]+c[3]){//小看台1
-            i0-=(c[0]+c[1]+c[2])
-            var row_count=60
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)
-            if(col>12)col+=4
-            var position=[
-                1.*row-30,//1.5*(row*0.25-50)*2.01+73,
-                1.28*col,
-                -99-1.5*col*1.9,
-            ]
-            var rotation=[0,-Math.PI+Math.PI,0]
-        }else if(i0<c[0]+c[1]+c[2]+c[3]+c[4]){//小看台2
-            i0-=(c[0]+c[1]+c[2]+c[3])
-            var row_count=60
-            var row=i0%row_count
-            var col=Math.floor(i0/row_count)
-            if(col>0)col+=3
-            if(col>12)col+=4
-            var position=[
-                1.*row-30,//1.5*(row*0.25-50)*2.01+73,
-                1.28*col,
-                99+1.5*col*1.9
-            ]
-            var rotation=[0,0+Math.PI,0]
-            // var position=[-1000,-1000,-1000]
-        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]) {//弧形看台1 （从小看台到大看台旁边的顺序排列）
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4])
-            if (i0<2) this.row_index = 0; // 重置行数
-            var col_index=i0 - Math.floor((0+this.row_index)*(this.row_index+1)/2);
-            if (col_index > this.row_index) {
-                this.row_index++;
-                col_index-=this.row_index;
-            }
-            var position=[
-                1.*col_index+30,
-                1.28*this.row_index+1.28,
-                99+1.5*this.row_index*1.9-col_index*0.25
-            ]
-            var rotation=[0,0,0] // 还需调整方向，目前尚未调整
-        }else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]) { //弧形看台2
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]);
-            if (i0<2) {
-                this.row_index = 0; // 重置行数
-                this.sum_count = 0;
-                this.row_count = 3;
-            }
-            var col_index = i0 - this.sum_count;
-            if (col_index > this.row_count) {
-                this.row_index++;
-                col_index-=this.row_count;
-                this.sum_count += this.row_count;
-                if (this.row_index%3 === 0) this.row_count+=2;
-            }
-            var position=[
-                1.*col_index+31+this.row_index,
-                1.28*this.row_index,
-                98+1.5*this.row_index*1.75-col_index*0.6
-            ]
-            var rotation = [0,0,0]
-        } else if (i0<c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]+c[7]) {
-            i0-=(c[0]+c[1]+c[2]+c[3]+c[4]+c[5]+c[6]);
-            if (i0<2) {
-                this.row_index = 0; // 重置行数
-                this.sum_count = 0;
-                this.row_count = 3;
-            } 
-            var col_index = i0 - this.sum_count;
-            if (col_index > this.row_count) {
-                this.row_index++;
-                col_index-=this.row_count;
-                this.sum_count += this.row_count;
-                if (this.row_index%4 === 0) this.row_count+=2;
-            }
-            // console.log(i0,this.row_index,col_index,this.row_count,this.sum_count);
-            var position=[
-                1.*col_index+34.5+this.row_index*1.8,
-                1.28*this.row_index,
-                95+1.5*this.row_index*1.45-col_index
-            ]
-            var rotation = [0,0,0]
-        } else {
-            
-        }
-        return {pos:position,rot:rotation} 
-    }
 }

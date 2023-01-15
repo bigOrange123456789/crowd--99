@@ -25,6 +25,14 @@
             left: 0px;
             top: 70px;
         }
+        #firstTime {
+            color: rgb(128, 0, 0);
+            font-size: 15px;
+            font-weight: normal;
+            position: fixed;
+            left: 0px;
+            top: 100px;
+        }
     </style>
     <link rel="stylesheet" href="assets/css/style.css">
     <script>
@@ -32,24 +40,32 @@
             pretime:performance.now(),
             save:[],
             time_all:0,
+            time_first:0,
+            first_add:true,
             measure:tag=>{
                 var time0=performance.now()
                 var sub=time0-window.timeTest.pretime
                 window.timeTest.time_all+=sub
+                if (window.timeTest.first_add) window.timeTest.time_first+=sub
+                if (tag == 'update end') window.timeTest.first_add = false
                 window.timeTest.pretime=time0
                 window.timeTest.save.push([tag,sub])
+                var firstTime = document.getElementById("firstTime")
+                // firstTime.innerText = "初始加载时间"+window.timeTest.time_first
                 console.log(
                     Math.round(sub),
                     tag
                 )
             }
         }
+        window.lodnumber=0
     </script>
-    <!-- <script src="src/index.js"></script> -->
-    <script src="src/main.js"></script>
+    <script defer src="src/index.js"></script>
+    <!-- <script defer src="src/main.js"></script> -->
 </head>
 <body>
 <canvas id="myCanvas"></canvas>
 <h1 id="triangles"></h1>
 <!-- <h1 id="visibleAvatarCount"></h1>-->
+<!-- <h1 id="firstTime"></h1> -->
 </body>

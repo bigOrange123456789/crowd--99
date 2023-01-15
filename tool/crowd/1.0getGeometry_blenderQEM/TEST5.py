@@ -10,14 +10,20 @@ class ModelProcessingTool:
         # outpath="C:\\Users\\admin\\Desktop\\save\\"
         #name="woman01"
         number=20
-        for i in range(number):
-            i=i+1
-            if i==20:
-                self.simplification_all(1)
-            else:
-                self.simplification_all(1/(20*(21-i)))
-            fileName=str(i)+".glb"#name+"_"+str(i)+".glb"
+        min=0.001
+        step=(1-min)/(number-1)
+        for i in range(20):
+            self.simplification_all(min+i*step)
+            fileName=str(i+1)+".glb"#name+"_"+str(i)+".glb"
             bpy.ops.export_scene.gltf(filepath=outpath+fileName, export_apply=True)
+        # for i in range(number):
+        #     i=i+1
+        #     if i==20:
+        #         self.simplification_all(1)
+        #     else:
+        #         self.simplification_all(1/(20*(21-i)))
+        #     fileName=str(i)+".glb"#name+"_"+str(i)+".glb"
+        #     bpy.ops.export_scene.gltf(filepath=outpath+fileName, export_apply=True)
         print("finished!")
 
     def __getObj():
