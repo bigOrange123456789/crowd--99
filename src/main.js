@@ -9,6 +9,13 @@ import {LightProducer } from './LightProducer.js'
 import {AvatarManager } from './AvatarManager.js'
 import { MoveManager } from '../lib/playerControl/MoveManager.js'
 import {MyUI} from "./MyUI.js"
+//PostProcessing
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
+import { ShaderPass } from "three/examples/jsm/postprocessing/shaderpass.js";
+
 export class Loader{
     constructor(body){
         this.isIosPlatform =this.isMobile()
@@ -40,6 +47,8 @@ export class Loader{
         window.renderer=this.renderer
         this.body.appendChild(this.renderer.domElement)
 
+        this.effectComposer = new EffectComposer(this.renderer) 
+
         this.stats = new Stats();
         this.stats.domElement.style.position = 'absolute'
         this.stats.domElement.style.left = '0px'
@@ -67,6 +76,11 @@ export class Loader{
         new Building(this.scene,this.camera)
         this.animate = this.animate.bind(this)
         requestAnimationFrame(this.animate)
+
+        //新的renderpass
+        const renderPass = new RenderPass(this.scene, this.camera)
+        this.effectComposer.addPass(renderPass)
+        this.addPostProcessing()
 
         new AvatarManager(this.scene,this.camera)
         new LightProducer(this.scene)
@@ -135,7 +149,9 @@ export class Loader{
         // }
         // this.lastTime = Date.now();
         this.stats.update()
-        this.renderer.render(this.scene,this.camera)
+        this.effectComposer.render()
+        //如果要启用后处理，就需要用后处理通道覆盖render通道  
+        //this.renderer.render(this.scene,this.camera)
         // let endTime = Date.now()
         // console.log("main时间", endTime - startTime)
         requestAnimationFrame(this.animate)
@@ -156,6 +172,24 @@ export class Loader{
                 if(cb)cb()
             }
         )
+    }
+    addPostProcessing(){//添加后处理效果层
+      //泛光
+      const unrealBloomPass = new UnrealBloomPass()
+      unrealBloomPass.strength = 0.3
+      unrealBloomPass.radius = 1
+      unrealBloomPass.threshold = 0.6
+      this.effectComposer.addPass(unrealBloomPass)
+
+      //选中描边
+      //const outlinePass=new OutlinePass(new THREE.Vector2(window.innerWidth,window.innerHeight),this.scene,this.camera)    
+      //this.effectComposer.addPass(outlinePass)
+
+      //TODO FXAA抗锯齿，很糊，考虑用TAA替换
+      //const fxaaShader=new ShaderPass(FXAAShader)
+      //fxaaShader.uniforms['resolution'].value.set(1/window.innerWidth,1/window.innerHeight)
+      //this.effectComposer.addPass(fxaaShader)
+
     }
     isMobile() {
           let check = false
