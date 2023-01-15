@@ -20,8 +20,6 @@ varying vec3 vViewPosition;
 #include <logdepthbuf_pars_vertex>
 #include <clipping_planes_pars_vertex>
 void main() {
-	// gl_Position=vec4(0.,0.,-1000.,1.);
-	// return;
 	#include <uv_vertex>
 	#include <uv2_vertex>
 	#include <color_vertex>
