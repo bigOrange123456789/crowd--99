@@ -179,7 +179,7 @@ export class Loader{
       unrealBloomPass.strength = 0.3
       unrealBloomPass.radius = 1
       unrealBloomPass.threshold = 0.6
-      //this.effectComposer.addPass(unrealBloomPass)
+      this.effectComposer.addPass(unrealBloomPass)
 
       //选中描边
       //const outlinePass=new OutlinePass(new THREE.Vector2(window.innerWidth,window.innerHeight),this.scene,this.camera)    
