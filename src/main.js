@@ -4,7 +4,7 @@ import {MapControls,OrbitControls} from "three/examples/jsm/controls/OrbitContro
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js'
 //RGBMLoader
-import { Building } from './Building.js'
+import { Building } from './Building_gltf.js'
 import {LightProducer } from './LightProducer.js'
 import {AvatarManager } from './AvatarManager.js'
 import { MoveManager } from '../lib/playerControl/MoveManager.js'
@@ -179,13 +179,13 @@ export class Loader{
       unrealBloomPass.strength = 0.3
       unrealBloomPass.radius = 1
       unrealBloomPass.threshold = 0.6
-      this.effectComposer.addPass(unrealBloomPass)
+      //this.effectComposer.addPass(unrealBloomPass)
 
       //选中描边
       //const outlinePass=new OutlinePass(new THREE.Vector2(window.innerWidth,window.innerHeight),this.scene,this.camera)    
       //this.effectComposer.addPass(outlinePass)
 
-      //TODO FXAA抗锯齿，很糊，考虑用TAA替换
+      //FXAA抗锯齿，很糊，考虑用TAA替换
       //const fxaaShader=new ShaderPass(FXAAShader)
       //fxaaShader.uniforms['resolution'].value.set(1/window.innerWidth,1/window.innerHeight)
       //this.effectComposer.addPass(fxaaShader)
