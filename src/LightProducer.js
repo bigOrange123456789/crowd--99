@@ -3,7 +3,7 @@ class LightProducer{
     constructor(scene){
         this.scene=scene
         // Lights 
-        const ambient = new THREE.AmbientLight( 0xffffff ,1.5);//new THREE.AmbientLight( 0xffffff ,.8);
+        const ambient = new THREE.AmbientLight( 0xffffff ,1.);//new THREE.AmbientLight( 0xffffff ,.8);
         scene.add( ambient );
         ambient.name="ambient"
 

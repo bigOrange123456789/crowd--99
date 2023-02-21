@@ -34,8 +34,8 @@ export class Loader{
             preserveDrawingBuffer:true
         })
         ////////////////////////////////////////////////////////////////////////
-        this.renderer.physicallyCorrectLights = true //正确的物理灯光照射
-        this.renderer.outputEncoding = THREE.sRGBEncoding //采用sRGBEncoding 
+        // this.renderer.physicallyCorrectLights = true //正确的物理灯光照射
+        // this.renderer.outputEncoding = THREE.sRGBEncoding //采用sRGBEncoding 
         // this.renderer.toneMapping = THREE.ACESFilmicToneMapping //aces标准
         // this.renderer.toneMappingExposure = 1//1.25 //调映射曝光度
         this.renderer.shadowMap.enabled = true //阴影

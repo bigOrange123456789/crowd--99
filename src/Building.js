@@ -7,5 +7,7 @@ export class Building{
             ).parentGroup
         parentGroup.scale.set(0.00005,0.00005,0.00005)
         scene.add(parentGroup)   
+        window.o=parentGroup
+
     }
 }

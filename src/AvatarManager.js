@@ -421,6 +421,8 @@ export class AvatarManager {
             gltfloader_next(0)
             function gltfloader_next(gltf_index){
                 new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[gltf_index], async (glb0) => {
+                    console.log("glb0:",glb0)
+                    window.test0001=glb0.scene.children[0].children[0].children[0].children
                     self.materialSet(glb0)
                     scenes.push(glb0.scene)
                     if(gltf_index+1<self.modelManager.modelList[modelType].pathModel.length) gltfloader_next(gltf_index+1)
@@ -517,9 +519,9 @@ export class AvatarManager {
                 let useTagLen = self.modelManager.modelList[modelType].useColorTag.length
                 for (let meshIndex = 0; meshIndex < useTagLen; meshIndex++) {
                     crowd.setColor(i00, [
-                        50*Math.random() - 0.5,
-                        50*Math.random() - 0.5,
-                        50*Math.random() - 0.5
+                        5*Math.random() - 0.5,
+                        5*Math.random() - 0.5,
+                        5*Math.random() - 0.5
                     ], self.modelManager.modelList[modelType].useColorTag[meshIndex])
                     // console.log(self.modelManager.modelList[modelType].useColorTag[meshIndex])
                 }

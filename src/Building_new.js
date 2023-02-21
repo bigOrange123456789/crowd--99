@@ -8,6 +8,7 @@ export class Building{
         this.parentGroup.scale.set(0.0005,0.0005,0.0005)
 
         scene.add(this.parentGroup)
+        // window.o=this.parentGroup
 
         this.load()
     }
