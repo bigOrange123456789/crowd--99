@@ -1,5 +1,5 @@
 import sceneConifg from '../config/sceneConifg_0.json'
-// import sceneConifg from '../config/sceneConifg_man01.json'
+// import sceneConifg from '../config/sceneConifg_man02.json'
 // import sceneConifg from '../config/sceneConifg_man_B.json'
 
 // import sceneConifg from '../config/sceneConifg_woman0.json'

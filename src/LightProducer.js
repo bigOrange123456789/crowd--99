@@ -12,10 +12,10 @@ class LightProducer{
         // scene.add( Light1 );
         // Light1.name="Light1"
 
-        const Light2 = new THREE.DirectionalLight( 0xcffffff,0.5 );
-        Light2.position.set( -20, 0, 0 );
-        scene.add( Light2 )
-        Light2.name="dirLight2"
+        // const Light2 = new THREE.DirectionalLight( 0xcffffff,0.5 );
+        // Light2.position.set( -20, 0, 0 );
+        // scene.add( Light2 )
+        // Light2.name="dirLight2"
 
 
         //创建区域光 

@@ -365,7 +365,12 @@ export class AvatarManager {
                     node.material.envMapIntensity = 0.1
                     node.material.metalness=1
                 }
+                if(name=="hair"){
+                    // alert(23)
+                    node.material.side=THREE.DoubleSide
+                }
                 if(name=="CloW_C_hair_geo"){//man_b
+                    
                     node.material.color.r=10
                     node.material.color.g=10
                     node.material.color.b=10
@@ -421,7 +426,7 @@ export class AvatarManager {
             gltfloader_next(0)
             function gltfloader_next(gltf_index){
                 new GLTFLoader().load(self.modelManager.modelList[modelType].pathModel[gltf_index], async (glb0) => {
-                    console.log("glb0:",glb0)
+                    // console.log("glb0:",glb0)
                     window.test0001=glb0.scene.children[0].children[0].children[0].children
                     self.materialSet(glb0)
                     scenes.push(glb0.scene)

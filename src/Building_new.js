@@ -4,28 +4,32 @@ import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader"
 
 export class Building{
     constructor(scene){
+        window.list000=[]
         this.parentGroup = new THREE.Group()
-        this.parentGroup.scale.set(0.0005,0.0005,0.0005)
+        // this.parentGroup.scale.set(0.0005,0.0005,0.0005)
 
         scene.add(this.parentGroup)
-        // window.o=this.parentGroup
+        this.parentGroup.position.z=-32
 
         this.load()
     }
     load(){
-        this.loadZip(0,new THREE.Vector3(1,1,1))
-        this.loadZip(1,new THREE.Vector3(0.1,0.1,0.1))
-        this.loadLight()
-    }
-    loadLight(){
         var self = this
-        new GLTFLoader().load("assets/Building/light.gltf",gltf=>{
-            self.parentGroup.add(gltf.scene)
+        new THREE.FileLoader().load("assets/Building/structdesc.json",json=>{
+            var structList = JSON.parse(json)
+            new THREE.FileLoader().load("assets/Building/smatrix.json",json=>{
+                var matrixList = JSON.parse(json)
+                var i = 0
+                var loading = setInterval(function(){
+                    self.loadZip(i,structList,matrixList)
+                    if(++i===13) clearInterval(loading)
+                },10)
+            })
         })
     }
-    loadZip(index,scale){
+    loadZip(index,structList,matrixList){
         var self = this
-        var url = "assets/Building/tiyuguan"+index+".zip"
+        var url = "assets/Building/output"+index+".zip"
         var promise = JSZip.external.Promise
         var baseUrl = "blob:"+THREE.LoaderUtils.extractUrlBase(url)
         new promise(function(resolve,reject){
@@ -57,61 +61,37 @@ export class Building{
             manager.setURLModifier(zip.urlResolver)
             return manager
         }).then(function(manager){
-            new THREE.FileLoader(manager).load("blob:assets/Building/structdesc.json",json=>{
-                var structList = JSON.parse(json)
-                new THREE.FileLoader(manager).load("blob:assets/Building/smatrix.json",json=>{
-                    var matrixList = JSON.parse(json)
-                    new GLTFLoader(manager).load("blob:assets/Building/output.glb",gltf=>{
-                        console.log(index)
-                        var meshNodeList = gltf.scene.children[0].children
-                        self.processMesh(index,meshNodeList,structList,matrixList,scale)
-                    })
-                })
+            new GLTFLoader(manager).load("blob:assets/Building/output"+index+".glb",gltf=>{
+                var meshNodeList = gltf.scene.children[0].children
+                self.processMesh(meshNodeList,structList,matrixList)
             })
         })
     }
-    processMesh(modelIndex,meshNodeList,structList,matrixList,scale){
+    processMesh(meshNodeList,structList,matrixList){
         var wire = new THREE.LineBasicMaterial({color: 0x444444})
         for(let i=0; i<meshNodeList.length; i++){
             var node = meshNodeList[i].clone()
-            if(modelIndex===0){
-                node.material = new THREE.MeshStandardMaterial({
-                    color:new THREE.Color(0.6+Math.random()*0.4,0.6+Math.random()*0.4,0.6+Math.random()*0.4),
-                    emissive:new THREE.Color(Math.random()*0.4,Math.random()*0.4,Math.random()*0.4),
-                    side:2
-                })
-            }else{
-                node.material = new THREE.MeshStandardMaterial({
-                    color:node.material.color,
-                    emissive:0x444444,
-                    side:2
-                })
+            {
+                var name=node.name
+                var c=node.material.color
+                // if(name.split("image").length>1){
+                // }else if(name=='xialouti_4'){
+                // }else if(name.split("Wutai").length>1){
+                // }else if(name.split("videowall").length>1){
+                // }
+                // else{
+                //     // {
+                //     //     c.r+=0.05
+                //     //     c.g+=0.21
+                //     //     c.b+=0.21
+                //     // }
+                // }
             }
-            node.scale.copy(scale)
             this.parentGroup.add(node)
-            if(node.geometry.boundingSphere.radius>1000000&&modelIndex===0){
-                let edges = new THREE.EdgesGeometry(node.geometry,60)
-                let lines = new THREE.LineSegments(edges,wire)
-                lines.scale.copy(scale)
-                this.parentGroup.add(lines)
-            }
-            var stride = node.geometry.attributes.position.data.stride
+            var stride = 3
             for(let j=0; j<structList[i].length; j++){
                 var object = node.clone()
                 object.geometry = node.geometry.clone()
-                if(modelIndex===0){
-                    object.material = new THREE.MeshStandardMaterial({
-                        color:new THREE.Color(0.6+Math.random()*0.4,0.6+Math.random()*0.4,0.6+Math.random()*0.4),
-                        emissive:new THREE.Color(Math.random()*0.4,Math.random()*0.4,Math.random()*0.4),
-                        side:2
-                    })
-                }else{
-                    object.material = new THREE.MeshStandardMaterial({
-                        color:object.material.color,
-                        emissive:0x444444,
-                        side:2
-                    })
-                }
                 var group = structList[i][j]
                 if(matrixList[group.n].it.length===0) continue
                 var index_arr = []
@@ -139,9 +119,6 @@ export class Building{
                 var new_index_array = new Uint16Array(updated_index_arr)
                 object.geometry.attributes.position = new THREE.BufferAttribute(new_position_array,3)
                 object.geometry.index = new THREE.BufferAttribute(new_index_array,1)
-                object.geometry.computeBoundingBox()
-                object.geometry.computeBoundingSphere()
-                delete object.geometry.attributes.normal
                 object.geometry.computeVertexNormals()
 
                 matrixList[group.n].it.push([1,0,0,0,0,1,0,0,0,0,1,0])
@@ -155,7 +132,6 @@ export class Building{
                         0, 0, 0, 1)
                     instanceMesh.setMatrixAt(k,instanceMatrix)
                 }
-                instanceMesh.scale.copy(scale)
                 this.parentGroup.add(instanceMesh)
             }
         }
