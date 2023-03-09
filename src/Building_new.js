@@ -7,6 +7,7 @@ export class Building{
         window.list000=[]
         this.parentGroup = new THREE.Group()
         // this.parentGroup.scale.set(0.0005,0.0005,0.0005)
+        this.parentGroup.scale.set(0.001,0.001,0.001)
 
         scene.add(this.parentGroup)
         this.parentGroup.position.z=-32
