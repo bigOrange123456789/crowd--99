@@ -4,7 +4,7 @@ import {MapControls,OrbitControls} from "three/examples/jsm/controls/OrbitContro
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { RGBMLoader } from 'three/examples/jsm/loaders/RGBMLoader.js'
 //RGBMLoader
-import { Building } from './Building_gltf_new.js'
+import { Building } from './Building_gltf.js'
 //import { Building } from './Building_new.js'
 import {LightProducer } from './LightProducer.js'
 import {AvatarManager } from './AvatarManager.js'
